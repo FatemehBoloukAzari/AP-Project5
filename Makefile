@@ -1,4 +1,4 @@
-CXX = g++
+CXX = g++ 
 CXXFLAGS = -std=c++17 -Wall -Wextra -I./include
 LFLAGS = -L./files -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 SRCDIR = src 
