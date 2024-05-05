@@ -16,5 +16,5 @@ const string PICS_PATH = "./files/pics/";
 const string AUDIO_PATH = "./files/audios/";
 const string FONTS_PATH = "./files/fonts/";
 
-int x[] = {220, 288, 351, 426, 490, 561, 634, 697, 763, 840};
-int y[] = {67, 154, 233, 322, 399, 483};
+int field_square_x[] = {220, 288, 351, 426, 490, 561, 634, 697, 763, 840};
+int field_square_y[] = {67, 154, 233, 322, 399, 483};
