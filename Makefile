@@ -21,3 +21,4 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(wildcard $(SRCDIR)/*.hpp)
 
 clean: 
 	rm -rf $(OBJDIR)/*.o $(EXECUTABLE) 
+
