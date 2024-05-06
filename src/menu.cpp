@@ -3,11 +3,25 @@
 const int CARD_WIDTH = 200;
 const int CARD_HEIGHT = 120;
 
+// move these to main (probably)
+int WALNUT_CARD_COOLDOWN = 5;
+int PEASHOOTER_CARD_COOLDOWN = 5;
+int SNOWPEA_CARD_COOLDOWN = 5;
+int MELONPULT_CARD_COOLDOWN = 5;
+int SUNFLOWER_CARD_COOLDOWN = 5;
+
+int WALNUT_PRICE = 5;
+int PEASHOOTER_PRICE = 5;
+int SNOWPEA_PRICE = 5;
+int MELONPULT_PRICE = 5;
+int SUNFLOWER_PRICE = 12;
+
 MenuItem::MenuItem(SpriteType type, int x_pos, int y_pos)
 {
     x = x_pos;
     y = y_pos;
-    switch (type)
+    sprite_type = type;
+    switch (sprite_type)
     {
         case WALNUT:
             item_texture.loadFromFile(PICS_PATH + "menu_walnut.png");
@@ -45,12 +59,30 @@ void MenuItem::render(RenderWindow &window)
     Font new_font;
     new_font.loadFromFile(FONTS_PATH + "randomfont.ttf");
     Text text;
-    int number_of_suns = 13;//suns.size();
-    text.setString(to_string(number_of_suns));
+    switch (sprite_type)
+    {
+        case WALNUT:
+            text.setString(to_string(WALNUT_PRICE));
+            break;
+        case PEASHOOTER:
+            text.setString(to_string(PEASHOOTER_PRICE));
+            break;
+        case SNOWPEA:
+            text.setString(to_string(SNOWPEA_PRICE));
+            break;
+        case MELONPULT:
+            text.setString(to_string(MELONPULT_PRICE));
+            break;
+        case SUNFLOWER:
+            text.setString(to_string(SUNFLOWER_PRICE));
+            break;
+        default:
+            break;
+    }
     text.setFillColor(Color::Black);
     text.setFont(new_font);
     text.setCharacterSize(40);
-    text.setPosition(x + 150, y + 60);
+    text.setPosition(x + 155, y + 60);
     text.setStyle(Text::Bold);
     window.draw(text);
 }

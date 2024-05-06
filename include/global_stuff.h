@@ -8,6 +8,16 @@
 using namespace std;
 using namespace sf;
 
+enum SpriteType
+{
+    WALNUT,
+    PEASHOOTER,
+    SNOWPEA,
+    MELONPULT,
+    SUNFLOWER,
+    NOT_SPRITE
+};
+
 const int WIDTH = 1500;
 const int HEIGHT = 1000;
 const int FRAME_RATE = 72;
@@ -19,9 +29,14 @@ const string FONTS_PATH = "./files/fonts/";
 const int field_square_x[] = {220, 288, 351, 426, 490, 561, 634, 697, 763, 840};
 const int field_square_y[] = {67, 154, 233, 322, 399, 483};
 
-const int WALNUT_CARD_COOLDOWN = 3; // change it to value in setting file
-const int PEASHOOTER_CARD_COOLDOWN = 5;
-const int SNOWPEA_CARD_COOLDOWN = 7;
-const int MELONPULT_CARD_COOLDOWN = 10;
-const int SUNFLOWER_CARD_COOLDOWN = 12;
-// they cause problem when they are not const
+extern int WALNUT_CARD_COOLDOWN; // change it to value in setting file
+extern int PEASHOOTER_CARD_COOLDOWN;
+extern int SNOWPEA_CARD_COOLDOWN;
+extern int MELONPULT_CARD_COOLDOWN;
+extern int SUNFLOWER_CARD_COOLDOWN;
+
+extern int WALNUT_PRICE; // change it to value in setting file
+extern int PEASHOOTER_PRICE;
+extern int SNOWPEA_PRICE;
+extern int MELONPULT_PRICE;
+extern int SUNFLOWER_PRICE;

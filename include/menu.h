@@ -2,16 +2,6 @@
 
 #include "global_stuff.h"
 
-enum SpriteType
-{
-    WALNUT,
-    PEASHOOTER,
-    SNOWPEA,
-    MELONPULT,
-    SUNFLOWER,
-    NOT_SPRITE
-};
-
 class MenuItem
 {
 public:
