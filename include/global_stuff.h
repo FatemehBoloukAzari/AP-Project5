@@ -17,7 +17,9 @@ enum SpriteType
     SNOWPEA,
     MELONPULT,
     SUNFLOWER,
-    NOT_SPRITE
+    NOT_SPRITE,
+    REGULAR,
+    HAIRMETALGARGANTUAR
 };
 
 const int WIDTH = 1500;
