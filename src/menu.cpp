@@ -1,7 +1,7 @@
 #include "menu.h"
 
-const int CARD_WIDTH = 200;
-const int CARD_HEIGHT = 120;
+const int CARD_WIDTH = 160;
+const int CARD_HEIGHT = 100;
 
 // move these to main (probably)
 int WALNUT_CARD_COOLDOWN = 5;
@@ -79,10 +79,10 @@ void MenuItem::render(RenderWindow &window)
         default:
             break;
     }
-    text.setFillColor(Color::Black);
+    text.setFillColor(Color::White);
     text.setFont(new_font);
-    text.setCharacterSize(40);
-    text.setPosition(x + 155, y + 60);
+    text.setCharacterSize(35);
+    text.setPosition(x + 123, y + 50);
     text.setStyle(Text::Bold);
     window.draw(text);
 }
