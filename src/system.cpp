@@ -1,5 +1,8 @@
 #include "system.h"
 
+const int SUN_BANK_WIDTH = 250;
+const int SUN_BANK_HEIGHT = 75;
+
 System::System(int width, int height)
 {
     window.create(VideoMode(width, height), "PVZ", Style::Close);
@@ -13,16 +16,35 @@ System::System(int width, int height)
     state = IN_GAME;
 }
 
-void System::render()
+void System::render_sun_bank()
 {
-    window.clear();
-    window.draw(backgroundSprite);
     Texture sun_bank_texture;
     sun_bank_texture.loadFromFile(PICS_PATH + "sun_bank.png");
     Sprite sun_bank_sprite;
     sun_bank_sprite.setTexture(sun_bank_texture);
+    double scale_x = (double)SUN_BANK_WIDTH / sun_bank_texture.getSize().x;
+    double scale_y = (double)SUN_BANK_HEIGHT / sun_bank_texture.getSize().y;
+    sun_bank_sprite.setScale(scale_x, scale_y);
     sun_bank_sprite.setPosition(20, 5);
     window.draw(sun_bank_sprite);
+    Font new_font;
+    new_font.loadFromFile(FONTS_PATH + "randomfont.ttf");
+    Text text;
+    int number_of_suns = 5;//suns.size();
+    text.setString(to_string(number_of_suns));
+    text.setFillColor(Color::Black);
+    text.setFont(new_font);
+    text.setCharacterSize(50);
+    text.setPosition(150, 13);
+    text.setStyle(Text::Bold);
+    window.draw(text);
+}
+
+void System::render()
+{
+    window.clear();
+    window.draw(backgroundSprite);
+    render_sun_bank();
     menu.render(window);
     window.display();
 }

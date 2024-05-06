@@ -32,6 +32,7 @@ private:
     /*vector <Sprite*> sprites;
     vector <Sun*> suns;
     vector <Bullet*> bullets;*/
+    void render_sun_bank();
     Menu menu;
     State state;
     //void handle_mouse_press(Event ev);

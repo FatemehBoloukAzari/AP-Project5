@@ -1,7 +1,7 @@
 #include "menu.h"
 
-const int CARD_WIDTH = 239;
-const int CARD_HEIGHT = 152;
+const int CARD_WIDTH = 200;
+const int CARD_HEIGHT = 120;
 
 MenuItem::MenuItem(SpriteType type, int x_pos, int y_pos)
 {
@@ -42,28 +42,30 @@ void MenuItem::render(RenderWindow &window)
     item_sprite.setScale(scale_x, scale_y);
     item_sprite.setPosition(x, y);
     window.draw(item_sprite);
+    Font new_font;
+    new_font.loadFromFile(FONTS_PATH + "randomfont.ttf");
+    Text text;
+    int number_of_suns = 13;//suns.size();
+    text.setString(to_string(number_of_suns));
+    text.setFillColor(Color::Black);
+    text.setFont(new_font);
+    text.setCharacterSize(40);
+    text.setPosition(x + 150, y + 60);
+    text.setStyle(Text::Bold);
+    window.draw(text);
 }
 
 void Menu::render(RenderWindow &window)
 {
-    /*Font MyFont;
-    MyFont.loadFromFile(FONTS_PATH + "randomfont.ttf");
-    Text text;
-    text.setString("  Menu: ");
-    text.setFillColor(Color::Yellow);
-    text.setFont(MyFont);
-    text.setCharacterSize(40);
-    text.setStyle(Text::Bold);
-    window.draw(text);*/
     for (auto &item : menu_items)
         item->render(window);
 }
 
 Menu::Menu()
 {
-    int y_pos = 80;
+    int y_pos = 100;
     int x_pos = 20;
-    int space_y = 5;
+    int space_y = 3;
     for (int type = WALNUT; type != NOT_SPRITE; type++)
     {
         SpriteType sprite_type = static_cast<SpriteType>(type);

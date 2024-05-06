@@ -8,8 +8,8 @@
 using namespace std;
 using namespace sf;
 
-const int WIDTH = 2000;
-const int HEIGHT = 1300;
+const int WIDTH = 1500;
+const int HEIGHT = 1000;
 const int FRAME_RATE = 72;
 
 const string PICS_PATH = "./files/pics/";
