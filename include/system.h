@@ -2,7 +2,8 @@
 
 #include "global_stuff.h"
 #include "menu.h"
-//#include "sprite.h"
+#include "zombie.h"
+
 //#include "sun.h"
 //#include "bullet.h"
 
