@@ -3,6 +3,11 @@
 const int SUN_BANK_WIDTH = 250;
 const int SUN_BANK_HEIGHT = 75;
 
+const bool MOVING_SUN = true;
+const bool NOT_MOVING_SUN = false;
+
+int SUN_INTERVAL = 5;
+
 System::System(int width, int height)
 {
     window.create(VideoMode(width, height), "PVZ", Style::Close);
@@ -14,6 +19,7 @@ System::System(int width, int height)
     float scale_y = (float)window.getSize().y / background.getSize().y;
     backgroundSprite.setScale(scale_x, scale_y);
     state = IN_GAME;
+    sun_generating_clock.restart();
 }
 
 void System::render_sun_bank()
@@ -45,8 +51,24 @@ void System::render()
     window.clear();
     window.draw(backgroundSprite);
     render_sun_bank();
+    for (auto &sun : suns)
+        sun->render(window);
     menu.render(window);
     window.display();
+}
+
+
+void System::update()
+{
+    Time elapsed = sun_generating_clock.getElapsedTime();
+    if (elapsed.asSeconds() >= SUN_INTERVAL)
+    {
+        sun_generating_clock.restart();
+        Sun *new_sun = new Sun(MOVING_SUN);
+        suns.push_back(new_sun);
+    }
+    for (auto &sun : suns)
+        sun->update();
 }
 
 void System::run()
@@ -54,7 +76,7 @@ void System::run()
     while (window.isOpen() && state != EXIT)
     {
         //handle_events();
-        //update();
+        update();
         render();
     }
 }

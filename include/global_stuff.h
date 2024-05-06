@@ -44,3 +44,6 @@ extern int PEASHOOTER_PRICE;
 extern int SNOWPEA_PRICE;
 extern int MELONPULT_PRICE;
 extern int SUNFLOWER_PRICE;
+
+extern int SUN_SPEED;
+extern int SUN_INTERVAL;

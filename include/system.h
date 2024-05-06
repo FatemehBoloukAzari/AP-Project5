@@ -3,8 +3,8 @@
 #include "global_stuff.h"
 #include "menu.h"
 #include "zombie.h"
+#include "sun.h"
 
-//#include "sun.h"
 //#include "bullet.h"
 
 enum State
@@ -30,11 +30,12 @@ private:
     Texture background;
     Sprite backgroundSprite;
     Clock clock;
-    /*vector <Sprite*> sprites;
+    //vector <Sprite*> sprites;
     vector <Sun*> suns;
-    vector <Bullet*> bullets;*/
+    //vector <Bullet*> bullets;
     void render_sun_bank();
     Menu menu;
     State state;
+    Clock sun_generating_clock;
     //void handle_mouse_press(Event ev);
 };
