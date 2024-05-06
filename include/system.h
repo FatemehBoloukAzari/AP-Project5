@@ -1,6 +1,7 @@
 #pragma once
 
 #include "global_stuff.h"
+#include "menu.h"
 //#include "sprite.h"
 //#include "sun.h"
 //#include "bullet.h"
@@ -30,8 +31,8 @@ private:
     Clock clock;
     /*vector <Sprite*> sprites;
     vector <Sun*> suns;
-    vector <Bullet*> bullets;
-    Menu menu;*/
+    vector <Bullet*> bullets;*/
+    Menu menu;
     State state;
     //void handle_mouse_press(Event ev);
 };

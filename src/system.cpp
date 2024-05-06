@@ -11,13 +11,19 @@ System::System(int width, int height)
     float scale_y = (float)window.getSize().y / background.getSize().y;
     backgroundSprite.setScale(scale_x, scale_y);
     state = IN_GAME;
-
 }
 
 void System::render()
 {
     window.clear();
     window.draw(backgroundSprite);
+    Texture sun_bank_texture;
+    sun_bank_texture.loadFromFile(PICS_PATH + "sun_bank.png");
+    Sprite sun_bank_sprite;
+    sun_bank_sprite.setTexture(sun_bank_texture);
+    sun_bank_sprite.setPosition(20, 5);
+    window.draw(sun_bank_sprite);
+    menu.render(window);
     window.display();
 }
 

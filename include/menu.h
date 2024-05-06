@@ -8,18 +8,21 @@ enum SpriteType
     PEASHOOTER,
     SNOWPEA,
     MELONPULT,
-    SUNFLOWER
+    SUNFLOWER,
+    NOT_SPRITE
 };
 
 class MenuItem
 {
 public:
-    void render();
+    MenuItem(SpriteType, int, int);
+    void render(RenderWindow &window);
     void update();
 private:
-    //int x;
-    //int y;
+    int x;
+    int y;
     Texture item_texture;
+    Sprite item_sprite;
     int remaining_cooldown_time;
     SpriteType sprite_type;
 };
@@ -27,8 +30,9 @@ private:
 class Menu
 {
 public:
+    Menu();
     void update();
-    void render();
+    void render(RenderWindow &window);
 private:
     vector <MenuItem*> menu_items;
 };
