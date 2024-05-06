@@ -3,6 +3,8 @@
 const int SUN_BANK_WIDTH = 250;
 const int SUN_BANK_HEIGHT = 75;
 
+const int INITIAL_NUMBER_OF_SUNS = 10;
+
 const bool MOVING_SUN = true;
 const bool NOT_MOVING_SUN = false;
 
@@ -20,6 +22,7 @@ System::System(int width, int height)
     backgroundSprite.setScale(scale_x, scale_y);
     state = IN_GAME;
     sun_generating_clock.restart();
+    number_of_suns = INITIAL_NUMBER_OF_SUNS;
 }
 
 void System::render_sun_bank()
@@ -36,7 +39,6 @@ void System::render_sun_bank()
     Font new_font;
     new_font.loadFromFile(FONTS_PATH + "randomfont.ttf");
     Text text;
-    int number_of_suns = 5;//suns.size();
     text.setString(to_string(number_of_suns));
     text.setFillColor(Color::Black);
     text.setFont(new_font);
@@ -71,11 +73,47 @@ void System::update()
         sun->update();
 }
 
+void System::handle_mouse_press(Event event)
+{
+    for (auto it = suns.begin(); it != suns.end();)
+    {
+        if ((*it)->check_mouse_press(event))
+        {
+            Sun* pressed_sun = *it;
+            number_of_suns++;
+            it = suns.erase(it);
+            delete pressed_sun;
+        }
+        else
+            it++;
+    }
+}
+
+void System::handle_events()
+{
+    Event event;
+    while (window.pollEvent(event))
+    {
+        switch (event.type)
+        {
+            case (Event::Closed):
+                window.close();
+                state = EXIT;
+                break;
+            case (Event::MouseButtonPressed):
+                handle_mouse_press(event);
+                break;
+            default:
+                break;
+        }
+    }
+}
+
 void System::run()
 {
     while (window.isOpen() && state != EXIT)
     {
-        //handle_events();
+        handle_events();
         update();
         render();
     }

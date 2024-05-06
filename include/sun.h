@@ -8,6 +8,7 @@ public:
     Sun(bool, int x_pos = 0, int y_pos = 0);
     void update();
     void render(RenderWindow &window);
+    bool check_mouse_press(Event event);
 private:
     int x;
     int y;

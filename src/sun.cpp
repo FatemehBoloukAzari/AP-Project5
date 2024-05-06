@@ -3,6 +3,8 @@
 const int SUN_WIDTH = 100;
 const int SUN_HEIGHT = 100;
 
+const int X_SPACE = 350;
+
 const int ONE_SECOND = 1;
 
 int SUN_SPEED = 5;
@@ -13,7 +15,7 @@ Sun::Sun(bool moving, int x_pos, int y_pos)
 {
     if (moving)
     {
-        x_pos = rng() % (WIDTH - SUN_WIDTH);
+        x_pos = rng() % (WIDTH - SUN_WIDTH - X_SPACE) + X_SPACE;
         y_pos = 0;
     }
     x = x_pos;
@@ -33,10 +35,21 @@ void Sun::render(RenderWindow &window)
     window.draw(sun_sprite);
 }
 
-
 void Sun::move()
 {
     y += SUN_SPEED;
+}
+
+bool Sun::check_mouse_press(Event event)
+{
+    Vector2f spritePos = sun_sprite.getPosition();
+    Vector2f mousePos = {(float)event.mouseButton.x, (float)event.mouseButton.y};
+    if (mousePos.x >= spritePos.x && mousePos.x <= spritePos.x + SUN_WIDTH &&
+        mousePos.y >= spritePos.y && mousePos.y <= spritePos.y + SUN_HEIGHT)
+    {
+        return true;
+    }
+    return false;
 }
 
 void Sun::update()

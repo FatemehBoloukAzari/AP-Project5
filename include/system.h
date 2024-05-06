@@ -37,5 +37,6 @@ private:
     Menu menu;
     State state;
     Clock sun_generating_clock;
-    //void handle_mouse_press(Event ev);
+    void handle_mouse_press(Event event);
+    int number_of_suns;
 };
