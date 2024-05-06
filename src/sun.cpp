@@ -52,6 +52,13 @@ bool Sun::check_mouse_press(Event event)
     return false;
 }
 
+bool Sun::exited_screen()
+{
+    if (y > HEIGHT)
+        return true;
+    return false;
+}
+
 void Sun::update()
 {
     Time elapsed = last_move_clock.getElapsedTime();

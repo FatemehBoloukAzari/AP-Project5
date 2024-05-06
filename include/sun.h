@@ -9,6 +9,7 @@ public:
     void update();
     void render(RenderWindow &window);
     bool check_mouse_press(Event event);
+    bool exited_screen();
 private:
     int x;
     int y;

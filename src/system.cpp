@@ -69,8 +69,18 @@ void System::update()
         Sun *new_sun = new Sun(MOVING_SUN);
         suns.push_back(new_sun);
     }
-    for (auto &sun : suns)
-        sun->update();
+    for (auto it = suns.begin(); it != suns.end();)
+    {
+        (*it)->update();
+        if ((*it)->exited_screen())
+        {
+            Sun* exited_sun = *it;
+            it = suns.erase(it);
+            delete exited_sun;
+        }
+        else
+            it++;
+    }
 }
 
 void System::handle_mouse_press(Event event)
