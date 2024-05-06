@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <iostream>
+#include <chrono>
+#include <random>
 
 using namespace std;
 using namespace sf;

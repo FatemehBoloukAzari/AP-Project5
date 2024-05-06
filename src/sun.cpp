@@ -3,11 +3,13 @@
 const int SUN_WIDTH = 100;
 const int SUN_HEIGHT = 100;
 
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+
 Sun::Sun(bool moving, int x_pos, int y_pos)
 {
     if (moving)
     {
-        x_pos = rand() % (WIDTH - SUN_WIDTH);
+        x_pos = rng() % (WIDTH - SUN_WIDTH);
         y_pos = 0;
     }
     x = x_pos;
