@@ -3,6 +3,7 @@
 #include "global_stuff.h"
 #include "menu.h"
 #include "zombie.h"
+#include "plant.h"
 
 //#include "sun.h"
 //#include "bullet.h"

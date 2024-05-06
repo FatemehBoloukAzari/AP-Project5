@@ -45,6 +45,8 @@ void System::render()
     window.clear();
     window.draw(backgroundSprite);
     render_sun_bank();
+    Plant* plant = new Plant(380 ,300 ,SNOWPEA) ; 
+    plant->render(window) ;
     menu.render(window);
     window.display();
 }
