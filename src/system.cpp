@@ -119,6 +119,42 @@ void System::handle_events()
     }
 }
 
+void System::handle_mouse_press(Event event)
+{
+    for (auto it = suns.begin(); it != suns.end();)
+    {
+        if ((*it)->check_mouse_press(event))
+        {
+            Sun* pressed_sun = *it;
+            number_of_suns++;
+            it = suns.erase(it);
+            delete pressed_sun;
+        }
+        else
+            it++;
+    }
+}
+
+void System::handle_events()
+{
+    Event event;
+    while (window.pollEvent(event))
+    {
+        switch (event.type)
+        {
+            case (Event::Closed):
+                window.close();
+                state = EXIT;
+                break;
+            case (Event::MouseButtonPressed):
+                handle_mouse_press(event);
+                break;
+            default:
+                break;
+        }
+    }
+}
+
 void System::run()
 {
     while (window.isOpen() && state != EXIT)
