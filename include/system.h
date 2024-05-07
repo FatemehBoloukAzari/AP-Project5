@@ -26,11 +26,13 @@ public:
     void run();
     void handle_events();
     void render();
+    void add_zombie(SpriteType);
+    void generate_random_zombie(SpriteType); 
     //~System();
 private:
     Texture background;
     Sprite backgroundSprite;
-    Clock clock;
+    Clock clock ,zombie_clock;
     /*vector <Sprite*> sprites;
     vector <Sun*> suns;
     vector <Bullet*> bullets;*/

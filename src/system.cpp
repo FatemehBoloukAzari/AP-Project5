@@ -45,10 +45,15 @@ void System::render()
     window.clear();
     window.draw(backgroundSprite);
     render_sun_bank();
-    Plant* plant = new Plant(380 ,300 ,SNOWPEA) ; 
-    plant->render(window) ;
     menu.render(window);
     window.display();
+}
+
+void System::add_zombie(SpriteType zombie_type){
+    Zombie* zombie = new Zombie(WIDTH ,)
+}
+
+void System::generate_random_zombie(){
 }
 
 void System::run()

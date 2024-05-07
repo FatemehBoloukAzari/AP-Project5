@@ -10,4 +10,5 @@ public :
     virtual void update() ; 
 protected : 
     int freeze_time ; 
+    vector <int> row_respawn_height ; 
 };
