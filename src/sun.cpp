@@ -11,7 +11,7 @@ int SUN_SPEED = 5;
 
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-Sun::Sun(bool moving, int x_pos, int y_pos)
+Sun::Sun(bool moving, double x_pos, double y_pos)
 {
     if (moving)
     {
