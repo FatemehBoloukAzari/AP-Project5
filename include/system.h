@@ -3,6 +3,7 @@
 #include "global_stuff.h"
 #include "menu.h"
 #include "zombie.h"
+#include "plant.h"
 
 //#include "sun.h"
 //#include "bullet.h"
@@ -29,7 +30,7 @@ public:
 private:
     Texture background;
     Sprite backgroundSprite;
-    Clock clock;
+    Clock clock ,zombie_clock;
     /*vector <Sprite*> sprites;
     vector <Sun*> suns;
     vector <Bullet*> bullets;*/

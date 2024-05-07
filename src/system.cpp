@@ -49,6 +49,8 @@ void System::render()
     window.display();
 }
 
+
+
 void System::run()
 {
     while (window.isOpen() && state != EXIT)
