@@ -13,6 +13,8 @@ const int MOVING_SPRITE_HEIGHT = 100;
 
 const pair <int, int> NO_SQUARE = {-1, -1};
 
+bool square_is_full[ROW][COLUMN];
+
 int SUN_INTERVAL = 5;
 
 System::System(int width, int height)
@@ -179,7 +181,7 @@ int get_price(SpriteType sprite_type)
 void System::handle_adding_plant(Event event, SpriteType adding_sprite)
 {
     pair <int, int> clicked_square = get_clicked_square(event, scale_x, scale_y);
-    if (clicked_square == NO_SQUARE)
+    if (clicked_square == NO_SQUARE || square_is_full[clicked_square.first][clicked_square.second])
     {
         menu.untag_tagged_item();
         return;
@@ -188,6 +190,7 @@ void System::handle_adding_plant(Event event, SpriteType adding_sprite)
     number_of_suns -= price;
     menu.update_used_card();
     menu.untag_tagged_item();
+    square_is_full[clicked_square.first][clicked_square.second] = true;
     //add_plant(adding_sprite, right position to add)
 }
 

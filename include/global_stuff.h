@@ -35,7 +35,7 @@ const int ROW = 5;
 
 const int field_square_x[] = {220, 288, 351, 426, 490, 561, 634, 697, 763, 840};
 const int field_square_y[] = {67, 154, 233, 322, 399, 483};
-extern int square_is_full[ROW][COLUMN];
+extern bool square_is_full[ROW][COLUMN];
 
 extern int WALNUT_CARD_COOLDOWN; // change it to value in setting file
 extern int PEASHOOTER_CARD_COOLDOWN;
