@@ -5,9 +5,9 @@ const int SUN_HEIGHT = 100;
 
 const int X_SPACE = 350;
 
-const int ONE_SECOND = 1;
+const int SUN_MOVE_INTERVAL = 10;
 
-int SUN_SPEED = 5;
+int SUN_SPEED = 10;
 
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
@@ -35,9 +35,9 @@ void Sun::render(RenderWindow &window)
     window.draw(sun_sprite);
 }
 
-void Sun::move()
+void Sun::move(double change_amount)
 {
-    y += SUN_SPEED;
+    y += change_amount;
 }
 
 bool Sun::check_mouse_press(Event event)
@@ -62,9 +62,9 @@ bool Sun::exited_screen()
 void Sun::update()
 {
     Time elapsed = last_move_clock.getElapsedTime();
-    if (elapsed.asSeconds() >= ONE_SECOND)
+    if (elapsed.asMilliseconds() >= SUN_MOVE_INTERVAL)
     {
-        move();
+        move((double)SUN_SPEED / 100);
         last_move_clock.restart();
     }
 }

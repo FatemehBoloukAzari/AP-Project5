@@ -17,5 +17,5 @@ private:
     Texture sun_texture;
     Sprite sun_sprite;
     Clock last_move_clock;
-    void move();
+    void move(double);
 };
