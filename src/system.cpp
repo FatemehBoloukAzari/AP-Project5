@@ -8,6 +8,9 @@ const int INITIAL_NUMBER_OF_SUNS = 10;
 const bool MOVING_SUN = true;
 const bool NOT_MOVING_SUN = false;
 
+const int MOVING_SPRITE_WIDTH = 100;
+const int MOVING_SPRITE_HEIGHT = 100;
+
 const pair <int, int> NO_SQUARE = {-1, -1};
 
 int SUN_INTERVAL = 5;
@@ -50,6 +53,45 @@ void System::render_sun_bank()
     window.draw(text);
 }
 
+
+void System::render_cursor_following_sprite(RenderWindow &window)
+{
+    if (menu.get_tagged_sprite() == NOT_SPRITE)
+        return;
+    Texture item_texture;
+    switch (menu.get_tagged_sprite())
+    {
+        case WALNUT:
+            item_texture.loadFromFile(PICS_PATH + "defai.png");
+            break;
+        case PEASHOOTER:
+            item_texture.loadFromFile(PICS_PATH + "nokhode_shooti.png");
+            break;
+        case SNOWPEA:
+            item_texture.loadFromFile(PICS_PATH + "nokhode_barfi.png");
+            break;
+        case MELONPULT:
+            item_texture.loadFromFile(PICS_PATH + "hendevane_part_kon.png");
+            break;
+        case SUNFLOWER:
+            item_texture.loadFromFile(PICS_PATH + "aftab_gardoon.png");           
+            break;
+        default:
+            break;
+    }
+    Sprite item_sprite;
+    item_sprite.setTexture(item_texture);
+    // instead of MOVING_SPRITE_WIDTH and MOVING_SPRITE_HEIGHT we can use the specified size
+    // for each sprite (the size that is used for adding the sprite to the field)
+    double scale_x = (double)MOVING_SPRITE_WIDTH / item_texture.getSize().x;
+    double scale_y = (double)MOVING_SPRITE_HEIGHT / item_texture.getSize().y;
+    item_sprite.setScale(scale_x, scale_y);
+    item_sprite.setOrigin(item_sprite.getLocalBounds().width / 2, item_sprite.getLocalBounds().height / 2);
+    Vector2i mouse_position = Mouse::getPosition(window);
+    item_sprite.setPosition(static_cast<Vector2f>(mouse_position));
+    window.draw(item_sprite);
+}
+
 void System::render()
 {
     window.clear();
@@ -58,6 +100,7 @@ void System::render()
     for (auto &sun : suns)
         sun->render(window);
     menu.render(window);
+    render_cursor_following_sprite(window);
     window.display();
 }
 

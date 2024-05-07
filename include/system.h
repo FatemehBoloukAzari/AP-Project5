@@ -30,7 +30,7 @@ public:
 private:
     Texture background;
     Sprite backgroundSprite;
-    Clock clock ,zombie_clock;
+    Clock clock, zombie_clock;
     //vector <Sprite*> sprites;
     vector <Sun*> suns;
     //vector <Bullet*> bullets;
@@ -43,4 +43,5 @@ private:
     void handle_mouse_press(Event event);
     int number_of_suns;
     void handle_adding_plant(Event event, SpriteType adding_sprite);
+    void render_cursor_following_sprite(RenderWindow &window);
 };
