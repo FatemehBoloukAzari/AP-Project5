@@ -49,6 +49,13 @@ void System::render()
     window.display();
 }
 
+void System::add_zombie(SpriteType zombie_type){
+    Zombie* zombie = new Zombie(WIDTH ,)
+}
+
+void System::generate_random_zombie(){
+}
+
 void System::run()
 {
     while (window.isOpen() && state != EXIT)
