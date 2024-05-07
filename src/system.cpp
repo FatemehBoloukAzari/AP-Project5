@@ -8,6 +8,8 @@ const int INITIAL_NUMBER_OF_SUNS = 10;
 const bool MOVING_SUN = true;
 const bool NOT_MOVING_SUN = false;
 
+const pair <int, int> NO_SQUARE = {-1, -1};
+
 int SUN_INTERVAL = 5;
 
 System::System(int width, int height)
@@ -17,8 +19,8 @@ System::System(int width, int height)
     if (!background.loadFromFile(PICS_PATH + "background.png"))
         cout << "failed to open" << endl;
     backgroundSprite.setTexture(background);
-    float scale_x = (float)window.getSize().x / background.getSize().x;
-    float scale_y = (float)window.getSize().y / background.getSize().y;
+    scale_x = (float)window.getSize().x / background.getSize().x;
+    scale_y = (float)window.getSize().y / background.getSize().y;
     backgroundSprite.setScale(scale_x, scale_y);
     state = IN_GAME;
     sun_generating_clock.restart();
@@ -83,6 +85,65 @@ void System::update()
     }
 }
 
+double get_scaled_x(double val, double scale_x)
+{
+    return val * scale_x;
+}
+
+double get_scaled_y(double val, double scale_y)
+{
+    return val * scale_y;
+}
+
+pair <int, int> get_clicked_square(Event event, double scale_x, double scale_y)
+{
+    Vector2f mouse_pos = {(float)event.mouseButton.x, (float)event.mouseButton.y};
+    for (int i = 0; i < ROW; i++)
+    {
+        for (int j = 0; j < COLUMN; j++)
+        {
+            double x1 = get_scaled_x(field_square_x[j], scale_x), x2 = get_scaled_x(field_square_x[j + 1], scale_x);
+            double y1 = get_scaled_y(field_square_y[i], scale_y), y2 = get_scaled_y(field_square_y[i + 1], scale_y);
+            if (y1 <= mouse_pos.y && mouse_pos.y <= y2 && 
+                x1 <= mouse_pos.x && mouse_pos.x <= x2)
+                return {i, j};
+        }
+    }
+    return NO_SQUARE;
+}
+
+int get_price(SpriteType sprite_type)
+{
+    switch (sprite_type)
+    {
+        case WALNUT:
+            return WALNUT_PRICE;
+        case PEASHOOTER:
+            return PEASHOOTER_PRICE;
+        case SNOWPEA:
+            return SNOWPEA_PRICE;
+        case MELONPULT:
+            return MELONPULT_PRICE;
+        case SUNFLOWER:
+            return SUNFLOWER_PRICE;
+        default:
+            break;
+    }
+    return 0;
+}
+
+void System::handle_adding_plant(Event event, SpriteType adding_sprite)
+{
+    pair <int, int> clicked_square = get_clicked_square(event, scale_x, scale_y);
+    if (clicked_square == NO_SQUARE)
+        return;
+    int price = get_price(adding_sprite);
+    number_of_suns -= price;
+    // oon sprite ro untage konim va start bezanim cooldownesh ro va ghiafasho avaz konim va in harfa
+    // untage bayad hata age clicked squar no square bood ham anjam she
+    //add_plant(adding_sprite, right position to add)
+}
+
 void System::handle_mouse_press(Event event)
 {
     for (auto it = suns.begin(); it != suns.end();)
@@ -97,6 +158,10 @@ void System::handle_mouse_press(Event event)
         else
             it++;
     }
+    menu.handle_mouse_press(event, number_of_suns);
+    SpriteType adding_sprite = menu.get_tagged_sprite();
+    if (adding_sprite != NOT_SPRITE)
+        handle_adding_plant(event, adding_sprite);
 }
 
 void System::handle_events()

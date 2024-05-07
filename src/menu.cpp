@@ -21,6 +21,8 @@ MenuItem::MenuItem(SpriteType type, int x_pos, int y_pos)
     x = x_pos;
     y = y_pos;
     sprite_type = type;
+    on_cooldown = false;
+    tagged = false;
     switch (sprite_type)
     {
         case WALNUT:
@@ -105,4 +107,70 @@ Menu::Menu()
         menu_items.push_back(new_menu_item);
         y_pos += CARD_HEIGHT + space_y;
     }
+}
+
+bool MenuItem::check_mouse_press(Event event)
+{
+    Vector2f sprite_pos = item_sprite.getPosition();
+    Vector2f mouse_pos = {(float)event.mouseButton.x, (float)event.mouseButton.y};
+    if (mouse_pos.x >= sprite_pos.x && mouse_pos.x <= sprite_pos.x + CARD_WIDTH &&
+        mouse_pos.y >= sprite_pos.y && mouse_pos.y <= sprite_pos.y + CARD_HEIGHT)
+    {
+        return true;
+    }
+    return false;
+}
+
+void MenuItem::handle_mouse_press(Event event, int number_of_suns)
+{
+    if (!check_mouse_press(event) || on_cooldown || tagged)
+        return;
+    int price = 0;
+    switch (sprite_type)
+    {
+        case WALNUT:
+            price = WALNUT_PRICE;
+            break;
+        case PEASHOOTER:
+            price = PEASHOOTER_PRICE;
+            break;
+        case SNOWPEA:
+            price = SNOWPEA_PRICE;
+            break;
+        case MELONPULT:
+            price = MELONPULT_PRICE;
+            break;
+        case SUNFLOWER:
+            price = SUNFLOWER_PRICE;
+            break;
+        default:
+            break;
+    }
+    if (price > number_of_suns)
+        return;
+    tagged = true;
+}
+
+void Menu::handle_mouse_press(Event event, int number_of_suns)
+{
+    for (auto &menu_item : menu_items)
+        menu_item->handle_mouse_press(event, number_of_suns);
+}
+
+bool MenuItem::is_tagged()
+{
+    return tagged;
+}
+
+SpriteType MenuItem::get_sprite_type()
+{
+    return sprite_type;
+}
+
+SpriteType Menu::get_tagged_sprite()
+{
+    for (auto &menu_item : menu_items)
+        if (menu_item->is_tagged())
+            return menu_item->get_sprite_type();
+    return NOT_SPRITE;
 }

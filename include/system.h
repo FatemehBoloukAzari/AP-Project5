@@ -34,10 +34,13 @@ private:
     //vector <Sprite*> sprites;
     vector <Sun*> suns;
     //vector <Bullet*> bullets;
+    double scale_x;
+    double scale_y;
     void render_sun_bank();
     Menu menu;
     State state;
     Clock sun_generating_clock;
     void handle_mouse_press(Event event);
     int number_of_suns;
+    void handle_adding_plant(Event event, SpriteType adding_sprite);
 };
