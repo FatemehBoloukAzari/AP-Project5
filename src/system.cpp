@@ -83,6 +83,7 @@ void System::update()
         else
             it++;
     }
+    menu.update();
 }
 
 double get_scaled_x(double val, double scale_x)
@@ -136,11 +137,14 @@ void System::handle_adding_plant(Event event, SpriteType adding_sprite)
 {
     pair <int, int> clicked_square = get_clicked_square(event, scale_x, scale_y);
     if (clicked_square == NO_SQUARE)
+    {
+        menu.untag_tagged_item();
         return;
+    }
     int price = get_price(adding_sprite);
     number_of_suns -= price;
-    // oon sprite ro untage konim va start bezanim cooldownesh ro va ghiafasho avaz konim va in harfa
-    // untage bayad hata age clicked squar no square bood ham anjam she
+    menu.update_used_card();
+    menu.untag_tagged_item();
     //add_plant(adding_sprite, right position to add)
 }
 
@@ -158,10 +162,10 @@ void System::handle_mouse_press(Event event)
         else
             it++;
     }
-    menu.handle_mouse_press(event, number_of_suns);
     SpriteType adding_sprite = menu.get_tagged_sprite();
     if (adding_sprite != NOT_SPRITE)
         handle_adding_plant(event, adding_sprite);
+    menu.handle_mouse_press(event, number_of_suns);
 }
 
 void System::handle_events()

@@ -10,17 +10,23 @@ public:
     void update();
     void handle_mouse_press(Event event, int number_of_suns);
     bool is_tagged();
+    void untag();
+    void update_used_card();
     SpriteType get_sprite_type();
 private:
     int x;
     int y;
     Texture item_texture;
     Sprite item_sprite;
-    int remaining_cooldown_time;
+    Texture item_cooldown_texture;
+    Sprite item_cooldown_sprite;
     SpriteType sprite_type;
     bool on_cooldown;
     bool tagged;
+    Clock cooldown_clock;
     bool check_mouse_press(Event event);
+    void normal_render(RenderWindow &window);
+    void cooldown_render(RenderWindow &window);
 };
 
 class Menu
@@ -31,6 +37,8 @@ public:
     void render(RenderWindow &window);
     void handle_mouse_press(Event event, int number_of_suns);
     SpriteType get_tagged_sprite();
+    void update_used_card();
+    void untag_tagged_item();
 private:
     vector <MenuItem*> menu_items;
 };

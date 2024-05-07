@@ -1,4 +1,5 @@
 #include "menu.h"
+#include <iomanip>
 
 const int CARD_WIDTH = 160;
 const int CARD_HEIGHT = 100;
@@ -27,31 +28,32 @@ MenuItem::MenuItem(SpriteType type, int x_pos, int y_pos)
     {
         case WALNUT:
             item_texture.loadFromFile(PICS_PATH + "menu_walnut.png");
-            remaining_cooldown_time = WALNUT_CARD_COOLDOWN;
+            item_cooldown_texture.loadFromFile(PICS_PATH + "menu_walnut_cooldown.png");
             break;
         case PEASHOOTER:
             item_texture.loadFromFile(PICS_PATH + "menu_peashooter.png");
-            remaining_cooldown_time = PEASHOOTER_CARD_COOLDOWN;
+            item_cooldown_texture.loadFromFile(PICS_PATH + "menu_peashooter_cooldown.png");
             break;
         case SNOWPEA:
             item_texture.loadFromFile(PICS_PATH + "menu_snowpea.png");
-            remaining_cooldown_time = SNOWPEA_CARD_COOLDOWN;
+            item_cooldown_texture.loadFromFile(PICS_PATH + "menu_snowpea_cooldown.png");
             break;
         case MELONPULT:
             item_texture.loadFromFile(PICS_PATH + "menu_melonpult.png");
-            remaining_cooldown_time = MELONPULT_CARD_COOLDOWN;
+            item_cooldown_texture.loadFromFile(PICS_PATH + "menu_melonpult_cooldown.png");
             break;
         case SUNFLOWER:
             item_texture.loadFromFile(PICS_PATH + "menu_sunflower.png");
-            remaining_cooldown_time = SUNFLOWER_CARD_COOLDOWN;
+            item_cooldown_texture.loadFromFile(PICS_PATH + "menu_sunflower_cooldown.png");
             break;
         default:
             break;
     }
     item_sprite.setTexture(item_texture);
+    item_cooldown_sprite.setTexture(item_cooldown_texture);
 }
 
-void MenuItem::render(RenderWindow &window)
+void MenuItem::normal_render(RenderWindow &window)
 {
     double scale_x = (double)CARD_WIDTH / item_texture.getSize().x;
     double scale_y = (double)CARD_HEIGHT / item_texture.getSize().y;
@@ -87,6 +89,83 @@ void MenuItem::render(RenderWindow &window)
     text.setPosition(x + 123, y + 50);
     text.setStyle(Text::Bold);
     window.draw(text);
+}
+
+int get_cooldown_time(SpriteType sprite_type)
+{
+    switch (sprite_type)
+    {
+        case WALNUT:
+            return WALNUT_CARD_COOLDOWN;
+        case PEASHOOTER:
+            return PEASHOOTER_CARD_COOLDOWN;
+        case SNOWPEA:
+            return SNOWPEA_CARD_COOLDOWN;
+        case MELONPULT:
+            return MELONPULT_CARD_COOLDOWN;
+        case SUNFLOWER:
+            return SUNFLOWER_CARD_COOLDOWN;
+        default:
+            break;
+    }
+    return 0;
+}
+
+void MenuItem::cooldown_render(RenderWindow &window)
+{
+    double scale_x = (double)CARD_WIDTH / item_texture.getSize().x;
+    double scale_y = (double)CARD_HEIGHT / item_texture.getSize().y;
+    item_cooldown_sprite.setScale(scale_x, scale_y);
+    item_cooldown_sprite.setPosition(x, y);
+    window.draw(item_cooldown_sprite);
+    Font new_font;
+    new_font.loadFromFile(FONTS_PATH + "randomfont.ttf");
+    Text text;
+    Time elapsed = cooldown_clock.getElapsedTime();
+    double remaning_cooldown_time = get_cooldown_time(sprite_type) - elapsed.asSeconds();
+    ostringstream stream;
+    stream << fixed << setprecision(1) << remaning_cooldown_time;
+    text.setString(stream.str());
+    text.setFillColor(Color::Red);
+    text.setFont(new_font);
+    text.setCharacterSize(35);
+    text.setPosition(x + 60, y + 25);
+    text.setStyle(Text::Bold);
+    window.draw(text);
+    switch (sprite_type)
+    {
+        case WALNUT:
+            text.setString(to_string(WALNUT_PRICE));
+            break;
+        case PEASHOOTER:
+            text.setString(to_string(PEASHOOTER_PRICE));
+            break;
+        case SNOWPEA:
+            text.setString(to_string(SNOWPEA_PRICE));
+            break;
+        case MELONPULT:
+            text.setString(to_string(MELONPULT_PRICE));
+            break;
+        case SUNFLOWER:
+            text.setString(to_string(SUNFLOWER_PRICE));
+            break;
+        default:
+            break;
+    }
+    text.setFillColor(Color::White);
+    text.setFont(new_font);
+    text.setCharacterSize(35);
+    text.setPosition(x + 123, y + 50);
+    text.setStyle(Text::Bold);
+    window.draw(text);
+}
+
+void MenuItem::render(RenderWindow &window)
+{
+    if (!on_cooldown)
+        normal_render(window);
+    else
+        cooldown_render(window);
 }
 
 void Menu::render(RenderWindow &window)
@@ -173,4 +252,42 @@ SpriteType Menu::get_tagged_sprite()
         if (menu_item->is_tagged())
             return menu_item->get_sprite_type();
     return NOT_SPRITE;
+}
+
+void MenuItem::update_used_card()
+{
+    cooldown_clock.restart();
+    on_cooldown = true;
+}
+
+void Menu::update_used_card()
+{
+    for (auto &menu_item : menu_items)
+        if (menu_item->is_tagged())
+            menu_item->update_used_card();
+}
+
+void MenuItem::untag()
+{
+    tagged = false;
+}
+
+void Menu::untag_tagged_item()
+{
+    for (auto &menu_item : menu_items)
+        if (menu_item->is_tagged())
+            menu_item->untag();
+}
+
+void MenuItem::update()
+{
+    Time elapsed = cooldown_clock.getElapsedTime();
+    if (elapsed.asSeconds() >= get_cooldown_time(sprite_type))
+        on_cooldown = false;
+}
+
+void Menu::update()
+{
+    for (auto &menu_item : menu_items)
+        menu_item->update();
 }
