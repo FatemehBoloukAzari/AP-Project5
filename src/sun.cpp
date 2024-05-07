@@ -42,10 +42,10 @@ void Sun::move()
 
 bool Sun::check_mouse_press(Event event)
 {
-    Vector2f spritePos = sun_sprite.getPosition();
-    Vector2f mousePos = {(float)event.mouseButton.x, (float)event.mouseButton.y};
-    if (mousePos.x >= spritePos.x && mousePos.x <= spritePos.x + SUN_WIDTH &&
-        mousePos.y >= spritePos.y && mousePos.y <= spritePos.y + SUN_HEIGHT)
+    Vector2f sprite_pos = sun_sprite.getPosition();
+    Vector2f mouse_pos = {(float)event.mouseButton.x, (float)event.mouseButton.y};
+    if (mouse_pos.x >= sprite_pos.x && mouse_pos.x <= sprite_pos.x + SUN_WIDTH &&
+        mouse_pos.y >= sprite_pos.y && mouse_pos.y <= sprite_pos.y + SUN_HEIGHT)
     {
         return true;
     }
