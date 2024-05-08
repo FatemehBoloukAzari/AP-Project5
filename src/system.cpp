@@ -274,13 +274,13 @@ void System::handle_events()
 
 void System::game_over_render()
 {
-    /*window.clear();
+    window.clear();
     window.draw(backgroundSprite);
     render_sun_bank();
     for (auto &sun : suns)
         sun->render(window);
     menu.render(window);
-    render_cursor_following_sprite(window);*/
+    render_cursor_following_sprite(window);
     RectangleShape rect;
     rect.setFillColor(Color(0, 0, 0, 200));
     rect.setSize(Vector2f(window.getSize().x, window.getSize().y));
