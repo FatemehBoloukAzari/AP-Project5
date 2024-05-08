@@ -44,4 +44,6 @@ private:
     int number_of_suns;
     void handle_adding_plant(Event event, SpriteType adding_sprite);
     void render_cursor_following_sprite(RenderWindow &window);
+    void in_game_initialization();
+    void main_menu_render();
 };

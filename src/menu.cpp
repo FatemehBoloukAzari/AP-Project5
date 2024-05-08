@@ -61,7 +61,7 @@ void MenuItem::normal_render(RenderWindow &window)
     item_sprite.setPosition(x, y);
     window.draw(item_sprite);
     Font new_font;
-    new_font.loadFromFile(FONTS_PATH + "randomfont.ttf");
+    new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
     Text text;
     switch (sprite_type)
     {
@@ -119,7 +119,7 @@ void MenuItem::cooldown_render(RenderWindow &window)
     item_cooldown_sprite.setPosition(x, y);
     window.draw(item_cooldown_sprite);
     Font new_font;
-    new_font.loadFromFile(FONTS_PATH + "randomfont.ttf");
+    new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
     Text text;
     Time elapsed = cooldown_clock.getElapsedTime();
     double remaning_cooldown_time = get_cooldown_time(sprite_type) - elapsed.asSeconds();

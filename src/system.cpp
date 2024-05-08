@@ -21,13 +21,23 @@ System::System(int width, int height)
 {
     window.create(VideoMode(width, height), "PVZ", Style::Close);
     window.setFramerateLimit(FRAME_RATE);
-    if (!background.loadFromFile(PICS_PATH + "background.png"))
+    if (!background.loadFromFile(PICS_PATH + "main_menu.png"))
         cout << "failed to open" << endl;
     backgroundSprite.setTexture(background);
     scale_x = (float)window.getSize().x / background.getSize().x;
     scale_y = (float)window.getSize().y / background.getSize().y;
     backgroundSprite.setScale(scale_x, scale_y);
-    state = IN_GAME;
+    state = MAIN_MENU;
+}
+
+void System::in_game_initialization()
+{
+    if (!background.loadFromFile(PICS_PATH + "background.png"))
+        cout << "failed to open" << endl;
+    backgroundSprite.setTexture(background);
+    scale_x = (float)window.getSize().x / backgroundSprite.getLocalBounds().width;
+    scale_y = (float)window.getSize().y / backgroundSprite.getLocalBounds().height;
+    backgroundSprite.setScale(scale_x, scale_y);
     sun_generating_clock.restart();
     number_of_suns = INITIAL_NUMBER_OF_SUNS;
 }
@@ -44,7 +54,7 @@ void System::render_sun_bank()
     sun_bank_sprite.setPosition(20, 5);
     window.draw(sun_bank_sprite);
     Font new_font;
-    new_font.loadFromFile(FONTS_PATH + "randomfont.ttf");
+    new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
     Text text;
     text.setString(to_string(number_of_suns));
     text.setFillColor(Color::Black);
@@ -54,7 +64,6 @@ void System::render_sun_bank()
     text.setStyle(Text::Bold);
     window.draw(text);
 }
-
 
 void System::render_cursor_following_sprite(RenderWindow &window)
 {
@@ -106,6 +115,28 @@ void System::render()
     window.display();
 }
 
+void System::main_menu_render()
+{
+    window.clear();
+    window.draw(backgroundSprite);
+    Font new_font;
+    new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
+    Text text;
+    text.setString("Press any key to start");
+    text.setFillColor(Color::Black);
+    text.setFont(new_font);
+    text.setCharacterSize(150);
+    int x_pos = (WIDTH - text.getLocalBounds().width) / 2;
+    int y_pos = (HEIGHT - text.getLocalBounds().height) / 2;
+    text.setPosition(x_pos, y_pos);
+    text.setStyle(Text::Bold);
+    Text shadow = text;
+    shadow.setFillColor(Color(0, 0, 0, 128));
+    shadow.move(6, -6);
+    window.draw(shadow);
+    window.draw(text);
+    window.display();
+}
 
 void System::update()
 {
@@ -228,6 +259,10 @@ void System::handle_events()
             case (Event::MouseButtonPressed):
                 handle_mouse_press(event);
                 break;
+            case (Event::KeyPressed):
+                if (state == MAIN_MENU)
+                    state = IN_GAME;
+                break;
             default:
                 break;
         }
@@ -236,10 +271,25 @@ void System::handle_events()
 
 void System::run()
 {
-    while (window.isOpen() && state != EXIT)
+    while (window.isOpen() && state == MAIN_MENU)
+    {
+        main_menu_render();
+        handle_events();
+    }
+    in_game_initialization();
+    while (window.isOpen() && state == IN_GAME)
     {
         handle_events();
         update();
         render();
     }
+    /*while (window.isOpen() && state == VICTORY_SCREEN)
+    {
+        handle_events();
+        update();
+        render();
+    }*/
+    /*while (window.isOpen() && state == GAMEOVER_SCREEN)
+    {
+    }*/
 }
