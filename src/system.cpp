@@ -40,6 +40,9 @@ void System::in_game_initialization()
     backgroundSprite.setScale(scale_x, scale_y);
     sun_generating_clock.restart();
     number_of_suns = INITIAL_NUMBER_OF_SUNS;
+    music.openFromFile(AUDIO_PATH + "in_game.wav");
+    music.setLoop(true);
+    music.play();
 }
 
 void System::render_sun_bank()

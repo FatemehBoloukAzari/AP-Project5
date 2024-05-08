@@ -7,7 +7,7 @@ const int X_SPACE = 350;
 
 const int SUN_MOVE_INTERVAL = 10;
 
-int SUN_SPEED = 10;
+int SUN_SPEED = 50;
 
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
