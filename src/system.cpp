@@ -272,6 +272,43 @@ void System::handle_events()
     }
 }
 
+void System::game_over_render()
+{
+    /*window.clear();
+    window.draw(backgroundSprite);
+    render_sun_bank();
+    for (auto &sun : suns)
+        sun->render(window);
+    menu.render(window);
+    render_cursor_following_sprite(window);*/
+    RectangleShape rect;
+    rect.setFillColor(Color(0, 0, 0, 200));
+    rect.setSize(Vector2f(window.getSize().x, window.getSize().y));
+    window.draw(rect);
+
+    Font new_font;
+    new_font.loadFromFile(FONTS_PATH + "Creepster-Regular.ttf");
+    Text text;
+    text.setFillColor(Color::Green);
+    text.setFont(new_font);
+    text.setCharacterSize(150);
+
+    text.setString("THE ZOMBIES");
+    int x_pos = (WIDTH - text.getLocalBounds().width) / 2;
+    int y_pos = (HEIGHT - text.getLocalBounds().height) / 2;
+    text.setPosition(x_pos, y_pos - 180);
+    window.draw(text);
+    text.setString("ATE YOUR");
+    x_pos = (WIDTH - text.getLocalBounds().width) / 2;
+    text.setPosition(x_pos, y_pos);
+    window.draw(text);
+    text.setString("BRAINS!");
+    x_pos = (WIDTH - text.getLocalBounds().width) / 2;
+    text.setPosition(x_pos, y_pos + 180);
+    window.draw(text);
+    window.display();
+}
+
 void System::run()
 {
     while (window.isOpen() && state == MAIN_MENU)
@@ -292,7 +329,8 @@ void System::run()
         update();
         render();
     }*/
-    /*while (window.isOpen() && state == GAMEOVER_SCREEN)
+    while (window.isOpen() && state == GAMEOVER_SCREEN)
     {
-    }*/
+        game_over_render();
+    }
 }

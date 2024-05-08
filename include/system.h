@@ -46,5 +46,6 @@ private:
     void render_cursor_following_sprite(RenderWindow &window);
     void in_game_initialization();
     void main_menu_render();
+    void game_over_render();
     Music music;
 };
