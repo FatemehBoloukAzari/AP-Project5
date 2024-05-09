@@ -5,6 +5,10 @@ const int SUN_HEIGHT = 100;
 
 const int X_SPACE = 350;
 
+const int SUN_MOVE_INTERVAL = 10;
+
+int SUN_SPEED = 50;
+
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 Sun::Sun(bool moving, double x_pos, double y_pos)
@@ -58,7 +62,7 @@ bool Sun::exited_screen()
 void Sun::update()
 {
     Time elapsed = last_move_clock.getElapsedTime();
-    if (elapsed.asMilliseconds() >= SUN_INTERVAL)
+    if (elapsed.asMilliseconds() >= SUN_MOVE_INTERVAL)
     {
         move((double)SUN_SPEED / 100);
         last_move_clock.restart();

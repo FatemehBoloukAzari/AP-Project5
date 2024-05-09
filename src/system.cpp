@@ -15,6 +15,8 @@ const pair <int, int> NO_SQUARE = {-1, -1};
 
 bool square_is_full[ROW][COLUMN];
 
+int SUN_INTERVAL = 5;
+
 System::System(int width, int height)
 {
     window.create(VideoMode(width, height), "PVZ", Style::Close);
