@@ -6,6 +6,7 @@
 #include <iostream>
 #include <chrono>
 #include <random>
+#include <fstream>
 
 using namespace std;
 using namespace sf;
@@ -19,7 +20,7 @@ enum SpriteType
     SUNFLOWER,
     NOT_SPRITE,
     REGULAR,
-    HAIRMETALGARGANTUAR
+    HAIRMETALGARGANTUAR,
 };
 
 const int WIDTH = 1500;
@@ -31,6 +32,7 @@ const int NUM_COLUMN = 9 ;
 const string PICS_PATH = "./files/pics/";
 const string AUDIO_PATH = "./files/audios/";
 const string FONTS_PATH = "./files/fonts/";
+const string SETTING_FILE = "setting.txt";
 
 const int COLUMN = 9;
 const int ROW = 5;
@@ -41,21 +43,6 @@ extern bool square_is_full[ROW][COLUMN];
 
 const int row_spawn_height_regular[] = {100 ,245 ,420 ,600 ,755} ; 
 const int row_spawn_height_giant[] = {20 ,180 ,370 ,530 ,703} ;
-
-extern int WALNUT_CARD_COOLDOWN; // change it to value in setting file
-extern int PEASHOOTER_CARD_COOLDOWN;
-extern int SNOWPEA_CARD_COOLDOWN;
-extern int MELONPULT_CARD_COOLDOWN;
-extern int SUNFLOWER_CARD_COOLDOWN;
-
-extern int WALNUT_PRICE; // change it to value in setting file
-extern int PEASHOOTER_PRICE;
-extern int SNOWPEA_PRICE;
-extern int MELONPULT_PRICE;
-extern int SUNFLOWER_PRICE;
-
-extern int SUN_SPEED;
-extern int SUN_INTERVAL;
 
 extern int ZOMBIE_SPEED ; 
 extern int ZOMBIE_MOVE_INTERVAL ; 

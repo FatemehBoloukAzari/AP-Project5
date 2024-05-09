@@ -1,21 +1,9 @@
 #include "menu.h"
+#include "setting.h"
 #include <iomanip>
 
 const int CARD_WIDTH = 160;
 const int CARD_HEIGHT = 100;
-
-// move these to main (probably)
-int WALNUT_CARD_COOLDOWN = 5;
-int PEASHOOTER_CARD_COOLDOWN = 5;
-int SNOWPEA_CARD_COOLDOWN = 5;
-int MELONPULT_CARD_COOLDOWN = 5;
-int SUNFLOWER_CARD_COOLDOWN = 5;
-
-int WALNUT_PRICE = 5;
-int PEASHOOTER_PRICE = 5;
-int SNOWPEA_PRICE = 5;
-int MELONPULT_PRICE = 5;
-int SUNFLOWER_PRICE = 12;
 
 MenuItem::MenuItem(SpriteType type, int x_pos, int y_pos)
 {
@@ -24,6 +12,8 @@ MenuItem::MenuItem(SpriteType type, int x_pos, int y_pos)
     sprite_type = type;
     on_cooldown = false;
     tagged = false;
+    cooldown = read_plant_cooldown_from_file(sprite_type);
+    price = read_plant_price_from_file(sprite_type);
     switch (sprite_type)
     {
         case WALNUT:
@@ -63,52 +53,13 @@ void MenuItem::normal_render(RenderWindow &window)
     Font new_font;
     new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
     Text text;
-    switch (sprite_type)
-    {
-        case WALNUT:
-            text.setString(to_string(WALNUT_PRICE));
-            break;
-        case PEASHOOTER:
-            text.setString(to_string(PEASHOOTER_PRICE));
-            break;
-        case SNOWPEA:
-            text.setString(to_string(SNOWPEA_PRICE));
-            break;
-        case MELONPULT:
-            text.setString(to_string(MELONPULT_PRICE));
-            break;
-        case SUNFLOWER:
-            text.setString(to_string(SUNFLOWER_PRICE));
-            break;
-        default:
-            break;
-    }
+    text.setString(to_string(price));
     text.setFillColor(Color::White);
     text.setFont(new_font);
     text.setCharacterSize(35);
     text.setPosition(x + 123, y + 50);
     text.setStyle(Text::Bold);
     window.draw(text);
-}
-
-int get_cooldown_time(SpriteType sprite_type)
-{
-    switch (sprite_type)
-    {
-        case WALNUT:
-            return WALNUT_CARD_COOLDOWN;
-        case PEASHOOTER:
-            return PEASHOOTER_CARD_COOLDOWN;
-        case SNOWPEA:
-            return SNOWPEA_CARD_COOLDOWN;
-        case MELONPULT:
-            return MELONPULT_CARD_COOLDOWN;
-        case SUNFLOWER:
-            return SUNFLOWER_CARD_COOLDOWN;
-        default:
-            break;
-    }
-    return 0;
 }
 
 void MenuItem::cooldown_render(RenderWindow &window)
@@ -122,7 +73,7 @@ void MenuItem::cooldown_render(RenderWindow &window)
     new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
     Text text;
     Time elapsed = cooldown_clock.getElapsedTime();
-    double remaning_cooldown_time = get_cooldown_time(sprite_type) - elapsed.asSeconds();
+    double remaning_cooldown_time = cooldown - elapsed.asSeconds();
     ostringstream stream;
     stream << fixed << setprecision(1) << remaning_cooldown_time;
     text.setString(stream.str());
@@ -132,26 +83,7 @@ void MenuItem::cooldown_render(RenderWindow &window)
     text.setPosition(x + 60, y + 25);
     text.setStyle(Text::Bold);
     window.draw(text);
-    switch (sprite_type)
-    {
-        case WALNUT:
-            text.setString(to_string(WALNUT_PRICE));
-            break;
-        case PEASHOOTER:
-            text.setString(to_string(PEASHOOTER_PRICE));
-            break;
-        case SNOWPEA:
-            text.setString(to_string(SNOWPEA_PRICE));
-            break;
-        case MELONPULT:
-            text.setString(to_string(MELONPULT_PRICE));
-            break;
-        case SUNFLOWER:
-            text.setString(to_string(SUNFLOWER_PRICE));
-            break;
-        default:
-            break;
-    }
+    text.setString(to_string(price));
     text.setFillColor(Color::White);
     text.setFont(new_font);
     text.setCharacterSize(35);
@@ -204,27 +136,6 @@ void MenuItem::handle_mouse_press(Event event, int number_of_suns)
 {
     if (!check_mouse_press(event) || on_cooldown || tagged)
         return;
-    int price = 0;
-    switch (sprite_type)
-    {
-        case WALNUT:
-            price = WALNUT_PRICE;
-            break;
-        case PEASHOOTER:
-            price = PEASHOOTER_PRICE;
-            break;
-        case SNOWPEA:
-            price = SNOWPEA_PRICE;
-            break;
-        case MELONPULT:
-            price = MELONPULT_PRICE;
-            break;
-        case SUNFLOWER:
-            price = SUNFLOWER_PRICE;
-            break;
-        default:
-            break;
-    }
     if (price > number_of_suns)
         return;
     tagged = true;
@@ -282,7 +193,7 @@ void Menu::untag_tagged_item()
 void MenuItem::update()
 {
     Time elapsed = cooldown_clock.getElapsedTime();
-    if (elapsed.asSeconds() >= get_cooldown_time(sprite_type))
+    if (elapsed.asSeconds() >= cooldown)
         on_cooldown = false;
 }
 

@@ -1,4 +1,5 @@
 #include "sun.h"
+#include "setting.h"
 
 const int SUN_WIDTH = 100;
 const int SUN_HEIGHT = 100;
@@ -6,8 +7,6 @@ const int SUN_HEIGHT = 100;
 const int X_SPACE = 350;
 
 const int SUN_MOVE_INTERVAL = 10;
-
-int SUN_SPEED = 50;
 
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
@@ -21,6 +20,7 @@ Sun::Sun(bool moving, double x_pos, double y_pos)
     x = x_pos;
     y = y_pos;
     is_moving = moving;
+    speed = read_sun_speed_from_file();
     sun_texture.loadFromFile(PICS_PATH + "sun.png");
     sun_sprite.setTexture(sun_texture);
     last_move_clock.restart();
@@ -64,7 +64,7 @@ void Sun::update()
     Time elapsed = last_move_clock.getElapsedTime();
     if (elapsed.asMilliseconds() >= SUN_MOVE_INTERVAL)
     {
-        move((double)SUN_SPEED / 100);
+        move((double)speed / 100);
         last_move_clock.restart();
     }
 }

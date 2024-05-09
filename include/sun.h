@@ -13,6 +13,7 @@ public:
 private:
     double x;
     double y;
+    int speed;
     bool is_moving;
     Texture sun_texture;
     Sprite sun_sprite;

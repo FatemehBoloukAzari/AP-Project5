@@ -16,6 +16,8 @@ public:
 private:
     int x;
     int y;
+    int cooldown;
+    int price;
     Texture item_texture;
     Sprite item_sprite;
     Texture item_cooldown_texture;

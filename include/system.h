@@ -46,6 +46,7 @@ private:
     Clock sun_generating_clock;
     void handle_mouse_press(Event event);
     int number_of_suns;
+    int sun_interval;
     void handle_adding_plant(Event event, SpriteType adding_sprite);
     void render_cursor_following_sprite(RenderWindow &window);
     void in_game_initialization();

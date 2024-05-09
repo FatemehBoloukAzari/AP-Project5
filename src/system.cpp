@@ -1,4 +1,5 @@
 #include "system.h"
+#include "setting.h"
 
 const int SUN_BANK_WIDTH = 250;
 const int SUN_BANK_HEIGHT = 75;
@@ -20,8 +21,6 @@ const pair <int, int> NO_SQUARE = {-1, -1};
 
 bool square_is_full[ROW][COLUMN];
 
-int SUN_INTERVAL = 5;
-
 int ZOMBIE_GENERATE_DURATION = 100 ; 
 int ZOMBIE_CYCLE_TIME = 10 ; 
 int ZOMBIE_CYCLE_START_AMOUNT = 5; 
@@ -37,6 +36,7 @@ System::System(int width, int height)
     scale_x = (float)window.getSize().x / background.getSize().x;
     scale_y = (float)window.getSize().y / background.getSize().y;
     backgroundSprite.setScale(scale_x, scale_y);
+    sun_interval = read_sun_interval_from_file();
     state = MAIN_MENU;
     zombie_amount_per_cycle = ZOMBIE_CYCLE_START_AMOUNT ; 
     giant_probability = -18 ; 
@@ -159,7 +159,7 @@ void System::main_menu_render()
 void System::update()
 {
     Time elapsed = sun_generating_clock.getElapsedTime();
-    if (elapsed.asSeconds() >= SUN_INTERVAL)
+    if (elapsed.asSeconds() >= sun_interval)
     {
         sun_generating_clock.restart();
         Sun *new_sun = new Sun(MOVING_SUN);
@@ -209,26 +209,6 @@ pair <int, int> get_clicked_square(Event event, double scale_x, double scale_y)
     return NO_SQUARE;
 }
 
-int get_price(SpriteType sprite_type)
-{
-    switch (sprite_type)
-    {
-        case WALNUT:
-            return WALNUT_PRICE;
-        case PEASHOOTER:
-            return PEASHOOTER_PRICE;
-        case SNOWPEA:
-            return SNOWPEA_PRICE;
-        case MELONPULT:
-            return MELONPULT_PRICE;
-        case SUNFLOWER:
-            return SUNFLOWER_PRICE;
-        default:
-            break;
-    }
-    return 0;
-}
-
 void System::handle_adding_plant(Event event, SpriteType adding_sprite)
 {
     pair <int, int> clicked_square = get_clicked_square(event, scale_x, scale_y);
@@ -237,7 +217,7 @@ void System::handle_adding_plant(Event event, SpriteType adding_sprite)
         menu.untag_tagged_item();
         return;
     }
-    int price = get_price(adding_sprite);
+    int price = read_plant_price_from_file(adding_sprite);
     number_of_suns -= price;
     menu.update_used_card();
     menu.untag_tagged_item();
