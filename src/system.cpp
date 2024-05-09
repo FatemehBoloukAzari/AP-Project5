@@ -3,6 +3,11 @@
 const int SUN_BANK_WIDTH = 250;
 const int SUN_BANK_HEIGHT = 75;
 
+const int REGULAR_WIDTH = 110;
+const int REGULAR_HEIGHT = 180; 
+const int HAIRMETALGARGANTUAR_WIDTH = 240; 
+const int HAIRMETALGARGANTUAR_HEIGHT = 250; 
+
 const int INITIAL_NUMBER_OF_SUNS = 10;
 
 const bool MOVING_SUN = true;
@@ -17,6 +22,11 @@ bool square_is_full[ROW][COLUMN];
 
 int SUN_INTERVAL = 5;
 
+int ZOMBIE_GENERATE_DURATION = 100 ; 
+int ZOMBIE_CYCLE_TIME = 10 ; 
+int ZOMBIE_CYCLE_START_AMOUNT = 5; 
+int ZOMBIE_INCREASE_RATE = 1 ;
+
 System::System(int width, int height)
 {
     window.create(VideoMode(width, height), "PVZ", Style::Close);
@@ -28,6 +38,8 @@ System::System(int width, int height)
     scale_y = (float)window.getSize().y / background.getSize().y;
     backgroundSprite.setScale(scale_x, scale_y);
     state = MAIN_MENU;
+    zombie_amount_per_cycle = ZOMBIE_CYCLE_START_AMOUNT ; 
+    giant_probability = -18 ; 
 }
 
 void System::in_game_initialization()
@@ -111,8 +123,11 @@ void System::render()
     window.clear();
     window.draw(backgroundSprite);
     render_sun_bank();
+    for (auto &game_object : game_objects)
+        game_object->render(window) ; 
     for (auto &sun : suns)
         sun->render(window);
+    cout << game_objects.size() << endl ; 
     menu.render(window);
     render_cursor_following_sprite(window);
     window.display();
@@ -163,6 +178,8 @@ void System::update()
             it++;
     }
     menu.update();
+    for (auto &game_object : game_objects)
+        game_object->update() ; 
 }
 
 double get_scaled_x(double val, double scale_x)
@@ -319,6 +336,7 @@ void System::run()
     in_game_initialization();
     while (window.isOpen() && state == IN_GAME)
     {
+        generate_zombie() ; 
         handle_events();
         update();
         render();
@@ -334,3 +352,56 @@ void System::run()
         game_over_render();
     }
 }
+
+void System::add_sprite(SpriteType sprite_type ,int x ,int y){
+    Zombie* zombie ; 
+    switch (sprite_type){
+    case REGULAR :
+        zombie = new Zombie(x ,y ,sprite_type) ; 
+        game_objects.push_back(zombie) ;   
+        break;
+    case HAIRMETALGARGANTUAR: 
+        zombie = new Zombie(x ,y ,sprite_type) ; 
+        game_objects.push_back(zombie) ;
+        break; 
+    default:
+        break;
+    }
+}
+
+SpriteType System::get_random_zombie_type(){
+    mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+    if (giant_probability <= 0) 
+        return REGULAR ; 
+    int rand_num = rng() % 150 ;
+    if (rand_num + 1 <= giant_probability)
+       return HAIRMETALGARGANTUAR ;  
+    return REGULAR ;
+}
+
+void System::generate_zombie(){
+    mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+    Time elapsed = clock.getElapsedTime();
+    if (elapsed.asSeconds() >= ZOMBIE_GENERATE_DURATION) 
+        return ;
+    if (zombie_amount_per_cycle > 0){
+        float needed_time_to_release_new_zombie = ZOMBIE_CYCLE_TIME / zombie_amount_per_cycle ; 
+        cout << needed_time_to_release_new_zombie << endl ;
+        elapsed = last_zombie_spawn_clock.getElapsedTime() ; 
+        if (elapsed.asSeconds() >= needed_time_to_release_new_zombie){
+            SpriteType sprite_type = get_random_zombie_type() ; 
+            int y = row_spawn_height_giant[rng() % NUM_ROW] ;
+            if (sprite_type == REGULAR)
+                y = row_spawn_height_regular[rng() % NUM_ROW] ; 
+            add_sprite(sprite_type ,WIDTH - (sprite_type == REGULAR ? REGULAR_WIDTH : HAIRMETALGARGANTUAR_WIDTH),y) ; 
+            last_zombie_spawn_clock.restart() ; 
+            giant_probability++ ; 
+        }
+    }
+    elapsed = last_zombie_increase_clock.getElapsedTime() ; 
+    if (elapsed.asSeconds() >= ZOMBIE_CYCLE_TIME){
+        last_zombie_increase_clock.restart() ; 
+        zombie_amount_per_cycle += ZOMBIE_INCREASE_RATE ;
+    }
+}
+

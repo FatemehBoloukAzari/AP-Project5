@@ -26,12 +26,16 @@ public:
     void run();
     void handle_events();
     void render();
+    void add_sprite(SpriteType ,int ,int);
+    void generate_zombie();
+    SpriteType get_random_zombie_type() ;
     //~System();
 private:
+    int zombie_amount_per_cycle ,giant_probability ; 
     Texture background;
     Sprite backgroundSprite;
-    Clock clock, zombie_clock;
-    //vector <Sprite*> sprites;
+    Clock clock ,last_zombie_increase_clock ,last_zombie_spawn_clock ;
+    vector <GameObject*> game_objects;
     vector <Sun*> suns;
     //vector <Bullet*> bullets;
     double scale_x;

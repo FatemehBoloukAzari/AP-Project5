@@ -1,6 +1,6 @@
 #include "game_object.h"
 
-GameObject::GameObject(int _x ,int _y ,SpriteType _sprite_type){
+GameObject::GameObject(double _x ,double _y ,SpriteType _sprite_type){
     x = _x ; 
     y = _y ; 
     sprite_type = _sprite_type ;

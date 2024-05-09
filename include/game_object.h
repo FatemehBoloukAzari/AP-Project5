@@ -4,12 +4,12 @@
 
 class GameObject {
 public :
-	GameObject (int ,int ,SpriteType) ; 
+	GameObject (double ,double ,SpriteType) ; 
 	virtual void update() = 0 ; 
 	virtual void render(RenderWindow &window) = 0 ;
 protected :
 	int health ;
-	int x ,y ;
+	double x ,y ;
 	int time_since_last_damage ;
 	Texture item_texture;
     Sprite item_sprite;
