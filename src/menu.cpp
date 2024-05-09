@@ -4,19 +4,6 @@
 const int CARD_WIDTH = 160;
 const int CARD_HEIGHT = 100;
 
-// move these to main (probably)
-int WALNUT_CARD_COOLDOWN = 5;
-int PEASHOOTER_CARD_COOLDOWN = 5;
-int SNOWPEA_CARD_COOLDOWN = 5;
-int MELONPULT_CARD_COOLDOWN = 5;
-int SUNFLOWER_CARD_COOLDOWN = 5;
-
-int WALNUT_PRICE = 5;
-int PEASHOOTER_PRICE = 5;
-int SNOWPEA_PRICE = 5;
-int MELONPULT_PRICE = 5;
-int SUNFLOWER_PRICE = 12;
-
 MenuItem::MenuItem(SpriteType type, int x_pos, int y_pos)
 {
     x = x_pos;
