@@ -57,6 +57,27 @@ void System::in_game_initialization()
     music.play();
 }
 
+void System::game_over_initialization()
+{
+    music.openFromFile(AUDIO_PATH + "game_over.wav");
+    music.setLoop(false);
+    music.play();
+    game_over_clock.restart();
+}
+
+void System::victory_initialization()
+{
+    if (!background.loadFromFile(PICS_PATH + "victory_screen.png"))
+        cerr << "failed to open" << endl;
+    backgroundSprite.setTexture(background, true);
+    scale_x = (float)window.getSize().x / backgroundSprite.getLocalBounds().width;
+    scale_y = (float)window.getSize().y / backgroundSprite.getLocalBounds().height;
+    backgroundSprite.setScale(scale_x, scale_y);
+    music.openFromFile(AUDIO_PATH + "victory.wav");
+    music.setLoop(false);
+    music.play();
+}
+
 void System::render_sun_bank()
 {
     Texture sun_bank_texture;
@@ -119,8 +140,6 @@ void System::render_cursor_following_sprite(RenderWindow &window)
     }
     Sprite item_sprite;
     item_sprite.setTexture(item_texture);
-    // instead of MOVING_SPRITE_WIDTH and MOVING_SPRITE_HEIGHT we can use the specified size
-    // for each sprite (the size that is used for adding the sprite to the field)
     double scale_x = (double)moving_sprite_width / item_texture.getSize().x;
     double scale_y = (double)moving_sprite_height / item_texture.getSize().y;
     item_sprite.setScale(scale_x, scale_y);
@@ -142,6 +161,13 @@ void System::render()
     //cout << game_objects.size() << endl ; 
     menu.render(window);
     render_cursor_following_sprite(window);
+    window.display();
+}
+
+void System::victory_render()
+{
+    window.clear();
+    window.draw(backgroundSprite);
     window.display();
 }
 
@@ -319,15 +345,19 @@ void System::game_over_render()
     int x_pos = (WIDTH - text.getLocalBounds().width) / 2;
     int y_pos = (HEIGHT - text.getLocalBounds().height) / 2;
     text.setPosition(x_pos, y_pos - 180);
-    window.draw(text);
+    if (game_over_clock.getElapsedTime().asSeconds() > 3)
+        window.draw(text);
     text.setString("ATE YOUR");
     x_pos = (WIDTH - text.getLocalBounds().width) / 2;
     text.setPosition(x_pos, y_pos);
-    window.draw(text);
+    if (game_over_clock.getElapsedTime().asSeconds() > 5)
+        window.draw(text);
     text.setString("BRAINS!");
+    text.setCharacterSize(220);
     x_pos = (WIDTH - text.getLocalBounds().width) / 2;
     text.setPosition(x_pos, y_pos + 180);
-    window.draw(text);
+    if (game_over_clock.getElapsedTime().asSeconds() > 6)
+        window.draw(text);
     window.display();
 }
 
@@ -346,12 +376,13 @@ void System::run()
         update();
         render();
     }
-    /*while (window.isOpen() && state == VICTORY_SCREEN)
+    victory_initialization();
+    while (window.isOpen() && state == VICTORY_SCREEN)
     {
         handle_events();
-        update();
-        render();
-    }*/
+        victory_render();
+    }
+    game_over_initialization();
     while (window.isOpen() && state == GAMEOVER_SCREEN)
     {
         handle_events();

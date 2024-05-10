@@ -34,7 +34,7 @@ private:
     int zombie_amount_per_cycle ,giant_probability ; 
     Texture background;
     Sprite backgroundSprite;
-    Clock clock ,last_zombie_increase_clock ,last_zombie_spawn_clock ;
+    Clock clock ,last_zombie_increase_clock ,last_zombie_spawn_clock, game_over_clock;
     vector <GameObject*> game_objects;
     vector <Sun*> suns;
     //vector <Bullet*> bullets;
@@ -50,8 +50,11 @@ private:
     void handle_adding_plant(Event event, SpriteType adding_sprite);
     void render_cursor_following_sprite(RenderWindow &window);
     void in_game_initialization();
+    void game_over_initialization();
+    void victory_initialization();
     void main_menu_render();
     void game_over_render();
+    void victory_render();
     void add_plant(SpriteType sprite_type, double pos_x, double pos_y);
     Music music;
 };
