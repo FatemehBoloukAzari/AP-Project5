@@ -62,6 +62,12 @@ void System::in_game_initialization()
 
 void System::game_over_initialization()
 {
+    if (!background.loadFromFile(PICS_PATH + "background.png"))
+        cerr << "failed to open" << endl;
+    backgroundSprite.setTexture(background, true);
+    scale_x = (float)window.getSize().x / backgroundSprite.getLocalBounds().width;
+    scale_y = (float)window.getSize().y / backgroundSprite.getLocalBounds().height;
+    backgroundSprite.setScale(scale_x, scale_y);
     music.openFromFile(AUDIO_PATH + "game_over.wav");
     music.setLoop(false);
     music.play();

@@ -37,7 +37,7 @@ private:
     Clock clock ,last_zombie_increase_clock ,last_zombie_spawn_clock, game_over_clock;
     vector <GameObject*> game_objects;
     vector <Sun*> suns;
-    //vector <Bullet*> bullets;
+    //vector <Projectile*> projectiles;
     double scale_x;
     double scale_y;
     void render_sun_bank();
