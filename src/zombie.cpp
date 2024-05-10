@@ -1,9 +1,5 @@
 #include "zombie.h"
 
-const int REGULAR_WIDTH = 110;
-const int REGULAR_HEIGHT = 180; 
-const int HAIRMETALGARGANTUAR_WIDTH = 240; 
-const int HAIRMETALGARGANTUAR_HEIGHT = 250; 
 int ZOMBIE_MOVE_INTERVAL = 30 ; 
 int ZOMBIE_SPEED = 50 ; 
 

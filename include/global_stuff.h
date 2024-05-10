@@ -11,6 +11,13 @@
 using namespace std;
 using namespace sf;
 
+enum BulletType 
+{
+    PEA, 
+    ICEPEA,
+    MELLON
+}; 
+
 enum SpriteType
 {
     WALNUT,
@@ -57,3 +64,11 @@ const int WALNUT_WIDTH = 100;
 const int WALNUT_HEIGHT = 120; 
 const int MELONPULT_WIDTH = 200; 
 const int MELONPULT_HEIGHT = 140; 
+const int REGULAR_WIDTH = 110;
+const int REGULAR_HEIGHT = 180; 
+const int HAIRMETALGARGANTUAR_WIDTH = 240; 
+const int HAIRMETALGARGANTUAR_HEIGHT = 250; 
+const int PEA_BULLET_WIDTH = 20 ; 
+const int PEA_BULLET_HEIGHT = 20 ; 
+const int ICEPEA_BULLET_WIDTH = 20 ; 
+const int ICEPEA_BULLET_HEIGHT = 20 ; 

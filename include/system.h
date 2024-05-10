@@ -5,6 +5,10 @@
 #include "zombie.h"
 #include "sun.h"
 #include "plant.h"
+#include "bullet.h"
+#include "mellon_bullet.h" 
+#include "pea_bullet.h"
+#include "icepea_bullet.h"
 
 //#include "bullet.h"
 
@@ -27,6 +31,7 @@ public:
     void handle_events();
     void render();
     void add_sprite(SpriteType ,int ,int);
+    void add_bullet(BulletType ,int ,int); 
     void generate_zombie();
     SpriteType get_random_zombie_type() ;
     //~System();
@@ -37,7 +42,7 @@ private:
     Clock clock ,last_zombie_increase_clock ,last_zombie_spawn_clock, game_over_clock;
     vector <GameObject*> game_objects;
     vector <Sun*> suns;
-    //vector <Projectile*> projectiles;
+    vector <Bullet*> bullets;
     double scale_x;
     double scale_y;
     void render_sun_bank();

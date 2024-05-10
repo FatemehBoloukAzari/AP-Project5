@@ -4,11 +4,6 @@
 const int SUN_BANK_WIDTH = 250;
 const int SUN_BANK_HEIGHT = 75;
 
-const int REGULAR_WIDTH = 110;
-const int REGULAR_HEIGHT = 180; 
-const int HAIRMETALGARGANTUAR_WIDTH = 240; 
-const int HAIRMETALGARGANTUAR_HEIGHT = 250; 
-
 const int INITIAL_NUMBER_OF_SUNS = 100;
 
 const bool MOVING_SUN = true;
@@ -457,3 +452,21 @@ void System::generate_zombie(){
     }
 }
 
+void add_bullet(BulletType bullet_type ,int x ,int y){
+    switch (bullet_type){
+    case PEA:
+        Pea_Bullet* bullet = new Pea_Bullet(x ,y ,bullet_type); 
+        bullets.push_back(bullet);   
+        break;
+    case ICEPEA: 
+        Icepea_Bullet* bullet = new Icepea_Bullet(x ,y ,bullet_type); 
+        bullets.push_back(bullet) ; 
+        break; 
+    case MELLON: 
+        Mellon_Bullet* bullet = new Mellon_Bullet(x ,y ,bullet_type); 
+        bullets.push_back(bullet) ; 
+        break ; 
+    default:
+        break;
+    }
+}
