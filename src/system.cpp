@@ -36,6 +36,9 @@ System::System(int width, int height)
     scale_x = (float)window.getSize().x / background.getSize().x;
     scale_y = (float)window.getSize().y / background.getSize().y;
     backgroundSprite.setScale(scale_x, scale_y);
+    music.openFromFile(AUDIO_PATH + "main_menu.wav");
+    music.setLoop(true);
+    music.play();
     sun_interval = read_sun_interval_from_file();
     state = MAIN_MENU;
     zombie_amount_per_cycle = ZOMBIE_CYCLE_START_AMOUNT ; 
