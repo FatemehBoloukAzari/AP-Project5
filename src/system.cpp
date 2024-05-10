@@ -9,7 +9,7 @@ const int REGULAR_HEIGHT = 180;
 const int HAIRMETALGARGANTUAR_WIDTH = 240; 
 const int HAIRMETALGARGANTUAR_HEIGHT = 250; 
 
-const int INITIAL_NUMBER_OF_SUNS = 10;
+const int INITIAL_NUMBER_OF_SUNS = 100;
 
 const bool MOVING_SUN = true;
 const bool NOT_MOVING_SUN = false;
@@ -31,7 +31,7 @@ System::System(int width, int height)
     window.create(VideoMode(width, height), "PVZ", Style::Close);
     window.setFramerateLimit(FRAME_RATE);
     if (!background.loadFromFile(PICS_PATH + "main_menu.png"))
-        cout << "failed to open" << endl;
+        cerr << "failed to open" << endl;
     backgroundSprite.setTexture(background);
     scale_x = (float)window.getSize().x / background.getSize().x;
     scale_y = (float)window.getSize().y / background.getSize().y;
@@ -45,7 +45,7 @@ System::System(int width, int height)
 void System::in_game_initialization()
 {
     if (!background.loadFromFile(PICS_PATH + "background.png"))
-        cout << "failed to open" << endl;
+        cerr << "failed to open" << endl;
     backgroundSprite.setTexture(background, true);
     scale_x = (float)window.getSize().x / backgroundSprite.getLocalBounds().width;
     scale_y = (float)window.getSize().y / backgroundSprite.getLocalBounds().height;
@@ -85,22 +85,34 @@ void System::render_cursor_following_sprite(RenderWindow &window)
     if (menu.get_tagged_sprite() == NOT_SPRITE)
         return;
     Texture item_texture;
+    int moving_sprite_width;
+    int moving_sprite_height;
     switch (menu.get_tagged_sprite())
     {
         case WALNUT:
             item_texture.loadFromFile(PICS_PATH + "defai.png");
+            moving_sprite_width = WALNUT_WIDTH;
+            moving_sprite_height = WALNUT_HEIGHT;
             break;
         case PEASHOOTER:
             item_texture.loadFromFile(PICS_PATH + "nokhode_shooti.png");
+            moving_sprite_width = PEASHOOTER_WIDTH;
+            moving_sprite_height = PEASHOOTER_HEIGHT;
             break;
         case SNOWPEA:
             item_texture.loadFromFile(PICS_PATH + "nokhode_barfi.png");
+            moving_sprite_width = SNOWPEA_WIDTH;
+            moving_sprite_height = SNOWPEA_HEIGHT;
             break;
         case MELONPULT:
             item_texture.loadFromFile(PICS_PATH + "hendevane_part_kon.png");
+            moving_sprite_width = MELONPULT_WIDTH;
+            moving_sprite_height = MELONPULT_HEIGHT;
             break;
         case SUNFLOWER:
-            item_texture.loadFromFile(PICS_PATH + "aftab_gardoon.png");           
+            item_texture.loadFromFile(PICS_PATH + "aftab_gardoon.png");
+            moving_sprite_width = SUNFLOWER_WIDTH;
+            moving_sprite_height = SUNFLOWER_HEIGHT;
             break;
         default:
             break;
@@ -109,8 +121,8 @@ void System::render_cursor_following_sprite(RenderWindow &window)
     item_sprite.setTexture(item_texture);
     // instead of MOVING_SPRITE_WIDTH and MOVING_SPRITE_HEIGHT we can use the specified size
     // for each sprite (the size that is used for adding the sprite to the field)
-    double scale_x = (double)MOVING_SPRITE_WIDTH / item_texture.getSize().x;
-    double scale_y = (double)MOVING_SPRITE_HEIGHT / item_texture.getSize().y;
+    double scale_x = (double)moving_sprite_width / item_texture.getSize().x;
+    double scale_y = (double)moving_sprite_height / item_texture.getSize().y;
     item_sprite.setScale(scale_x, scale_y);
     item_sprite.setOrigin(item_sprite.getLocalBounds().width / 2, item_sprite.getLocalBounds().height / 2);
     Vector2i mouse_position = Mouse::getPosition(window);
@@ -127,7 +139,7 @@ void System::render()
         game_object->render(window) ; 
     for (auto &sun : suns)
         sun->render(window);
-    cout << game_objects.size() << endl ; 
+    //cout << game_objects.size() << endl ; 
     menu.render(window);
     render_cursor_following_sprite(window);
     window.display();
@@ -209,6 +221,12 @@ pair <int, int> get_clicked_square(Event event, double scale_x, double scale_y)
     return NO_SQUARE;
 }
 
+void System::add_plant(SpriteType sprite_type, double pos_x, double pos_y)
+{
+    Plant* new_plant = new Plant(pos_x, pos_y, sprite_type);
+    game_objects.push_back(new_plant);
+}
+
 void System::handle_adding_plant(Event event, SpriteType adding_sprite)
 {
     pair <int, int> clicked_square = get_clicked_square(event, scale_x, scale_y);
@@ -222,7 +240,12 @@ void System::handle_adding_plant(Event event, SpriteType adding_sprite)
     menu.update_used_card();
     menu.untag_tagged_item();
     square_is_full[clicked_square.first][clicked_square.second] = true;
-    //add_plant(adding_sprite, right position to add)
+    int row = clicked_square.first, col = clicked_square.second;
+    double x_pos = (field_square_x[col] + field_square_x[col + 1]) / 2;
+    double y_pos = (field_square_y[row] + field_square_y[row + 1]) / 2;
+    x_pos *= scale_x;
+    y_pos *= scale_y;
+    add_plant(adding_sprite, x_pos, y_pos);
 }
 
 void System::handle_mouse_press(Event event)
@@ -274,10 +297,12 @@ void System::game_over_render()
     window.clear();
     window.draw(backgroundSprite);
     render_sun_bank();
+    for (auto &game_object : game_objects)
+        game_object->render(window);
     for (auto &sun : suns)
         sun->render(window);
     menu.render(window);
-    render_cursor_following_sprite(window);
+    //render_cursor_following_sprite(window);
     RectangleShape rect;
     rect.setFillColor(Color(0, 0, 0, 200));
     rect.setSize(Vector2f(window.getSize().x, window.getSize().y));
@@ -329,9 +354,16 @@ void System::run()
     }*/
     while (window.isOpen() && state == GAMEOVER_SCREEN)
     {
+        handle_events();
         game_over_render();
     }
 }
+
+/*System::~System()
+{
+    music.~Music();
+
+}*/
 
 void System::add_sprite(SpriteType sprite_type ,int x ,int y){
     Zombie* zombie ; 
@@ -366,7 +398,7 @@ void System::generate_zombie(){
         return ;
     if (zombie_amount_per_cycle > 0){
         float needed_time_to_release_new_zombie = ZOMBIE_CYCLE_TIME / zombie_amount_per_cycle ; 
-        cout << needed_time_to_release_new_zombie << endl ;
+        //cout << needed_time_to_release_new_zombie << endl ;
         elapsed = last_zombie_spawn_clock.getElapsedTime() ; 
         if (elapsed.asSeconds() >= needed_time_to_release_new_zombie){
             SpriteType sprite_type = get_random_zombie_type() ; 

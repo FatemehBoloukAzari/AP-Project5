@@ -1,17 +1,9 @@
 #include "plant.h"
 
-const int SUNFLOWER_WIDTH = 120;
-const int SUNFLOWER_HEIGHT = 125; 
-const int PEASHOOTER_WIDTH = 120; 
-const int PEASHOOTER_HEIGHT = 125; 
-const int SNOWPEA_WIDTH = 135; 
-const int SNOWPEA_HEIGHT = 125; 
-const int WALNUT_WIDTH = 120; 
-const int WALNUT_HEIGHT = 139; 
-const int MELONPULT_WIDTH = 200; 
-const int MELONPULT_HEIGHT = 140; 
-
-Plant::Plant(int _x ,int _y ,SpriteType _sprite_type) : GameObject(_x ,_y ,_sprite_type){}
+Plant::Plant(int _x ,int _y ,SpriteType _sprite_type) : GameObject(_x ,_y ,_sprite_type)
+{
+    item_sprite.setOrigin(item_sprite.getLocalBounds().width / 2, item_sprite.getLocalBounds().height / 2);
+}
 
 void Plant::render(RenderWindow &window){ 
     double scale_x ,scale_y ; 

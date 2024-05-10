@@ -10,7 +10,7 @@ public :
 protected :
 	int health ;
 	double x ,y ;
-	int time_since_last_damage ;
+	Clock last_damage;
 	Texture item_texture;
     Sprite item_sprite;
     SpriteType sprite_type;

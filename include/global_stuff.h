@@ -46,3 +46,14 @@ const int row_spawn_height_giant[] = {20 ,180 ,370 ,530 ,703} ;
 
 extern int ZOMBIE_SPEED ; 
 extern int ZOMBIE_MOVE_INTERVAL ; 
+
+const int SUNFLOWER_WIDTH = 120;
+const int SUNFLOWER_HEIGHT = 125; 
+const int PEASHOOTER_WIDTH = 120; 
+const int PEASHOOTER_HEIGHT = 125; 
+const int SNOWPEA_WIDTH = 135; 
+const int SNOWPEA_HEIGHT = 110; 
+const int WALNUT_WIDTH = 100; 
+const int WALNUT_HEIGHT = 120; 
+const int MELONPULT_WIDTH = 200; 
+const int MELONPULT_HEIGHT = 140; 

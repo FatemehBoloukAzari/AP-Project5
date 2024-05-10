@@ -52,5 +52,6 @@ private:
     void in_game_initialization();
     void main_menu_render();
     void game_over_render();
+    void add_plant(SpriteType sprite_type, double pos_x, double pos_y);
     Music music;
 };
