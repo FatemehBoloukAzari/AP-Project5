@@ -162,6 +162,8 @@ void System::render()
         game_object->render(window) ; 
     for (auto &sun : suns)
         sun->render(window);
+    for (auto &bullet : bullets)
+        bullet->render(window) ; 
     //cout << game_objects.size() << endl ; 
     menu.render(window);
     render_cursor_following_sprite(window);
@@ -375,7 +377,8 @@ void System::run()
     in_game_initialization();
     while (window.isOpen() && state == IN_GAME)
     {
-        generate_zombie() ; 
+        generate_zombie() ;
+        add_bullet(MELLON ,400 ,400) ; 
         handle_events();
         update();
         render();
@@ -452,18 +455,19 @@ void System::generate_zombie(){
     }
 }
 
-void add_bullet(BulletType bullet_type ,int x ,int y){
+void System::add_bullet(BulletType bullet_type ,int x ,int y){
+    Bullet* bullet ; 
     switch (bullet_type){
     case PEA:
-        Pea_Bullet* bullet = new Pea_Bullet(x ,y ,bullet_type); 
+        bullet = new Pea_Bullet(x ,y ,bullet_type); 
         bullets.push_back(bullet);   
         break;
     case ICEPEA: 
-        Icepea_Bullet* bullet = new Icepea_Bullet(x ,y ,bullet_type); 
+        bullet = new Icepea_Bullet(x ,y ,bullet_type); 
         bullets.push_back(bullet) ; 
         break; 
     case MELLON: 
-        Mellon_Bullet* bullet = new Mellon_Bullet(x ,y ,bullet_type); 
+        bullet = new Mellon_Bullet(x ,y ,bullet_type); 
         bullets.push_back(bullet) ; 
         break ; 
     default:
