@@ -2,9 +2,6 @@
 #include "setting.h"
 #include <iomanip>
 
-const int CARD_WIDTH = 160;
-const int CARD_HEIGHT = 100;
-
 MenuItem::MenuItem(SpriteType type, int x_pos, int y_pos)
 {
     x = x_pos;

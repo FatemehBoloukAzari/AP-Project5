@@ -1,28 +1,9 @@
 #include "system.h"
 #include "setting.h"
 
-const int SUN_BANK_WIDTH = 250;
-const int SUN_BANK_HEIGHT = 75;
-
-const int INITIAL_NUMBER_OF_SUNS = 100;
-
-const bool MOVING_SUN = true;
-const bool NOT_MOVING_SUN = false;
-
-const int MOVING_SPRITE_WIDTH = 100;
-const int MOVING_SPRITE_HEIGHT = 100;
-
-const pair <int, int> NO_SQUARE = {-1, -1};
-
-bool square_is_full[ROW][COLUMN];
-
-int ZOMBIE_GENERATE_DURATION = 100 ; 
-int ZOMBIE_CYCLE_TIME = 10 ; 
-int ZOMBIE_CYCLE_START_AMOUNT = 5; 
-int ZOMBIE_INCREASE_RATE = 1 ;
-
 System::System(int width, int height)
 {
+    memset(square_is_full ,false ,sizeof square_is_full);
     window.create(VideoMode(width, height), "PVZ", Style::Close);
     window.setFramerateLimit(FRAME_RATE);
     if (!background.loadFromFile(PICS_PATH + "main_menu.png"))
@@ -36,7 +17,10 @@ System::System(int width, int height)
     music.play();
     sun_interval = read_sun_interval_from_file();
     state = MAIN_MENU;
-    zombie_amount_per_cycle = ZOMBIE_CYCLE_START_AMOUNT ; 
+    zombie_amount_per_cycle = read_first_interval_zombies() ;
+    zombie_cycle_time = read_attack_interval() ; 
+    zombie_generate_duration = read_total_attack_time() ; 
+    zombie_increase_rate = read_zombie_number_change() ; 
     giant_probability = -18 ; 
 }
 
@@ -239,9 +223,9 @@ double get_scaled_y(double val, double scale_y)
 pair <int, int> get_clicked_square(Event event, double scale_x, double scale_y)
 {
     Vector2f mouse_pos = {(float)event.mouseButton.x, (float)event.mouseButton.y};
-    for (int i = 0; i < ROW; i++)
+    for (int i = 0; i < NUM_ROW; i++)
     {
-        for (int j = 0; j < COLUMN; j++)
+        for (int j = 0; j < NUM_COLUMN; j++)
         {
             double x1 = get_scaled_x(field_square_x[j], scale_x), x2 = get_scaled_x(field_square_x[j + 1], scale_x);
             double y1 = get_scaled_y(field_square_y[i], scale_y), y2 = get_scaled_y(field_square_y[i + 1], scale_y);
@@ -277,6 +261,8 @@ void System::handle_adding_plant(Event event, SpriteType adding_sprite)
     double y_pos = (field_square_y[row] + field_square_y[row + 1]) / 2;
     x_pos *= scale_x;
     y_pos *= scale_y;
+    if (adding_sprite == MELONPULT)
+        x_pos += MELONPULT_MARGIN ; 
     add_plant(adding_sprite, x_pos, y_pos);
 }
 
@@ -378,7 +364,6 @@ void System::run()
     while (window.isOpen() && state == IN_GAME)
     {
         generate_zombie() ;
-        add_bullet(MELLON ,400 ,400) ; 
         handle_events();
         update();
         render();
@@ -432,10 +417,10 @@ SpriteType System::get_random_zombie_type(){
 void System::generate_zombie(){
     mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
     Time elapsed = clock.getElapsedTime();
-    if (elapsed.asSeconds() >= ZOMBIE_GENERATE_DURATION) 
+    if (elapsed.asSeconds() >= zombie_generate_duration) 
         return ;
     if (zombie_amount_per_cycle > 0){
-        float needed_time_to_release_new_zombie = ZOMBIE_CYCLE_TIME / zombie_amount_per_cycle ; 
+        float needed_time_to_release_new_zombie = zombie_cycle_time / zombie_amount_per_cycle ; 
         //cout << needed_time_to_release_new_zombie << endl ;
         elapsed = last_zombie_spawn_clock.getElapsedTime() ; 
         if (elapsed.asSeconds() >= needed_time_to_release_new_zombie){
@@ -449,9 +434,9 @@ void System::generate_zombie(){
         }
     }
     elapsed = last_zombie_increase_clock.getElapsedTime() ; 
-    if (elapsed.asSeconds() >= ZOMBIE_CYCLE_TIME){
+    if (elapsed.asSeconds() >= zombie_cycle_time){
         last_zombie_increase_clock.restart() ; 
-        zombie_amount_per_cycle += ZOMBIE_INCREASE_RATE ;
+        zombie_amount_per_cycle += zombie_increase_rate ;
     }
 }
 

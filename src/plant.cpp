@@ -1,8 +1,28 @@
 #include "plant.h"
+#include "setting.h"
 
 Plant::Plant(int _x ,int _y ,SpriteType _sprite_type) : GameObject(_x ,_y ,_sprite_type)
 {
     item_sprite.setOrigin(item_sprite.getLocalBounds().width / 2, item_sprite.getLocalBounds().height / 2);
+    switch (sprite_type){
+    case PEASHOOTER:
+        damage = read_plant_damage_from_file(PEASHOOTER) ;
+        hit_rate = read_plant_hit_rate_from_file(PEASHOOTER) ; 
+        health = read_plant_health_from_file(PEASHOOTER) ;
+        break;
+    case SNOWPEA:
+        damage = read_plant_damage_from_file(SNOWPEA) ;
+        hit_rate = read_plant_hit_rate_from_file(SNOWPEA) ; 
+        health = read_plant_health_from_file(SNOWPEA) ; 
+        break;
+    case MELONPULT:
+        damage = read_plant_damage_from_file(MELONPULT) ;
+        hit_rate = read_plant_hit_rate_from_file(MELONPULT) ; 
+        health = read_plant_health_from_file(MELONPULT) ; 
+        break;
+    default:
+        break;
+    }
 }
 
 void Plant::render(RenderWindow &window){ 

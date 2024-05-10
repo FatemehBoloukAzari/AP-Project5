@@ -1,20 +1,24 @@
-#include "zombie.h"
-
-int ZOMBIE_MOVE_INTERVAL = 30 ; 
-int ZOMBIE_SPEED = 50 ; 
-
-void debug_out() { cerr << endl; }
- 
-template <typename Head, typename... Tail>
-void debug_out(Head H, Tail... T) {
-	cerr << " " << H ;
-	debug_out(T...);
-}
- 
-#define debug(...)             cerr << "(" << #__VA_ARGS__ << "): ", debug_out(__VA_ARGS__)
+#include "zombie.h" 
+#include "setting.h" 
 
 Zombie::Zombie(int _x ,int _y ,SpriteType _sprite_type) : GameObject(_x ,_y ,_sprite_type){
     freeze_time = 0 ; 
+    switch (sprite_type){
+    case REGULAR:
+        speed = read_zombie_speed_from_file(REGULAR) ; 
+        damage = read_zombie_damage_from_file(REGULAR) ;
+        hit_rate = read_zombie_hit_rate_from_file(REGULAR) ; 
+        health = read_zombie_health_from_file(REGULAR) ; 
+        break;
+    case HAIRMETALGARGANTUAR:
+        speed = read_zombie_speed_from_file(HAIRMETALGARGANTUAR) ; 
+        damage = read_zombie_damage_from_file(HAIRMETALGARGANTUAR) ;
+        hit_rate = read_zombie_hit_rate_from_file(HAIRMETALGARGANTUAR) ; 
+        health = read_zombie_health_from_file(HAIRMETALGARGANTUAR) ; 
+        break;
+    default:
+        break;
+    }
 }
 
 void Zombie::render(RenderWindow &window){ 
@@ -48,7 +52,7 @@ void Zombie::update(){
     Time elapsed = last_move_clock.getElapsedTime();
     if (elapsed.asMilliseconds() >= ZOMBIE_MOVE_INTERVAL)
     {
-        move((double)ZOMBIE_SPEED / 100);
+        move((double)speed / 100);
         last_move_clock.restart();
     }
 }

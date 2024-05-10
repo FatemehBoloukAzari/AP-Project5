@@ -8,6 +8,6 @@ public :
     Icepea_Bullet (int ,int ,BulletType);
     virtual void render(RenderWindow &window) ; 
     virtual void update() ; 
-protected : 
-    
+private : 
+    void move(double) ; 
 };

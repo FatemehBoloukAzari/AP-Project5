@@ -36,7 +36,9 @@ public:
     SpriteType get_random_zombie_type() ;
     //~System();
 private:
-    int zombie_amount_per_cycle ,giant_probability ; 
+    bool square_is_full[NUM_ROW][NUM_COLUMN];
+    int zombie_amount_per_cycle ,giant_probability; 
+    int zombie_cycle_time ,zombie_generate_duration ,zombie_increase_rate; 
     Texture background;
     Sprite backgroundSprite;
     Clock clock ,last_zombie_increase_clock ,last_zombie_spawn_clock, game_over_clock;

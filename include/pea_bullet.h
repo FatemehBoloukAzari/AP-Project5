@@ -8,6 +8,7 @@ public :
     Pea_Bullet (int ,int ,BulletType);
     virtual void render(RenderWindow &window) ; 
     virtual void update() ; 
-protected : 
+    void move(double) ; 
+private : 
     
 };

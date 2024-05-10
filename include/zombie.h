@@ -11,5 +11,6 @@ public :
     void move(double) ; 
     Clock last_move_clock ; 
 protected : 
-    int freeze_time ; 
+    int freeze_time ;
+    int speed ,damage ,hit_rate ,health; 
 };

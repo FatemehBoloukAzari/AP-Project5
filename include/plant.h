@@ -9,5 +9,5 @@ public :
     virtual void render(RenderWindow &window) ; 
     virtual void update() ; 
 protected : 
-    
+    int damage ,health ,hit_rate;
 };

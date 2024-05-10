@@ -12,6 +12,15 @@ void Pea_Bullet::render(RenderWindow &window){
     window.draw(item_sprite);
 }
 
-void Pea_Bullet::update(){
+void Pea_Bullet::move(double change_amount){
+    x += change_amount ; 
+}
 
+void Pea_Bullet::update(){
+    Time elapsed = last_move_clock.getElapsedTime();
+    if (elapsed.asMilliseconds() >= PEA_BULLET_MOVE_INTERVAL)
+    {
+        move((double)speed / 100);
+        last_move_clock.restart();
+    }
 }

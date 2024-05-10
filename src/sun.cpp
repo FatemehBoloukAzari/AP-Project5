@@ -1,13 +1,6 @@
 #include "sun.h"
 #include "setting.h"
 
-const int SUN_WIDTH = 100;
-const int SUN_HEIGHT = 100;
-
-const int X_SPACE = 350;
-
-const int SUN_MOVE_INTERVAL = 10;
-
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 Sun::Sun(bool moving, double x_pos, double y_pos)

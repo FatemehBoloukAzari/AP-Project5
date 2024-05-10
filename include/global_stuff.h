@@ -7,6 +7,7 @@
 #include <chrono>
 #include <random>
 #include <fstream>
+#include <cstring> 
 
 using namespace std;
 using namespace sf;
@@ -41,19 +42,27 @@ const string AUDIO_PATH = "./files/audios/";
 const string FONTS_PATH = "./files/fonts/";
 const string SETTING_FILE = "setting.txt";
 
-const int COLUMN = 9;
-const int ROW = 5;
-
 const int field_square_x[] = {220, 288, 351, 426, 490, 561, 634, 697, 763, 840};
 const int field_square_y[] = {67, 154, 233, 322, 399, 483};
-extern bool square_is_full[ROW][COLUMN];
 
 const int row_spawn_height_regular[] = {100 ,245 ,420 ,600 ,755} ; 
 const int row_spawn_height_giant[] = {20 ,180 ,370 ,530 ,703} ;
 
-extern int ZOMBIE_SPEED ; 
-extern int ZOMBIE_MOVE_INTERVAL ; 
+const int INITIAL_NUMBER_OF_SUNS = 100;
 
+const bool MOVING_SUN = true;
+const bool NOT_MOVING_SUN = false;
+
+const int MELONPULT_MARGIN = -35 ;
+
+const pair <int, int> NO_SQUARE = {-1, -1};
+
+const int CARD_WIDTH = 160;
+const int CARD_HEIGHT = 100;
+const int MOVING_SPRITE_WIDTH = 100;
+const int MOVING_SPRITE_HEIGHT = 100;
+const int SUN_BANK_WIDTH = 250;
+const int SUN_BANK_HEIGHT = 75;
 const int SUNFLOWER_WIDTH = 120;
 const int SUNFLOWER_HEIGHT = 125; 
 const int PEASHOOTER_WIDTH = 120; 
@@ -73,4 +82,25 @@ const int PEA_BULLET_HEIGHT = 40 ;
 const int ICEPEA_BULLET_WIDTH = 40 ; 
 const int ICEPEA_BULLET_HEIGHT = 40 ; 
 const int MELLON_BULLET_WIDTH = 70 ; 
-const int MELLON_BULLET_HEIGHT = 61 ; 
+const int MELLON_BULLET_HEIGHT = 61 ;
+const int SUN_WIDTH = 100;
+const int SUN_HEIGHT = 100;
+
+const int X_SPACE = 350;
+
+const int SUN_MOVE_INTERVAL = 10;
+const int ZOMBIE_MOVE_INTERVAL = 30; 
+const int PEA_BULLET_MOVE_INTERVAL = 30 ;
+const int ICEPEA_BULLET_MOVE_INTERVAL = 30 ;
+
+/*
+void debug_out() { cerr << endl; }
+ 
+template <typename Head, typename... Tail>
+void debug_out(Head H, Tail... T) {
+	cerr << " " << H ;
+	debug_out(T...);
+}
+ 
+#define debug(...)             cerr << "(" << #__VA_ARGS__ << "): ", debug_out(__VA_ARGS__)
+*/
