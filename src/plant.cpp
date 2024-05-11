@@ -1,8 +1,10 @@
 #include "plant.h"
 #include "setting.h"
 
-Plant::Plant(int _x ,int _y ,SpriteType _sprite_type) : GameObject(_x ,_y ,_sprite_type)
+Plant::Plant(int _x ,int _y ,SpriteType _sprite_type ,int _row ,int _column) : GameObject(_x ,_y ,_sprite_type)
 {
+    row = _row ; 
+    column = _column ;
     item_sprite.setOrigin(item_sprite.getLocalBounds().width / 2, item_sprite.getLocalBounds().height / 2);
     switch (sprite_type){
     case PEASHOOTER:
@@ -19,6 +21,16 @@ Plant::Plant(int _x ,int _y ,SpriteType _sprite_type) : GameObject(_x ,_y ,_spri
         damage = read_plant_damage_from_file(MELONPULT) ;
         hit_rate = read_plant_hit_rate_from_file(MELONPULT) ; 
         health = read_plant_health_from_file(MELONPULT) ; 
+        break;
+    case SUNFLOWER:
+        damage = read_plant_damage_from_file(SUNFLOWER) ;
+        hit_rate = read_plant_hit_rate_from_file(SUNFLOWER) ; 
+        health = read_plant_health_from_file(SUNFLOWER) ; 
+        break;
+    case WALNUT:
+        damage = read_plant_damage_from_file(WALNUT) ;
+        hit_rate = read_plant_hit_rate_from_file(WALNUT) ; 
+        health = read_plant_health_from_file(WALNUT) ; 
         break;
     default:
         break;
@@ -67,6 +79,26 @@ void Plant::render(RenderWindow &window){
         break;
     }
     
+}
+
+void Plant::decrease_health(int damage){
+    health -= damage ; 
+}
+
+bool Plant::is_dead(){
+    return health <= 0; 
+}
+
+int Plant::get_row(){
+    return row ; 
+}
+
+int Plant::get_column(){
+    return column ;
+}
+
+bool Plant::is_plant(){
+    return true ; 
 }
 
 void Plant::update(){

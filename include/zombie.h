@@ -8,9 +8,14 @@ public :
     Zombie (int ,int ,SpriteType);
     virtual void render(RenderWindow &window) ; 
     virtual void update() ;
+    virtual bool is_plant() ; 
     void move(double) ; 
-    Clock last_move_clock ; 
-protected : 
+    void init_hit_clock() ; 
+    Clock last_move_clock ,last_hit_clock; 
+    bool moving ,attacked ;
+    int get_column_number(double ,double) ; 
+    int get_damage(); 
+private : 
     int freeze_time ;
-    int speed ,damage ,hit_rate ,health; 
+    int speed ,damage ,hit_rate ,health;
 };

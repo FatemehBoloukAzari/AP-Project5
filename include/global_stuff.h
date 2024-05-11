@@ -8,6 +8,7 @@
 #include <random>
 #include <fstream>
 #include <cstring> 
+#include <set>
 
 using namespace std;
 using namespace sf;
@@ -35,7 +36,7 @@ const int WIDTH = 1500;
 const int HEIGHT = 1000;
 const int FRAME_RATE = 72;
 const int NUM_ROW = 5 ; 
-const int NUM_COLUMN = 9 ;
+const int NUM_COLUMN = 10 ;
 
 const string PICS_PATH = "./files/pics/";
 const string AUDIO_PATH = "./files/audios/";
@@ -54,6 +55,7 @@ const bool MOVING_SUN = true;
 const bool NOT_MOVING_SUN = false;
 
 const int MELONPULT_MARGIN = -35 ;
+const int ZOMBIE_EATING_MARGIN = -53 ; 
 
 const pair <int, int> NO_SQUARE = {-1, -1};
 
@@ -92,6 +94,8 @@ const int SUN_MOVE_INTERVAL = 10;
 const int ZOMBIE_MOVE_INTERVAL = 30; 
 const int PEA_BULLET_MOVE_INTERVAL = 30 ;
 const int ICEPEA_BULLET_MOVE_INTERVAL = 30 ;
+
+const int GIANT_PROBABILITY = 450 ; 
 
 /*
 void debug_out() { cerr << endl; }

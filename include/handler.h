@@ -14,16 +14,20 @@ class Handler
 {
 public:
     Handler();
-    void update();
+    void update(double ,double);
     void render(RenderWindow &window);
-    void add_sprite(SpriteType ,int ,int);
-    void add_bullet(BulletType ,int ,int); 
+    void add_zombie(SpriteType ,int ,int ,int);
+    void add_bullet(BulletType ,double ,double ,int); 
     void generate_zombie();
     void handle_mouse_press(Event event, double, double);
     SpriteType get_random_zombie_type();
     void main_menu_render(RenderWindow &window);
     void game_over_render(RenderWindow &window);
     void in_game_initialization();
+    void handle_zombie_damages(double ,double); 
+    void clean_dead_plants(); 
+    void check_moving_stopped_zombies(double ,double); 
+    bool is_in_same_field(Zombie* ,Plant* ,double ,double); 
     //~Handler();
 private:
     bool square_is_full[NUM_ROW][NUM_COLUMN];
@@ -33,6 +37,8 @@ private:
     vector <GameObject*> game_objects;
     vector <Sun*> suns;
     vector <Bullet*> bullets;
+    vector <Zombie*> zombies_in_line[5]; 
+    vector <Bullet*> bullets_in_line[5]; 
     Menu menu;
     Clock sun_generating_clock;
     int number_of_suns;
@@ -40,5 +46,5 @@ private:
     void render_sun_bank(RenderWindow &window);
     void handle_adding_plant(Event event, SpriteType adding_sprite, double, double);
     void render_cursor_following_sprite(RenderWindow &window);
-    void add_plant(SpriteType sprite_type, double pos_x, double pos_y);
+    void add_plant(SpriteType sprite_type, double pos_x, double pos_y ,int row ,int col);
 };

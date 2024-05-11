@@ -7,6 +7,7 @@ public :
 	GameObject (double ,double ,SpriteType) ; 
 	virtual void update() = 0 ; 
 	virtual void render(RenderWindow &window) = 0 ;
+	virtual bool is_plant() = 0 ; 
 protected :
 	int health ;
 	double x ,y ;

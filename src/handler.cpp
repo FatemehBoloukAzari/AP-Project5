@@ -131,9 +131,9 @@ pair <int, int> get_clicked_square(Event event, double scale_x, double scale_y)
     return NO_SQUARE;
 }
 
-void Handler::add_plant(SpriteType sprite_type, double pos_x, double pos_y)
+void Handler::add_plant(SpriteType sprite_type, double pos_x, double pos_y ,int row ,int col)
 {
-    Plant* new_plant = new Plant(pos_x, pos_y, sprite_type);
+    Plant* new_plant = new Plant(pos_x, pos_y, sprite_type ,row ,col);
     game_objects.push_back(new_plant);
 }
 
@@ -157,10 +157,10 @@ void Handler::handle_adding_plant(Event event, SpriteType adding_sprite, double 
     y_pos *= scale_y;
     if (adding_sprite == MELONPULT)
         x_pos += MELONPULT_MARGIN ; 
-    add_plant(adding_sprite, x_pos, y_pos);
+    add_plant(adding_sprite, x_pos, y_pos ,row ,col);
 }
 
-void Handler::add_sprite(SpriteType sprite_type ,int x ,int y){
+void Handler::add_zombie(SpriteType sprite_type ,int x ,int y ,int row_number){
     Zombie* zombie ; 
     switch (sprite_type){
     case REGULAR :
@@ -174,13 +174,14 @@ void Handler::add_sprite(SpriteType sprite_type ,int x ,int y){
     default:
         break;
     }
+    zombies_in_line[row_number].push_back(zombie) ;
 }
 
 SpriteType Handler::get_random_zombie_type(){
     mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
     if (giant_probability <= 0) 
         return REGULAR ; 
-    int rand_num = rng() % 150 ;
+    int rand_num = rng() % GIANT_PROBABILITY ;
     if (rand_num + 1 <= giant_probability)
        return HAIRMETALGARGANTUAR ;  
     return REGULAR ;
@@ -192,15 +193,15 @@ void Handler::generate_zombie(){
     if (elapsed.asSeconds() >= zombie_generate_duration) 
         return ;
     if (zombie_amount_per_cycle > 0){
-        float needed_time_to_release_new_zombie = zombie_cycle_time / zombie_amount_per_cycle ; 
-        //cout << needed_time_to_release_new_zombie << endl ;
+        double needed_time_to_release_new_zombie = (double)zombie_cycle_time / zombie_amount_per_cycle ; 
         elapsed = last_zombie_spawn_clock.getElapsedTime() ; 
         if (elapsed.asSeconds() >= needed_time_to_release_new_zombie){
-            SpriteType sprite_type = get_random_zombie_type() ; 
-            int y = row_spawn_height_giant[rng() % NUM_ROW] ;
+            SpriteType sprite_type = get_random_zombie_type() ;
+            int row_number = rng() % NUM_ROW ;
+            int y = row_spawn_height_giant[row_number] ;
             if (sprite_type == REGULAR)
-                y = row_spawn_height_regular[rng() % NUM_ROW] ; 
-            add_sprite(sprite_type ,WIDTH - (sprite_type == REGULAR ? REGULAR_WIDTH : HAIRMETALGARGANTUAR_WIDTH),y) ; 
+                y = row_spawn_height_regular[row_number] ;
+            add_zombie(sprite_type ,WIDTH ,y ,row_number) ; 
             last_zombie_spawn_clock.restart() ; 
             giant_probability++ ; 
         }
@@ -212,12 +213,12 @@ void Handler::generate_zombie(){
     }
 }
 
-void Handler::add_bullet(BulletType bullet_type ,int x ,int y){
+void Handler::add_bullet(BulletType bullet_type ,double x ,double y ,int row_number){
     Bullet* bullet ; 
     switch (bullet_type){
     case PEA:
         bullet = new Pea_Bullet(x ,y ,bullet_type); 
-        bullets.push_back(bullet);   
+        bullets.push_back(bullet);
         break;
     case ICEPEA: 
         bullet = new Icepea_Bullet(x ,y ,bullet_type); 
@@ -230,6 +231,7 @@ void Handler::add_bullet(BulletType bullet_type ,int x ,int y){
     default:
         break;
     }
+    bullets_in_line[row_number].push_back(bullet);
 }
 
 void Handler::handle_mouse_press(Event event, double scale_x, double scale_y)
@@ -265,8 +267,11 @@ void Handler::render(RenderWindow &window)
     render_cursor_following_sprite(window);
 }
 
-void Handler::update()
+void Handler::update(double scale_x ,double scale_y)
 {
+    handle_zombie_damages(scale_x ,scale_y) ; 
+    clean_dead_plants() ; 
+    check_moving_stopped_zombies(scale_x ,scale_y) ; 
     Time elapsed = sun_generating_clock.getElapsedTime();
     if (elapsed.asSeconds() >= sun_interval)
     {
@@ -304,4 +309,63 @@ void Handler::game_over_render(RenderWindow& window)
 void Handler::in_game_initialization()
 {
     sun_generating_clock.restart();
+}
+
+void Handler::handle_zombie_damages(double scale_x ,double scale_y){
+    for (auto it = game_objects.begin(); it != game_objects.end() ;it++){
+        if ((*it)->is_plant()){
+            auto plant = dynamic_cast<Plant*>(*it) ; 
+            for (auto zombie : zombies_in_line[plant->get_row()]){
+                if (is_in_same_field(zombie ,plant ,scale_x ,scale_y)){
+                    if (!zombie->moving){
+                        zombie->update() ;
+                        if (zombie->attacked){
+                            plant->decrease_health(zombie->get_damage()) ; 
+                            zombie->attacked = false ; 
+                        }
+                    }
+                    else {
+                        zombie->moving = false ;
+                        zombie->init_hit_clock() ; 
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Handler::clean_dead_plants(){
+    for (auto it = game_objects.begin(); it != game_objects.end();){
+        if ((*it)->is_plant()){
+            auto plant = dynamic_cast<Plant*>(*it) ; 
+            if (plant->is_dead()){
+                square_is_full[plant->get_row()][plant->get_column()] = false ;
+                delete plant ; 
+                game_objects.erase(it) ; 
+            }
+            else {
+                it++ ; 
+            }
+        }
+        else {
+            it++ ; 
+        }
+    }
+}
+
+void Handler::check_moving_stopped_zombies(double scale_x ,double scale_y){
+    for (int row = 0; row < NUM_ROW; row++){
+        for (auto zombie : zombies_in_line[row]){
+            if (!zombie->moving){
+                int col = zombie->get_column_number(scale_x ,scale_y) ;
+                if (!square_is_full[row][col]){
+                    zombie->moving = true ; 
+                }
+            }
+        }
+    }
+}
+
+bool Handler::is_in_same_field(Zombie *zombie, Plant *plant ,double scale_x ,double scale_y){
+    return plant->get_column() == zombie->get_column_number(scale_x ,scale_y) ;
 }

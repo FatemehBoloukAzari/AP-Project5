@@ -77,7 +77,7 @@ void System::victory_render()
 
 void System::update()
 {
-    handler->update();
+    handler->update(scale_x ,scale_y);
 }
 
 void System::handle_mouse_press(Event event)
