@@ -322,6 +322,17 @@ void Handler::in_game_initialization()
     sun_generating_clock.restart();
 }
 
+void Handler::handle_plants_shooting(){
+    for (auto object : game_objects){
+        if (object->is_plant()){
+            Plant* plant = dynamic_cast<Plant*>(object) ;
+            if (zombies_in_line[plant->get_row()].empty()){
+                
+            }
+        }
+    }
+}
+
 void Handler::handle_zombie_damages(double scale_x ,double scale_y){
     for (auto it = game_objects.begin(); it != game_objects.end() ;it++){
         if ((*it)->is_plant()){

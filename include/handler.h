@@ -24,6 +24,7 @@ public:
     void main_menu_render(RenderWindow &window);
     void game_over_render(RenderWindow &window);
     void in_game_initialization();
+    void handle_plants_shooting(); 
     void handle_zombie_damages(double ,double); 
     void clean_dead_plants(); 
     void check_moving_stopped_zombies(double ,double); 

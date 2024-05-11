@@ -3,6 +3,8 @@
 
 Plant::Plant(int _x ,int _y ,SpriteType _sprite_type ,int _row ,int _column) : GameObject(_x ,_y ,_sprite_type)
 {
+    shooted = false ; 
+    shooting = false ; 
     row = _row ; 
     column = _column ;
     item_sprite.setOrigin(item_sprite.getLocalBounds().width / 2, item_sprite.getLocalBounds().height / 2);
@@ -83,6 +85,10 @@ void Plant::render(RenderWindow &window){
 
 void Plant::decrease_health(int damage){
     health -= damage ; 
+}
+
+void Plant::init_shot_clock(){
+    last_shot_clock.restart() ; 
 }
 
 bool Plant::is_dead(){

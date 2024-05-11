@@ -1,6 +1,8 @@
 #include "icepea_bullet.h"
 
 Icepea_Bullet::Icepea_Bullet(int _x ,int _y ,BulletType _bullet_type) : Bullet(_x ,_y ,_bullet_type){
+    damage = read_plant_damage_from_file(SNOWPEA) ; 
+    speed = read_plant_speed_from_file(SNOWPEA) ;
 }
 
 void Icepea_Bullet::render(RenderWindow &window){ 
@@ -14,6 +16,10 @@ void Icepea_Bullet::render(RenderWindow &window){
 
 void Icepea_Bullet::move(double change_amount){
     x += change_amount ; 
+}
+
+int Icepea_Bullet::get_damage(){
+    return damage;
 }
 
 void Icepea_Bullet::update(){

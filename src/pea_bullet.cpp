@@ -1,6 +1,8 @@
 #include "pea_bullet.h"
 
 Pea_Bullet::Pea_Bullet(int _x ,int _y ,BulletType _bullet_type) : Bullet(_x ,_y ,_bullet_type){
+    damage = read_plant_damage_from_file(PEASHOOTER) ; 
+    speed = read_plant_speed_from_file(PEASHOOTER) ;
 }
 
 void Pea_Bullet::render(RenderWindow &window){ 
@@ -14,6 +16,10 @@ void Pea_Bullet::render(RenderWindow &window){
 
 void Pea_Bullet::move(double change_amount){
     x += change_amount ; 
+}
+
+int Pea_Bullet::get_damage(){
+    return damage;
 }
 
 void Pea_Bullet::update(){

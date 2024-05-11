@@ -10,9 +10,11 @@ public :
     virtual void update() ;  
     virtual bool is_plant() ;
     void decrease_health(int); 
+    void init_shot_clock(); 
     bool is_dead(); 
     int get_row() ;
     int get_column() ; 
+    bool shooting ,shooted ; 
 private : 
     int damage ,health ,hit_rate ,row ,column ;
     Clock last_shot_clock ; 
