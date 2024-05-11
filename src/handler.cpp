@@ -297,6 +297,9 @@ void Handler::update(State &state, double scale_x)
         if (x_pos < get_scaled_x(HOME_X, scale_x))
             state = GAMEOVER_SCREEN;
     }
+    Time elapsed = clock.getElapsedTime();
+    if (elapsed.asSeconds() >= zombie_generate_duration)
+        state = VICTORY_SCREEN;
 }
 
 void Handler::game_over_render(RenderWindow& window)
