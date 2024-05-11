@@ -162,16 +162,12 @@ void System::run()
         handle_events();
     }
     in_game_initialization();
-    int x = 0;
     while (window.isOpen() && state == IN_GAME)
     {
         handler->generate_zombie() ;
         handle_events();
         update();
         render();
-        x++;
-        if (x == 200)
-            state = GAMEOVER_SCREEN;
     }
     victory_initialization();
     while (window.isOpen() && state == VICTORY_SCREEN)
