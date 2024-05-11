@@ -14,7 +14,7 @@ class Handler
 {
 public:
     Handler();
-    void update();
+    void update(State &state, double scale_x);
     void render(RenderWindow &window);
     void add_sprite(SpriteType ,int ,int);
     void add_bullet(BulletType ,int ,int); 

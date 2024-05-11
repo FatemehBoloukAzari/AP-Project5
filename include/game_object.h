@@ -5,6 +5,7 @@
 class GameObject {
 public :
 	GameObject (double ,double ,SpriteType) ; 
+	double get_x() {return x;}
 	virtual void update() = 0 ; 
 	virtual void render(RenderWindow &window) = 0 ;
 protected :

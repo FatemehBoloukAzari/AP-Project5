@@ -77,7 +77,7 @@ void System::victory_render()
 
 void System::update()
 {
-    handler->update();
+    handler->update(state, scale_x);
 }
 
 void System::handle_mouse_press(Event event)
@@ -128,7 +128,7 @@ void System::game_over_render()
 
     text.setString("THE ZOMBIES");
     int x_pos = (WIDTH - text.getLocalBounds().width) / 2;
-    int y_pos = (HEIGHT - text.getLocalBounds().height) / 2;
+    int y_pos = (HEIGHT - text.getLocalBounds().height) / 2 - 50;
     text.setPosition(x_pos, y_pos - 180);
     if (game_over_clock.getElapsedTime().asSeconds() > 3)
         window.draw(text);

@@ -265,7 +265,7 @@ void Handler::render(RenderWindow &window)
     render_cursor_following_sprite(window);
 }
 
-void Handler::update()
+void Handler::update(State &state, double scale_x)
 {
     Time elapsed = sun_generating_clock.getElapsedTime();
     if (elapsed.asSeconds() >= sun_interval)
@@ -288,7 +288,15 @@ void Handler::update()
     }
     menu.update();
     for (auto &game_object : game_objects)
-        game_object->update() ; 
+    {
+        game_object->update();
+        Zombie* zm = dynamic_cast<Zombie*> (game_object);
+        if (zm == NULL)
+            continue;
+        double x_pos = zm->get_x();
+        if (x_pos < get_scaled_x(HOME_X, scale_x))
+            state = GAMEOVER_SCREEN;
+    }
 }
 
 void Handler::game_over_render(RenderWindow& window)

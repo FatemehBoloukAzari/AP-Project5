@@ -13,15 +13,6 @@
 
 //#include "bullet.h"
 
-enum State
-{
-    MAIN_MENU,
-    IN_GAME,
-    VICTORY_SCREEN,
-    GAMEOVER_SCREEN,
-    EXIT
-};
-
 class System
 {
 public:
