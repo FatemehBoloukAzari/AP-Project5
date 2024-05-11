@@ -267,7 +267,7 @@ void Handler::render(RenderWindow &window)
     render_cursor_following_sprite(window);
 }
 
-void Handler::update(double scale_x ,double scale_y)
+void Handler::update(State &state, double scale_x ,double scale_y)
 {
     handle_zombie_damages(scale_x ,scale_y) ; 
     clean_dead_plants() ; 
@@ -293,7 +293,18 @@ void Handler::update(double scale_x ,double scale_y)
     }
     menu.update();
     for (auto &game_object : game_objects)
-        game_object->update() ; 
+    {
+        game_object->update();
+        Zombie* zm = dynamic_cast<Zombie*> (game_object);
+        if (zm == NULL)
+            continue;
+        double x_pos = zm->get_x();
+        if (x_pos < get_scaled_x(HOME_X, scale_x))
+            state = GAMEOVER_SCREEN;
+    }
+    elapsed = clock.getElapsedTime();
+    if (elapsed.asSeconds() >= zombie_generate_duration)
+        state = VICTORY_SCREEN;
 }
 
 void Handler::game_over_render(RenderWindow& window)

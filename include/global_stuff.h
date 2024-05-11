@@ -32,6 +32,15 @@ enum SpriteType
     HAIRMETALGARGANTUAR,
 };
 
+enum State
+{
+    MAIN_MENU,
+    IN_GAME,
+    VICTORY_SCREEN,
+    GAMEOVER_SCREEN,
+    EXIT
+};
+
 const int WIDTH = 1500;
 const int HEIGHT = 1000;
 const int FRAME_RATE = 72;
@@ -45,6 +54,7 @@ const string SETTING_FILE = "setting.txt";
 
 const int field_square_x[] = {220, 288, 351, 426, 490, 561, 634, 697, 763, 840};
 const int field_square_y[] = {67, 154, 233, 322, 399, 483};
+const int HOME_X = 173;
 
 const int row_spawn_height_regular[] = {100 ,245 ,420 ,600 ,755} ; 
 const int row_spawn_height_giant[] = {20 ,180 ,370 ,530 ,703} ;
