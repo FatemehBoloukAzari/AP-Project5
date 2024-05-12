@@ -26,7 +26,6 @@ public:
 private:
     Texture background;
     Sprite backgroundSprite;
-    Clock game_over_clock;
     double scale_x;
     double scale_y;
     State state;

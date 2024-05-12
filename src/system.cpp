@@ -43,17 +43,11 @@ void System::game_over_initialization()
     music.openFromFile(AUDIO_PATH + "game_over.wav");
     music.setLoop(false);
     music.play();
-    game_over_clock.restart();
+    handler->game_over_initialization();
 }
 
 void System::victory_initialization()
 {
-    if (!background.loadFromFile(PICS_PATH + "victory_screen.png"))
-        cerr << "failed to open" << endl;
-    backgroundSprite.setTexture(background, true);
-    scale_x = (float)window.getSize().x / backgroundSprite.getLocalBounds().width;
-    scale_y = (float)window.getSize().y / backgroundSprite.getLocalBounds().height;
-    backgroundSprite.setScale(scale_x, scale_y);
     music.openFromFile(AUDIO_PATH + "victory.wav");
     music.setLoop(false);
     music.play();
@@ -71,6 +65,7 @@ void System::victory_render()
 {
     window.clear();
     window.draw(backgroundSprite);
+    handler->victory_render(window);
     window.display();
 }
 
@@ -101,6 +96,8 @@ void System::handle_events()
             case (Event::KeyPressed):
                 if (state == MAIN_MENU)
                     state = IN_GAME;
+                if ((state == VICTORY_SCREEN || state == GAMEOVER_SCREEN) && event.key.code == Keyboard::Escape)
+                    state = EXIT;
                 break;
             default:
                 break;
@@ -113,35 +110,6 @@ void System::game_over_render()
     window.clear();
     window.draw(backgroundSprite);
     handler->game_over_render(window);
-    RectangleShape rect;
-    rect.setFillColor(Color(0, 0, 0, 200));
-    rect.setSize(Vector2f(window.getSize().x, window.getSize().y));
-    window.draw(rect);
-
-    Font new_font;
-    new_font.loadFromFile(FONTS_PATH + "Creepster-Regular.ttf");
-    Text text;
-    text.setFillColor(Color::Green);
-    text.setFont(new_font);
-    text.setCharacterSize(150);
-
-    text.setString("THE ZOMBIES");
-    int x_pos = (WIDTH - text.getLocalBounds().width) / 2;
-    int y_pos = (HEIGHT - text.getLocalBounds().height) / 2 - 50;
-    text.setPosition(x_pos, y_pos - 180);
-    if (game_over_clock.getElapsedTime().asSeconds() > 3)
-        window.draw(text);
-    text.setString("ATE YOUR");
-    x_pos = (WIDTH - text.getLocalBounds().width) / 2;
-    text.setPosition(x_pos, y_pos);
-    if (game_over_clock.getElapsedTime().asSeconds() > 5)
-        window.draw(text);
-    text.setString("BRAINS!");
-    text.setCharacterSize(220);
-    x_pos = (WIDTH - text.getLocalBounds().width) / 2;
-    text.setPosition(x_pos, y_pos + 180);
-    if (game_over_clock.getElapsedTime().asSeconds() > 6)
-        window.draw(text);
     window.display();
 }
 

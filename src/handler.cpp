@@ -1,6 +1,9 @@
 #include "handler.h"
 #include "setting.h"
 
+const int THANKING_PERSON_HEIGHT = 835;
+const int THANKING_PERSON_WIDTH = 375;
+
 Handler::Handler()
 {
     memset(square_is_full ,false ,sizeof square_is_full);
@@ -267,6 +270,18 @@ void Handler::render(RenderWindow &window)
     render_cursor_following_sprite(window);
 }
 
+int Handler::get_number_of_zombies()
+{
+    int cnt = 0;
+    for (auto game_object : game_objects)
+    {
+        Zombie* zm = dynamic_cast<Zombie*> (game_object);
+        if (zm != NULL)
+            cnt++;
+    }
+    return cnt;
+}
+
 void Handler::update(State &state, double scale_x ,double scale_y)
 {
     handle_plants_shooting() ; 
@@ -307,18 +322,87 @@ void Handler::update(State &state, double scale_x ,double scale_y)
         bullet->update() ; 
     }
     elapsed = clock.getElapsedTime();
-    if (elapsed.asSeconds() >= zombie_generate_duration)
+    if (elapsed.asSeconds() >= zombie_generate_duration && get_number_of_zombies())
         state = VICTORY_SCREEN;
 }
 
 void Handler::game_over_render(RenderWindow& window)
 {
-    render_sun_bank(window);
+    //render_sun_bank(window);
     for (auto &game_object : game_objects)
         game_object->render(window);
     for (auto &sun : suns)
         sun->render(window);
-    menu.render(window);
+    RectangleShape rect;
+    rect.setFillColor(Color(0, 0, 0, 200));
+    rect.setSize(Vector2f(window.getSize().x, window.getSize().y));
+    window.draw(rect);
+
+    Font new_font;
+    new_font.loadFromFile(FONTS_PATH + "Creepster-Regular.ttf");
+    Text text;
+    text.setFillColor(Color::Green);
+    text.setFont(new_font);
+    text.setCharacterSize(150);
+
+    text.setString("THE ZOMBIES");
+    int x_pos = (WIDTH - text.getLocalBounds().width) / 2;
+    int y_pos = (HEIGHT - text.getLocalBounds().height) / 2 - 50;
+    text.setPosition(x_pos, y_pos - 180);
+    if (game_over_clock.getElapsedTime().asSeconds() > 3)
+        window.draw(text);
+    text.setString("ATE YOUR");
+    x_pos = (WIDTH - text.getLocalBounds().width) / 2;
+    text.setPosition(x_pos, y_pos);
+    if (game_over_clock.getElapsedTime().asSeconds() > 5)
+        window.draw(text);
+    text.setString("BRAINS!");
+    text.setCharacterSize(220);
+    x_pos = (WIDTH - text.getLocalBounds().width) / 2;
+    text.setPosition(x_pos, y_pos + 180);
+    if (game_over_clock.getElapsedTime().asSeconds() > 6)
+        window.draw(text);
+    new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
+    text.setString("Press Escape To Exit");
+    text.setCharacterSize(60);
+    text.setFont(new_font);
+    text.setFillColor(Color::White);
+    x_pos = (WIDTH - text.getLocalBounds().width) / 2;
+    text.setPosition(x_pos, HEIGHT - 100);
+    if (game_over_clock.getElapsedTime().asSeconds() > 8)
+        window.draw(text);
+    //menu.render(window);
+}
+
+void Handler::victory_render(RenderWindow& window)
+{
+    //render_sun_bank(window);
+    for (auto &game_object : game_objects)
+        game_object->render(window);
+    for (auto &sun : suns)
+        sun->render(window);
+    Texture thanking_person_texture;
+    thanking_person_texture.loadFromFile(PICS_PATH + "winning_person.png");
+    Sprite thanking_person;
+    thanking_person.setTexture(thanking_person_texture);
+    double scale_x = (double)THANKING_PERSON_WIDTH / thanking_person.getGlobalBounds().width;
+    double scale_y = (double)THANKING_PERSON_HEIGHT / thanking_person.getGlobalBounds().height;
+    thanking_person.setScale(scale_x, scale_y);
+    thanking_person.setOrigin(thanking_person.getGlobalBounds().width / 2, thanking_person.getGlobalBounds().height / 2);
+    thanking_person.setPosition(150, 300);
+    window.draw(thanking_person);
+    Font new_font;
+    Text text;
+    new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
+    text.setString("Press Escape To Exit");
+    text.setCharacterSize(60);
+    text.setFont(new_font);
+    text.setFillColor(Color::Green);
+    int x_pos = (WIDTH - text.getLocalBounds().width) / 2;
+    text.setPosition(x_pos, HEIGHT - 100);
+    if (game_over_clock.getElapsedTime().asSeconds() > 8)
+        window.draw(text);
+    //menu.render(window);
 }
 
 void Handler::in_game_initialization()
@@ -359,6 +443,10 @@ void Handler::handle_plants_shooting(){
             }
         }
     }
+}
+void Handler::game_over_initialization()
+{
+    game_over_clock.restart();
 }
 
 void Handler::handle_zombie_damages(double scale_x ,double scale_y){

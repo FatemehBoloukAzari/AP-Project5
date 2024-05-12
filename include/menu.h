@@ -28,6 +28,7 @@ private:
     Clock cooldown_clock;
     bool check_mouse_press(Event event);
     void normal_render(RenderWindow &window);
+    void render_cooldown_card(RenderWindow &window, double);
     void cooldown_render(RenderWindow &window);
 };
 

@@ -59,18 +59,47 @@ void MenuItem::normal_render(RenderWindow &window)
     window.draw(text);
 }
 
+Color to_gray_scale(const sf::Color& color)
+{
+    unsigned char gray = color.r * 0.2126f + color.g * 0.7152f + color.b * 0.0722f;
+    return Color(gray, gray, gray, color.a);
+}
+
+void MenuItem::render_cooldown_card(RenderWindow &window, double remaning_cooldown_time)
+{
+    item_cooldown_sprite.setTexture(item_cooldown_texture);
+    Image image = item_cooldown_texture.copyToImage();
+    Vector2u image_size = image.getSize();
+    int number_of_gray_rows = remaning_cooldown_time / cooldown * image_size.y;
+
+    for (int y = 0; y < number_of_gray_rows; y++)
+    {
+        for (int x = 0; x < (int)image_size.x; x++)
+        {
+            Color pixelColor = image.getPixel(x, y);
+            pixelColor = to_gray_scale(pixelColor);
+            image.setPixel(x, y, pixelColor);
+        }
+    }
+    Texture in_cooldown_texture;
+    in_cooldown_texture.loadFromImage(image);
+    item_cooldown_sprite.setTexture(in_cooldown_texture);
+    window.draw(item_cooldown_sprite);
+}
+
 void MenuItem::cooldown_render(RenderWindow &window)
 {
     double scale_x = (double)CARD_WIDTH / item_texture.getSize().x;
     double scale_y = (double)CARD_HEIGHT / item_texture.getSize().y;
     item_cooldown_sprite.setScale(scale_x, scale_y);
     item_cooldown_sprite.setPosition(x, y);
-    window.draw(item_cooldown_sprite);
+    //window.draw(item_cooldown_sprite);
+    Time elapsed = cooldown_clock.getElapsedTime();
+    double remaning_cooldown_time = cooldown - elapsed.asSeconds();
+    render_cooldown_card(window, remaning_cooldown_time);
     Font new_font;
     new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
     Text text;
-    Time elapsed = cooldown_clock.getElapsedTime();
-    double remaning_cooldown_time = cooldown - elapsed.asSeconds();
     ostringstream stream;
     stream << fixed << setprecision(1) << remaning_cooldown_time;
     text.setString(stream.str());
