@@ -9,11 +9,13 @@ Sun::Sun(bool moving, double x_pos, double y_pos)
     {
         x_pos = rng() % (WIDTH - SUN_WIDTH - X_SPACE) + X_SPACE;
         y_pos = 0;
+        speed = read_sun_speed_from_file();
     }
+    else
+        speed = 0;
     x = x_pos;
     y = y_pos;
     is_moving = moving;
-    speed = read_sun_speed_from_file();
     sun_texture.loadFromFile(PICS_PATH + "sun.png");
     sun_sprite.setTexture(sun_texture);
     last_move_clock.restart();
@@ -54,6 +56,8 @@ bool Sun::exited_screen()
 
 void Sun::update()
 {
+    if (!is_moving)
+        return;
     Time elapsed = last_move_clock.getElapsedTime();
     if (elapsed.asMilliseconds() >= SUN_MOVE_INTERVAL)
     {

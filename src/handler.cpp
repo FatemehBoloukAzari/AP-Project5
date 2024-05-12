@@ -231,6 +231,12 @@ void Handler::add_bullet(BulletType bullet_type ,int row_number ,double x ,doubl
         bullet = new Mellon_Bullet(row_number ,x ,y ,bullet_type); 
         bullets.push_back(bullet) ; 
         break ; 
+    case SUN:
+    {
+        Sun* new_sun = new Sun(NOT_MOVING_SUN, x, y);
+        suns.push_back(new_sun);
+        break;
+    }
     default:
         break;
     }
@@ -322,7 +328,7 @@ void Handler::update(State &state, double scale_x ,double scale_y)
         bullet->update() ; 
     }
     elapsed = clock.getElapsedTime();
-    if (elapsed.asSeconds() >= zombie_generate_duration && get_number_of_zombies())
+    if (elapsed.asSeconds() >= zombie_generate_duration && !get_number_of_zombies())
         state = VICTORY_SCREEN;
 }
 
@@ -397,7 +403,7 @@ void Handler::victory_render(RenderWindow& window)
     text.setString("Press Escape To Exit");
     text.setCharacterSize(60);
     text.setFont(new_font);
-    text.setFillColor(Color::Green);
+    text.setFillColor(Color::White);
     int x_pos = (WIDTH - text.getLocalBounds().width) / 2;
     text.setPosition(x_pos, HEIGHT - 100);
     if (game_over_clock.getElapsedTime().asSeconds() > 8)
@@ -436,6 +442,9 @@ void Handler::handle_plants_shooting(){
                     case MELONPULT:
                         add_bullet(MELLON ,plant->get_row() ,plant->get_x() ,plant->get_y() + BULLET_MARGIN);
                         break; 
+                    case SUNFLOWER:
+                        add_bullet(SUN, plant->get_row(), plant->get_x(), plant->get_y());
+                        break;
                     default:
                         break;
                     }

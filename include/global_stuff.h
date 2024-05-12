@@ -18,7 +18,8 @@ enum BulletType
 {
     PEA, 
     ICEPEA,
-    MELLON
+    MELLON,
+    SUN
 }; 
 
 enum SpriteType
