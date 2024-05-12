@@ -109,6 +109,10 @@ const int ICEPEA_BULLET_MOVE_INTERVAL = 30 ;
 
 const int GIANT_PROBABILITY = 450 ; 
 
+const int FREEZE_TIME_PER_BULLET = 5 ; 
+
+const int SCALE_MILLISECONDS = 100 ;
+
 /*
 void debug_out() { cerr << endl; }
  

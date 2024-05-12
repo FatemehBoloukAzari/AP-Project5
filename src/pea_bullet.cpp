@@ -26,7 +26,7 @@ void Pea_Bullet::update(){
     Time elapsed = last_move_clock.getElapsedTime();
     if (elapsed.asMilliseconds() >= PEA_BULLET_MOVE_INTERVAL)
     {
-        move((double)speed / 100);
+        move((double)speed / SCALE_MILLISECONDS);
         last_move_clock.restart();
     }
 }

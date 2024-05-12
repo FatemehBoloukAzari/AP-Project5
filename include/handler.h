@@ -18,6 +18,7 @@ public:
     void render(RenderWindow &window);
     void add_zombie(SpriteType ,double ,double ,int);
     void add_bullet(BulletType ,int ,double ,double); 
+    void delete_bullet(Bullet*) ;
     void generate_zombie();
     void handle_mouse_press(Event event, double, double);
     SpriteType get_random_zombie_type();
@@ -30,6 +31,11 @@ public:
     void handle_zombie_damages(double ,double); 
     void clean_dead_plants(); 
     void check_moving_stopped_zombies(double ,double); 
+    void clean_sun() ; 
+    void clean_outside_bullets();
+    void clean_dead_zombies(); 
+    void generate_random_sun(); 
+    void check_peas_collision(); 
     bool is_in_same_field(Zombie* ,Plant* ,double ,double); 
     //~Handler();
 private:

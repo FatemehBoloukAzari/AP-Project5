@@ -28,3 +28,9 @@ Bullet::Bullet(int _row ,double _x ,double _y ,BulletType _bullet_type){
     }
     item_sprite.setTexture(item_texture);
 }
+
+bool Bullet::exited_screen(){
+    if (x > WIDTH)
+        return true;
+    return false;
+}

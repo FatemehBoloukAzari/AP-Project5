@@ -57,7 +57,7 @@ void Sun::update()
     Time elapsed = last_move_clock.getElapsedTime();
     if (elapsed.asMilliseconds() >= SUN_MOVE_INTERVAL)
     {
-        move((double)speed / 100);
+        move((double)speed / SCALE_MILLISECONDS);
         last_move_clock.restart();
     }
 }
