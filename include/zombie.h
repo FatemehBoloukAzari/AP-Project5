@@ -21,6 +21,7 @@ public :
     FloatRect get_rect(); 
     bool freezed ; 
     bool is_dead(); 
+    int get_speed() {return speed;}
 private : 
     int freeze_time ,row ;
     int speed ,damage ,hit_rate ,health;

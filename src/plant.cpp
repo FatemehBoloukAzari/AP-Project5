@@ -26,6 +26,7 @@ Plant::Plant(double _x ,double _y ,SpriteType _sprite_type ,int _row ,int _colum
         health = read_plant_health_from_file(MELONPULT) ; 
         break;
     case SUNFLOWER:
+        shooting = true ; 
         sprite_type = SUNFLOWER ;
         hit_rate = read_plant_hit_rate_from_file(SUNFLOWER) ; 
         health = read_plant_health_from_file(SUNFLOWER) ; 

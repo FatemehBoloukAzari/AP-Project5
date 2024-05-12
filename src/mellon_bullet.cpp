@@ -1,8 +1,12 @@
 #include "mellon_bullet.h"
 
-Mellon_Bullet::Mellon_Bullet(int row ,double _x ,double _y ,BulletType _bullet_type) : Bullet(row ,_x ,_y ,_bullet_type){
+Mellon_Bullet::Mellon_Bullet(int row ,double _x ,double _y ,BulletType _bullet_type, Zombie* zombie) : Bullet(row ,_x ,_y ,_bullet_type){
     damage = read_plant_damage_from_file(MELONPULT) ; 
     speed = read_plant_speed_from_file(MELONPULT) ;
+    target_zombie = zombie;
+    init_x = x;
+    init_y = y;
+    collision_time = (target_zombie->get_x() - x) / (speed + zombie->get_speed());
 }
 
 void Mellon_Bullet::render(RenderWindow &window){ 
@@ -24,9 +28,17 @@ void Mellon_Bullet::update(){
 }
 
 void Mellon_Bullet::move(double change_amount){
-    x += change_amount ; 
+    double t = shooting_time.getElapsedTime().asSeconds();
+    x = init_x + t * speed;
+    y = init_y + t * (t - collision_time) * 500;
 }
 
 int Mellon_Bullet::get_damage(){
     return damage;
+}
+
+bool Mellon_Bullet::end_collision_time()
+{
+    double t = shooting_time.getElapsedTime().asSeconds();
+    return (t >= collision_time);
 }

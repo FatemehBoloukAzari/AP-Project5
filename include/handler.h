@@ -58,4 +58,6 @@ private:
     void render_cursor_following_sprite(RenderWindow &window);
     void add_plant(SpriteType sprite_type, double pos_x, double pos_y ,int row ,int col);
     int get_number_of_zombies();
+    Zombie* first_zombie_in_row(double x, int row_number);
+    void check_melons_collision();
 };
