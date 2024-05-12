@@ -1,10 +1,12 @@
 #include "bullet.h"
 #include "setting.h"
 
-Bullet::Bullet(double _x ,double _y ,BulletType _bullet_type){
-    x = _x ; 
+Bullet::Bullet(int _row ,double _x ,double _y ,BulletType _bullet_type){
+    x = _x ;
     y = _y ; 
+    row = _row ; 
     bullet_type = _bullet_type ; 
+    item_sprite.setOrigin(item_sprite.getLocalBounds().width / 2, item_sprite.getLocalBounds().height / 2);
     switch (bullet_type){
         case PEA:
             speed = read_plant_speed_from_file(PEASHOOTER) ; 

@@ -5,7 +5,7 @@
 
 class Mellon_Bullet : public Bullet {
 public :
-    Mellon_Bullet (int ,int ,BulletType);
+    Mellon_Bullet (int ,double ,double ,BulletType);
     virtual void render(RenderWindow &window) ; 
     virtual void update() ; 
     virtual void move(double) ;

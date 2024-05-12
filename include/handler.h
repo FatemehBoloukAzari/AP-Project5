@@ -16,8 +16,8 @@ public:
     Handler();
     void update(State &state, double scale_x ,double scale_y);
     void render(RenderWindow &window);
-    void add_zombie(SpriteType ,int ,int ,int);
-    void add_bullet(BulletType ,double ,double ,int); 
+    void add_zombie(SpriteType ,double ,double ,int);
+    void add_bullet(BulletType ,int ,double ,double); 
     void generate_zombie();
     void handle_mouse_press(Event event, double, double);
     SpriteType get_random_zombie_type();

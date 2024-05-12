@@ -9,6 +9,7 @@
 #include <fstream>
 #include <cstring> 
 #include <set>
+#include <assert.h>
 
 using namespace std;
 using namespace sf;
@@ -66,6 +67,7 @@ const bool NOT_MOVING_SUN = false;
 
 const int MELONPULT_MARGIN = -35 ;
 const int ZOMBIE_EATING_MARGIN = -53 ; 
+const int BULLET_MARGIN = -30 ; 
 
 const pair <int, int> NO_SQUARE = {-1, -1};
 

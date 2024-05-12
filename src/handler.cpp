@@ -160,7 +160,7 @@ void Handler::handle_adding_plant(Event event, SpriteType adding_sprite, double 
     add_plant(adding_sprite, x_pos, y_pos ,row ,col);
 }
 
-void Handler::add_zombie(SpriteType sprite_type ,int x ,int y ,int row_number){
+void Handler::add_zombie(SpriteType sprite_type ,double x ,double y ,int row_number){
     Zombie* zombie ; 
     switch (sprite_type){
     case REGULAR :
@@ -213,19 +213,19 @@ void Handler::generate_zombie(){
     }
 }
 
-void Handler::add_bullet(BulletType bullet_type ,double x ,double y ,int row_number){
+void Handler::add_bullet(BulletType bullet_type ,int row_number ,double x ,double y){
     Bullet* bullet ; 
     switch (bullet_type){
     case PEA:
-        bullet = new Pea_Bullet(x ,y ,bullet_type); 
+        bullet = new Pea_Bullet(row_number ,x ,y ,bullet_type); 
         bullets.push_back(bullet);
         break;
     case ICEPEA: 
-        bullet = new Icepea_Bullet(x ,y ,bullet_type); 
+        bullet = new Icepea_Bullet(row_number ,x ,y ,bullet_type); 
         bullets.push_back(bullet) ; 
         break; 
     case MELLON: 
-        bullet = new Mellon_Bullet(x ,y ,bullet_type); 
+        bullet = new Mellon_Bullet(row_number ,x ,y ,bullet_type); 
         bullets.push_back(bullet) ; 
         break ; 
     default:
@@ -269,6 +269,7 @@ void Handler::render(RenderWindow &window)
 
 void Handler::update(State &state, double scale_x ,double scale_y)
 {
+    handle_plants_shooting() ; 
     handle_zombie_damages(scale_x ,scale_y) ; 
     clean_dead_plants() ; 
     check_moving_stopped_zombies(scale_x ,scale_y) ; 
@@ -302,6 +303,9 @@ void Handler::update(State &state, double scale_x ,double scale_y)
         if (x_pos < get_scaled_x(HOME_X, scale_x))
             state = GAMEOVER_SCREEN;
     }
+    for (auto &bullet : bullets){
+        bullet->update() ; 
+    }
     elapsed = clock.getElapsedTime();
     if (elapsed.asSeconds() >= zombie_generate_duration)
         state = VICTORY_SCREEN;
@@ -327,7 +331,31 @@ void Handler::handle_plants_shooting(){
         if (object->is_plant()){
             Plant* plant = dynamic_cast<Plant*>(object) ;
             if (zombies_in_line[plant->get_row()].empty()){
-                
+                plant->shooting = false ; 
+            }
+            else {
+                if (!plant->shooting){
+                    plant->shooting = true ; 
+                    plant->shooted = false ; 
+                    plant->init_shot_clock() ; 
+                }
+                plant->update() ; 
+                if (plant->shooted){
+                    plant->shooted = false ; 
+                    switch (plant->get_sprite_type()){
+                    case PEASHOOTER:
+                        add_bullet(PEA ,plant->get_row() ,plant->get_x() ,plant->get_y() + BULLET_MARGIN);
+                        break;
+                    case SNOWPEA:
+                        add_bullet(ICEPEA ,plant->get_row() ,plant->get_x() ,plant->get_y() + BULLET_MARGIN );
+                        break; 
+                    case MELONPULT:
+                        add_bullet(MELLON ,plant->get_row() ,plant->get_x() ,plant->get_y() + BULLET_MARGIN);
+                        break; 
+                    default:
+                        break;
+                    }
+                }
             }
         }
     }
@@ -363,7 +391,7 @@ void Handler::clean_dead_plants(){
             if (plant->is_dead()){
                 square_is_full[plant->get_row()][plant->get_column()] = false ;
                 delete plant ; 
-                game_objects.erase(it) ; 
+                it = game_objects.erase(it) ; 
             }
             else {
                 it++ ; 

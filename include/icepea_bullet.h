@@ -5,7 +5,7 @@
 
 class Icepea_Bullet : public Bullet {
 public :
-    Icepea_Bullet (int ,int ,BulletType);
+    Icepea_Bullet (int ,double ,double ,BulletType);
     virtual void render(RenderWindow &window) ; 
     virtual void update() ; 
     virtual void move(double) ;

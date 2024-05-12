@@ -5,7 +5,7 @@
 
 class Pea_Bullet : public Bullet {
 public :
-    Pea_Bullet (int ,int ,BulletType);
+    Pea_Bullet (int ,double ,double ,BulletType);
     virtual void render(RenderWindow &window) ; 
     virtual void update() ; 
     virtual void move(double) ;

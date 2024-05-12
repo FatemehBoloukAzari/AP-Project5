@@ -5,7 +5,7 @@
 
 class Plant : public GameObject {
 public :
-    Plant (int ,int ,SpriteType ,int ,int);
+    Plant (double ,double ,SpriteType ,int ,int);
     virtual void render(RenderWindow &window) ; 
     virtual void update() ;  
     virtual bool is_plant() ;
@@ -15,7 +15,9 @@ public :
     int get_row() ;
     int get_column() ; 
     bool shooting ,shooted ; 
+    SpriteType get_sprite_type() ; 
 private : 
-    int damage ,health ,hit_rate ,row ,column ;
+    int health ,hit_rate ,row ,column ;
     Clock last_shot_clock ; 
+    SpriteType sprite_type ; 
 };

@@ -6,6 +6,7 @@ class GameObject {
 public :
 	GameObject (double ,double ,SpriteType) ; 
 	double get_x() {return x;}
+	double get_y() {return y;}
 	virtual void update() = 0 ; 
 	virtual void render(RenderWindow &window) = 0 ;
 	virtual bool is_plant() = 0 ; 

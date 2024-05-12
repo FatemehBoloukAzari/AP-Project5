@@ -1,6 +1,6 @@
 #include "icepea_bullet.h"
 
-Icepea_Bullet::Icepea_Bullet(int _x ,int _y ,BulletType _bullet_type) : Bullet(_x ,_y ,_bullet_type){
+Icepea_Bullet::Icepea_Bullet(int row ,double _x ,double _y ,BulletType _bullet_type) : Bullet(row ,_x ,_y ,_bullet_type){
     damage = read_plant_damage_from_file(SNOWPEA) ; 
     speed = read_plant_speed_from_file(SNOWPEA) ;
 }

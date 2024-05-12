@@ -1,6 +1,6 @@
 #include "mellon_bullet.h"
 
-Mellon_Bullet::Mellon_Bullet(int _x ,int _y ,BulletType _bullet_type) : Bullet(_x ,_y ,_bullet_type){
+Mellon_Bullet::Mellon_Bullet(int row ,double _x ,double _y ,BulletType _bullet_type) : Bullet(row ,_x ,_y ,_bullet_type){
     damage = read_plant_damage_from_file(MELONPULT) ; 
     speed = read_plant_speed_from_file(MELONPULT) ;
 }
@@ -15,10 +15,16 @@ void Mellon_Bullet::render(RenderWindow &window){
 }
 
 void Mellon_Bullet::update(){
-
+    Time elapsed = last_move_clock.getElapsedTime();
+    if (elapsed.asMilliseconds() >= ICEPEA_BULLET_MOVE_INTERVAL)
+    {
+        move((double)speed / 100);
+        last_move_clock.restart();
+    }
 }
 
-void Mellon_Bullet::move(double){
+void Mellon_Bullet::move(double change_amount){
+    x += change_amount ; 
 }
 
 int Mellon_Bullet::get_damage(){

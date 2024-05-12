@@ -64,7 +64,6 @@ void System::render()
     window.clear();
     window.draw(backgroundSprite);
     handler->render(window);
-    //cout << game_objects.size() << endl ; 
     window.display();
 }
 
