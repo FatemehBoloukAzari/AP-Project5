@@ -15,7 +15,7 @@ public :
 	int get_row(){return row;}
 	double get_x(){return x;}
 	double get_y(){return y;}
-	FloatRect get_rect(){return item_sprite.getLocalBounds();} 
+	FloatRect get_rect(){return item_sprite.getGlobalBounds();} 
 protected :
 	double y ,x;
 	int speed ,damage ,row ; 

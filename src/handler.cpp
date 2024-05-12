@@ -177,7 +177,6 @@ void Handler::add_zombie(SpriteType sprite_type ,double x ,double y ,int row_num
     default:
         break;
     }
-    cout << row_number << endl ; 
     zombies_in_line[row_number].push_back(zombie) ;
 }
 
@@ -235,7 +234,6 @@ void Handler::add_bullet(BulletType bullet_type ,int row_number ,double x ,doubl
     default:
         break;
     }
-    cout << row_number << "<-bullet" << endl ; 
     bullets_in_line[row_number].push_back(bullet);
 }
 
@@ -243,6 +241,7 @@ void Handler::delete_bullet(Bullet* bullet){
     bullets.erase(find(bullets.begin() ,bullets.end() ,bullet)) ; 
     int row = bullet->get_row() ; 
     bullets_in_line[row].erase(find(bullets_in_line[row].begin() ,bullets_in_line[row].end() ,bullet));
+    delete bullet ; 
 }
 
 void Handler::handle_mouse_press(Event event, double scale_x, double scale_y)
@@ -560,43 +559,41 @@ void Handler::generate_random_sun(){
 }
 
 void Handler::check_peas_collision(){
+    vector <Bullet*> trash_bullets ; 
     for (int row = 0; row < NUM_ROW; row++){
         for (auto bullet : bullets_in_line[row]){
             Zombie* nearest_zombie = NULL ; 
             for (auto zombie : zombies_in_line[row]){
                 FloatRect zombie_rect = zombie->get_rect();
                 FloatRect bullet_rect = bullet->get_rect();
-                cout << zombie_rect.left << " " << zombie_rect.left + zombie_rect.width ;
-                cout << "-----------" ; 
-                cout << bullet_rect.left << " " << bullet_rect.left + bullet_rect.width << endl ; 
                 if (bullet_rect.intersects(zombie_rect)){
-                    cout << zombie->get_y() << " ," << zombie->get_x() ;
-                    cout << "-------" ; 
-                    cout << bullet->get_y() << " ," << bullet->get_x() << endl ;
                     if (nearest_zombie == NULL || nearest_zombie->get_x() > zombie->get_x()){
                         nearest_zombie = zombie ; 
-                         
                     }
                 }
             }
             if (nearest_zombie != NULL){
-                
-                //cout << "heyyyyyy" << endl ; 
                 switch (bullet->get_bullet_type()){
                 case PEA:
                     nearest_zombie->decrease_health(bullet->get_damage()) ; 
-                    delete_bullet(bullet) ;                    
+                    trash_bullets.push_back(bullet) ; 
+                    //delete_bullet(bullet) ;                    
                     break;
-                case SNOWPEA:
+                case ICEPEA:
+                    //cout << bullet_rect.left << " , " << bullet_rect.left + bullet_rect.width << endl ; 
                     nearest_zombie->decrease_health(bullet->get_damage()) ; 
                     nearest_zombie->affect_freezing() ; 
-                    delete_bullet(bullet) ;
+                    trash_bullets.push_back(bullet) ; 
+                    //delete_bullet(bullet) ;
                     break;                 
                 default:
                     break;
                 }    
             }
         }
+    }
+    for (auto bullet : trash_bullets){
+        delete_bullet(bullet) ; 
     }
 }
 
