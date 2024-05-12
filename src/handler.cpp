@@ -167,11 +167,11 @@ void Handler::add_zombie(SpriteType sprite_type ,double x ,double y ,int row_num
     Zombie* zombie ; 
     switch (sprite_type){
     case REGULAR :
-        zombie = new Zombie(x ,y ,sprite_type) ; 
+        zombie = new Zombie(x ,y ,sprite_type ,row_number) ; 
         game_objects.push_back(zombie) ;   
         break;
     case HAIRMETALGARGANTUAR: 
-        zombie = new Zombie(x ,y ,sprite_type) ; 
+        zombie = new Zombie(x ,y ,sprite_type ,row_number) ; 
         game_objects.push_back(zombie) ;
         break; 
     default:
@@ -243,6 +243,13 @@ void Handler::add_bullet(BulletType bullet_type ,int row_number ,double x ,doubl
     bullets_in_line[row_number].push_back(bullet);
 }
 
+void Handler::delete_bullet(Bullet* bullet){
+    bullets.erase(find(bullets.begin() ,bullets.end() ,bullet)) ; 
+    int row = bullet->get_row() ; 
+    bullets_in_line[row].erase(find(bullets_in_line[row].begin() ,bullets_in_line[row].end() ,bullet));
+    delete bullet ; 
+}
+
 void Handler::handle_mouse_press(Event event, double scale_x, double scale_y)
 {
     for (auto it = suns.begin(); it != suns.end();)
@@ -288,31 +295,19 @@ int Handler::get_number_of_zombies()
     return cnt;
 }
 
+
+
 void Handler::update(State &state, double scale_x ,double scale_y)
 {
     handle_plants_shooting() ; 
     handle_zombie_damages(scale_x ,scale_y) ; 
     clean_dead_plants() ; 
     check_moving_stopped_zombies(scale_x ,scale_y) ; 
-    Time elapsed = sun_generating_clock.getElapsedTime();
-    if (elapsed.asSeconds() >= sun_interval)
-    {
-        sun_generating_clock.restart();
-        Sun *new_sun = new Sun(MOVING_SUN);
-        suns.push_back(new_sun);
-    }
-    for (auto it = suns.begin(); it != suns.end();)
-    {
-        (*it)->update();
-        if ((*it)->exited_screen())
-        {
-            Sun* exited_sun = *it;
-            it = suns.erase(it);
-            delete exited_sun;
-        }
-        else
-            it++;
-    }
+    generate_random_sun() ; 
+    clean_sun() ;
+    clean_outside_bullets() ;
+    check_peas_collision() ; 
+    clean_dead_zombies() ; 
     menu.update();
     for (auto &game_object : game_objects)
     {
@@ -327,7 +322,7 @@ void Handler::update(State &state, double scale_x ,double scale_y)
     for (auto &bullet : bullets){
         bullet->update() ; 
     }
-    elapsed = clock.getElapsedTime();
+    Time elapsed = clock.getElapsedTime();
     if (elapsed.asSeconds() >= zombie_generate_duration && !get_number_of_zombies())
         state = VICTORY_SCREEN;
 }
@@ -510,6 +505,104 @@ void Handler::check_moving_stopped_zombies(double scale_x ,double scale_y){
                 }
             }
         }
+    }
+}
+
+void Handler::clean_sun(){
+    for (auto it = suns.begin(); it != suns.end();)
+    {
+        (*it)->update();
+        if ((*it)->exited_screen())
+        {
+            Sun* exited_sun = *it;
+            it = suns.erase(it);
+            delete exited_sun;
+        }
+        else
+            it++;
+    }
+}
+
+void Handler::clean_outside_bullets(){
+    for (auto it = bullets.begin(); it != bullets.end();)
+    {
+        (*it)->update();
+        if ((*it)->exited_screen())
+        {
+            Bullet* exited_bullet = *it;
+            int row = exited_bullet->get_row() ; 
+            bullets_in_line[row].erase(find(bullets_in_line[row].begin() ,bullets_in_line[row].end(), exited_bullet));
+            it = bullets.erase(it);
+            delete exited_bullet;
+        }
+        else
+            it++;
+    }
+}
+
+void Handler::clean_dead_zombies(){
+    vector <Zombie*> trash_zombies; 
+    for (int row = 0; row < NUM_ROW; row++){
+        for (auto zombie : zombies_in_line[row]){
+            if (zombie->is_dead()){
+                trash_zombies.push_back(zombie) ; 
+            }
+        }
+    }
+    for (auto zombie : trash_zombies){
+        game_objects.erase(find(game_objects.begin() ,game_objects.end() ,zombie)) ; 
+        int row = zombie->get_row() ; 
+        zombies_in_line[row].erase(find(zombies_in_line[row].begin() ,zombies_in_line[row].end() ,zombie)) ; 
+        delete zombie ; 
+    }
+}
+
+void Handler::generate_random_sun(){
+    Time elapsed = sun_generating_clock.getElapsedTime();
+    if (elapsed.asSeconds() >= sun_interval)
+    {
+        sun_generating_clock.restart();
+        Sun *new_sun = new Sun(MOVING_SUN);
+        suns.push_back(new_sun);
+    }
+}
+
+void Handler::check_peas_collision(){
+    vector <Bullet*> trash_bullets ; 
+    for (int row = 0; row < NUM_ROW; row++){
+        for (auto bullet : bullets_in_line[row]){
+            Zombie* nearest_zombie = NULL ; 
+            for (auto zombie : zombies_in_line[row]){
+                FloatRect zombie_rect = zombie->get_rect();
+                FloatRect bullet_rect = bullet->get_rect();
+                if (bullet_rect.intersects(zombie_rect)){
+                    if (nearest_zombie == NULL || nearest_zombie->get_x() > zombie->get_x()){
+                        nearest_zombie = zombie ; 
+                    }
+                }
+            }
+            if (nearest_zombie != NULL){
+                switch (bullet->get_bullet_type()){
+                case PEA:
+                    nearest_zombie->decrease_health(bullet->get_damage()) ; 
+                    trash_bullets.push_back(bullet) ; 
+                    //delete_bullet(bullet) ;                    
+                    break;
+                case ICEPEA:
+                    //cout << bullet_rect.left << " , " << bullet_rect.left + bullet_rect.width << endl ; 
+                    nearest_zombie->decrease_health(bullet->get_damage()) ; 
+                    nearest_zombie->affect_freezing() ; 
+                    trash_bullets.push_back(bullet) ; 
+                    //delete_bullet(bullet) ;
+                    break;                 
+                default:
+                    break;
+                }    
+            }
+        }
+    }
+    for (auto bullet : trash_bullets){
+        delete_bullet(bullet) ; 
     }
 }
 

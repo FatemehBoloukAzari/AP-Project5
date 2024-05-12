@@ -1,8 +1,9 @@
 #include "zombie.h" 
 #include "setting.h" 
 
-Zombie::Zombie(int _x ,int _y ,SpriteType _sprite_type) : GameObject(_x ,_y ,_sprite_type){
+Zombie::Zombie(double _x ,double _y ,SpriteType _sprite_type ,int _row) : GameObject(_x ,_y ,_sprite_type){
     freeze_time = 0 ; 
+    row = _row ; 
     moving = true ; 
     attacked = false ; 
     switch (sprite_type){
@@ -60,16 +61,38 @@ void Zombie::init_hit_clock(){
     last_hit_clock.restart() ; 
 }
 
+void Zombie::decrease_health(int damage){
+    health -= damage ; 
+}
+
+void Zombie::affect_freezing(){
+    if (!freezed){
+        freezed = true ; 
+        freeze_time += FREEZE_TIME_PER_BULLET ; 
+        freeze_clock.restart() ; 
+    }
+    else {
+        freeze_time += FREEZE_TIME_PER_BULLET ; 
+    }
+}
+
 bool Zombie::is_plant(){
     return false ; 
 }
 
 void Zombie::update(){
+    if (freezed){
+        Time elapsed = freeze_clock.getElapsedTime() ; 
+        if (elapsed.asSeconds() >= freeze_time){
+            freezed = false ; 
+            freeze_time = 0 ; 
+        }
+    }
     if (moving){
         Time elapsed = last_move_clock.getElapsedTime();
         if (elapsed.asMilliseconds() >= ZOMBIE_MOVE_INTERVAL)
         {
-            move((double)speed / 100);
+            move((double)speed /(freezed ? 2 : 1)/ SCALE_MILLISECONDS);
             last_move_clock.restart();
         }
     }
@@ -85,4 +108,12 @@ void Zombie::update(){
 
 int Zombie::get_damage(){
     return damage ; 
+}
+
+FloatRect Zombie::get_rect(){
+    return item_sprite.getGlobalBounds() ;
+}
+
+bool Zombie::is_dead(){
+    return health <= 0 ;
 }
