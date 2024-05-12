@@ -61,7 +61,7 @@ const int HOME_X = 173;
 const int row_spawn_height_regular[] = {100 ,245 ,420 ,600 ,755} ; 
 const int row_spawn_height_giant[] = {20 ,180 ,370 ,530 ,703} ;
 
-const int INITIAL_NUMBER_OF_SUNS = 100;
+const int INITIAL_NUMBER_OF_SUNS = 10;
 
 const bool MOVING_SUN = true;
 const bool NOT_MOVING_SUN = false;
