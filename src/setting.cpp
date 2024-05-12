@@ -61,6 +61,13 @@ vector <string> get_setting(string sprite_str)
     return {};
 }
 
+bool have_sprite_in_setting(SpriteType sprite_type)
+{
+    vector <string> sprite_setting = get_setting(get_sprite_string(sprite_type));
+    if (sprite_setting.empty())
+        return false;
+    return true;
+}
 
 int read_zombie_damage_from_file(SpriteType sprite_type)
 {

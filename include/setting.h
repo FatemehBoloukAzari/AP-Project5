@@ -24,3 +24,5 @@ int read_zombie_number_change();
 // SUN
 int read_sun_speed_from_file();
 int read_sun_interval_from_file();
+
+bool have_sprite_in_setting(SpriteType sprite_type);

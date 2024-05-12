@@ -140,6 +140,8 @@ Menu::Menu()
     for (int type = WALNUT; type != NOT_SPRITE; type++)
     {
         SpriteType sprite_type = static_cast<SpriteType>(type);
+        if (!have_sprite_in_setting(sprite_type))
+            continue;
         MenuItem* new_menu_item = new MenuItem(sprite_type, x_pos, y_pos);
         menu_items.push_back(new_menu_item);
         y_pos += CARD_HEIGHT + space_y;
