@@ -100,6 +100,8 @@ const int MELLON_BULLET_WIDTH = 70 ;
 const int MELLON_BULLET_HEIGHT = 61 ;
 const int SUN_WIDTH = 100;
 const int SUN_HEIGHT = 100;
+const int THANKING_PERSON_HEIGHT = 835;
+const int THANKING_PERSON_WIDTH = 375;
 
 const int X_SPACE = 350;
 
@@ -108,11 +110,13 @@ const int ZOMBIE_MOVE_INTERVAL = 30;
 const int PEA_BULLET_MOVE_INTERVAL = 30 ;
 const int ICEPEA_BULLET_MOVE_INTERVAL = 30 ;
 
-const int GIANT_PROBABILITY = 450 ; 
+const int GIANT_PROBABILITY = 150 ; 
 
 const int FREEZE_TIME_PER_BULLET = 5 ; 
 
 const int SCALE_MILLISECONDS = 100 ;
+
+const int SUNBULLET_SPEED = 30 ;
 
 /*
 void debug_out() { cerr << endl; }
