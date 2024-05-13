@@ -37,7 +37,7 @@ public:
     void generate_random_sun(); 
     void check_peas_collision(); 
     bool is_in_same_field(Zombie* ,Plant* ,double ,double); 
-    //~Handler();
+    ~Handler();
 private:
     bool square_is_full[NUM_ROW][NUM_COLUMN];
     int zombie_amount_per_cycle ,giant_probability; 
