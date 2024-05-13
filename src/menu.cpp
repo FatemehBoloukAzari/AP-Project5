@@ -102,7 +102,7 @@ void MenuItem::cooldown_render(RenderWindow &window)
     ostringstream stream;
     stream << fixed << setprecision(1) << remaning_cooldown_time;
     text.setString(stream.str());
-    text.setFillColor(Color::Red);
+    text.setFillColor(Color::White);
     text.setFont(new_font);
     text.setCharacterSize(35);
     text.setPosition(x + 60, y + 25);
