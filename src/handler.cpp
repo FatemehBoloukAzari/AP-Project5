@@ -297,7 +297,7 @@ void Handler::render(RenderWindow &window)
         sun->render(window);
     for (auto &bullet : bullets)
         bullet->render(window) ; 
-    menu.render(window);
+    menu.render(window ,number_of_suns);
     render_cursor_following_sprite(window);
 }
 
