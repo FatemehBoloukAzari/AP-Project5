@@ -102,7 +102,7 @@ void MenuItem::cooldown_render(RenderWindow &window)
     ostringstream stream;
     stream << fixed << setprecision(1) << remaning_cooldown_time;
     text.setString(stream.str());
-    text.setFillColor(Color::White);
+    text.setFillColor(Color::Red);
     text.setFont(new_font);
     text.setCharacterSize(35);
     text.setPosition(x + 60, y + 25);
@@ -117,18 +117,39 @@ void MenuItem::cooldown_render(RenderWindow &window)
     window.draw(text);
 }
 
-void MenuItem::render(RenderWindow &window)
-{
-    if (!on_cooldown)
-        normal_render(window);
-    else
-        cooldown_render(window);
+void MenuItem::disabled_render(RenderWindow &window){ 
+    double scale_x = (double)CARD_WIDTH / item_texture.getSize().x;
+    double scale_y = (double)CARD_HEIGHT / item_texture.getSize().y;
+    item_cooldown_sprite.setScale(scale_x, scale_y);
+    item_cooldown_sprite.setPosition(x, y);
+    item_cooldown_sprite.setTexture(item_cooldown_texture);
+    window.draw(item_cooldown_sprite);
+    Font new_font;
+    new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
+    Text text;
+    text.setString(to_string(price));
+    text.setFillColor(Color::Red);
+    text.setFont(new_font);
+    text.setCharacterSize(35);
+    text.setPosition(x + 123, y + 50);
+    text.setStyle(Text::Bold);
+    window.draw(text);
 }
 
-void Menu::render(RenderWindow &window)
+void MenuItem::render(RenderWindow &window ,int number_of_suns)
+{
+    if (!on_cooldown && number_of_suns >= price)
+        normal_render(window);
+    else if (on_cooldown)
+        cooldown_render(window);
+    else 
+        disabled_render(window) ; 
+}
+
+void Menu::render(RenderWindow &window ,int number_of_suns)
 {
     for (auto &item : menu_items)
-        item->render(window);
+        item->render(window ,number_of_suns);
 }
 
 Menu::Menu()

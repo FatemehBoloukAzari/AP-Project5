@@ -39,7 +39,7 @@ public:
     bool is_in_same_field(Zombie* ,Plant* ,double ,double); 
     ~Handler();
 private:
-    bool square_is_full[NUM_ROW][NUM_COLUMN];
+    bool square_is_full[NUM_ROW][NUM_COLUMN] ,first_zombie_generate ;
     int zombie_amount_per_cycle ,giant_probability; 
     int zombie_cycle_time ,zombie_generate_duration ,zombie_increase_rate; 
     Clock clock ,last_zombie_increase_clock ,last_zombie_spawn_clock;
@@ -59,5 +59,6 @@ private:
     void add_plant(SpriteType sprite_type, double pos_x, double pos_y ,int row ,int col);
     int get_number_of_zombies();
     Zombie* first_zombie_in_row(double x, int row_number);
+    Zombie* last_Zombie_in_row(int); 
     void check_melons_collision();
 };

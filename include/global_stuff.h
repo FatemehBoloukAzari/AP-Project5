@@ -61,7 +61,7 @@ const int HOME_X = 173;
 const int row_spawn_height_regular[] = {100 ,245 ,420 ,600 ,755} ; 
 const int row_spawn_height_giant[] = {20 ,180 ,370 ,530 ,703} ;
 
-const int INITIAL_NUMBER_OF_SUNS = 100;
+const int INITIAL_NUMBER_OF_SUNS = 3;
 
 const bool MOVING_SUN = true;
 const bool NOT_MOVING_SUN = false;
@@ -100,6 +100,8 @@ const int MELLON_BULLET_WIDTH = 70 ;
 const int MELLON_BULLET_HEIGHT = 61 ;
 const int SUN_WIDTH = 100;
 const int SUN_HEIGHT = 100;
+const int THANKING_PERSON_HEIGHT = 835;
+const int THANKING_PERSON_WIDTH = 375;
 
 const int X_SPACE = 350;
 
@@ -108,11 +110,13 @@ const int ZOMBIE_MOVE_INTERVAL = 30;
 const int PEA_BULLET_MOVE_INTERVAL = 30 ;
 const int ICEPEA_BULLET_MOVE_INTERVAL = 30 ;
 
-const int GIANT_PROBABILITY = 450 ; 
+const int GIANT_PROBABILITY = 150 ; 
 
 const int FREEZE_TIME_PER_BULLET = 5 ; 
 
 const int SCALE_MILLISECONDS = 100 ;
+
+const int SUNBULLET_SPEED = 30 ;
 
 /*
 void debug_out() { cerr << endl; }

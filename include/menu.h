@@ -6,7 +6,7 @@ class MenuItem
 {
 public:
     MenuItem(SpriteType, int, int);
-    void render(RenderWindow &window);
+    void render(RenderWindow &window ,int number_of_suns);
     void update();
     void handle_mouse_press(Event event, int number_of_suns);
     bool is_tagged();
@@ -30,6 +30,7 @@ private:
     void normal_render(RenderWindow &window);
     void render_cooldown_card(RenderWindow &window, double);
     void cooldown_render(RenderWindow &window);
+    void disabled_render(RenderWindow &window);
 };
 
 class Menu
@@ -37,7 +38,7 @@ class Menu
 public:
     Menu();
     void update();
-    void render(RenderWindow &window);
+    void render(RenderWindow &window ,int number_of_sun);
     void handle_mouse_press(Event event, int number_of_suns);
     SpriteType get_tagged_sprite();
     void update_used_card();
