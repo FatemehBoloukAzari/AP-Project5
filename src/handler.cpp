@@ -656,11 +656,6 @@ bool Handler::is_in_same_field(Zombie *zombie, Plant *plant ,double scale_x ,dou
 
 Handler::~Handler()
 {
-    vector <GameObject*> game_objects;
-    vector <Sun*> suns;
-    vector <Bullet*> bullets;
-    vector <Zombie*> zombies_in_line[5]; 
-    vector <Bullet*> bullets_in_line[5]; 
     while (!game_objects.empty())
     {
         auto game_object = game_objects.back();
@@ -678,20 +673,5 @@ Handler::~Handler()
         auto bullet = bullets.back();
         bullets.pop_back();
         delete bullet;
-    }
-    for (int i = 4; i >= 0; i--)
-    {
-        while (!zombies_in_line[i].empty())
-        {
-            auto zombie = zombies_in_line[i].back();
-            zombies_in_line[i].pop_back();
-            delete zombie;
-        }
-        while (!zombies_in_line[i].empty())
-        {
-            auto bullet = bullets_in_line[i].back();
-            bullets_in_line[i].pop_back();
-            delete bullet;
-        }
     }
 }

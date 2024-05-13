@@ -150,8 +150,7 @@ void System::run()
     }
 }
 
-/*System::~System()
+System::~System()
 {
-    music.~Music();
     delete handler;
-}*/
+}
