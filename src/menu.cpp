@@ -93,7 +93,6 @@ void MenuItem::cooldown_render(RenderWindow &window)
     double scale_y = (double)CARD_HEIGHT / item_texture.getSize().y;
     item_cooldown_sprite.setScale(scale_x, scale_y);
     item_cooldown_sprite.setPosition(x, y);
-    //window.draw(item_cooldown_sprite);
     Time elapsed = cooldown_clock.getElapsedTime();
     double remaning_cooldown_time = cooldown - elapsed.asSeconds();
     render_cooldown_card(window, remaning_cooldown_time);

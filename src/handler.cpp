@@ -348,7 +348,6 @@ void Handler::update(State &state, double scale_x ,double scale_y)
 
 void Handler::game_over_render(RenderWindow& window)
 {
-    //render_sun_bank(window);
     for (auto &game_object : game_objects)
         game_object->render(window);
     for (auto &sun : suns)
@@ -391,12 +390,10 @@ void Handler::game_over_render(RenderWindow& window)
     text.setPosition(x_pos, HEIGHT - 100);
     if (game_over_clock.getElapsedTime().asSeconds() > 8)
         window.draw(text);
-    //menu.render(window);
 }
 
 void Handler::victory_render(RenderWindow& window)
 {
-    //render_sun_bank(window);
     for (auto &game_object : game_objects)
         game_object->render(window);
     for (auto &sun : suns)
@@ -422,7 +419,6 @@ void Handler::victory_render(RenderWindow& window)
     text.setPosition(x_pos, HEIGHT - 100);
     if (game_over_clock.getElapsedTime().asSeconds() > 8)
         window.draw(text);
-    //menu.render(window);
 }
 
 void Handler::in_game_initialization()

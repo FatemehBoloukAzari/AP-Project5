@@ -11,8 +11,6 @@
 #include "icepea_bullet.h"
 #include "handler.h"
 
-//#include "bullet.h"
-
 class System
 {
 public:
