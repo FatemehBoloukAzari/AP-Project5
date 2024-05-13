@@ -27,10 +27,10 @@ void Mellon_Bullet::update(){
     }
 }
 
-void Mellon_Bullet::move(double change_amount){
+void Mellon_Bullet::move(double amount){
     double t = shooting_time.getElapsedTime().asSeconds();
     x = init_x + t * speed;
-    y = init_y + t * (t - collision_time) * 500;
+    y = init_y + t * (t - collision_time) * MELLON_ACCELERATION;
 }
 
 int Mellon_Bullet::get_damage(){

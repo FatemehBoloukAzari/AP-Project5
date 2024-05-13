@@ -15,7 +15,7 @@ public :
     void affect_freezing(); 
     Clock last_move_clock ,last_hit_clock ,freeze_clock; 
     bool moving ,attacked ;
-    int get_column_number(double ,double) ; 
+    int get_column_number(double) ; 
     int get_damage(); 
     int get_row(){return row;} 
     FloatRect get_rect(); 

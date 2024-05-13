@@ -315,12 +315,12 @@ int Handler::get_number_of_zombies()
 
 
 
-void Handler::update(State &state, double scale_x ,double scale_y)
+void Handler::update(State &state, double scale_x)
 {
     handle_plants_shooting() ; 
-    handle_zombie_damages(scale_x ,scale_y) ; 
+    handle_zombie_damages(scale_x) ; 
     clean_dead_plants() ; 
-    check_moving_stopped_zombies(scale_x ,scale_y) ; 
+    check_moving_stopped_zombies(scale_x) ; 
     generate_random_sun() ; 
     clean_sun() ;
     clean_outside_bullets() ;
@@ -479,12 +479,12 @@ void Handler::game_over_initialization()
     game_over_clock.restart();
 }
 
-void Handler::handle_zombie_damages(double scale_x ,double scale_y){
+void Handler::handle_zombie_damages(double scale_x){
     for (auto it = game_objects.begin(); it != game_objects.end() ;it++){
         if ((*it)->is_plant()){
             auto plant = dynamic_cast<Plant*>(*it) ; 
             for (auto zombie : zombies_in_line[plant->get_row()]){
-                if (is_in_same_field(zombie ,plant ,scale_x ,scale_y)){
+                if (is_in_same_field(zombie ,plant ,scale_x)){
                     if (!zombie->moving){
                         zombie->update() ;
                         if (zombie->attacked){
@@ -521,11 +521,11 @@ void Handler::clean_dead_plants(){
     }
 }
 
-void Handler::check_moving_stopped_zombies(double scale_x ,double scale_y){
+void Handler::check_moving_stopped_zombies(double scale_x){
     for (int row = 0; row < NUM_ROW; row++){
         for (auto zombie : zombies_in_line[row]){
             if (!zombie->moving){
-                int col = zombie->get_column_number(scale_x ,scale_y) ;
+                int col = zombie->get_column_number(scale_x) ;
                 if (!square_is_full[row][col]){
                     zombie->moving = true ; 
                 }
@@ -634,7 +634,7 @@ void Handler::check_peas_collision(){
                 FloatRect zombie_rect = zombie->get_rect();
                 FloatRect bullet_rect = bullet->get_rect();
                 if (bullet_rect.intersects(zombie_rect)){
-                    if (nearest_zombie == NULL || nearest_zombie->get_x() > zombie->get_x() && !zombie->is_dead()){
+                    if (nearest_zombie == NULL || (nearest_zombie->get_x() > zombie->get_x() && !zombie->is_dead())){
                         nearest_zombie = zombie ; 
                     }
                 }
@@ -661,6 +661,6 @@ void Handler::check_peas_collision(){
     }
 }
 
-bool Handler::is_in_same_field(Zombie *zombie, Plant *plant ,double scale_x ,double scale_y){
-    return plant->get_column() == zombie->get_column_number(scale_x ,scale_y) ;
+bool Handler::is_in_same_field(Zombie *zombie, Plant *plant ,double scale_x){
+    return plant->get_column() == zombie->get_column_number(scale_x) ;
 }

@@ -69,6 +69,8 @@ const bool NOT_MOVING_SUN = false;
 const int MELONPULT_MARGIN = -35 ;
 const int ZOMBIE_EATING_MARGIN = -53 ; 
 const int BULLET_MARGIN = -30 ; 
+const int GENERATED_SUN_MARGIN_X = -50 ; 
+const int GENERATED_SUN_MARGIN_Y = -50 ; 
 
 const pair <int, int> NO_SQUARE = {-1, -1};
 
@@ -118,14 +120,10 @@ const int SCALE_MILLISECONDS = 100 ;
 
 const int SUNBULLET_SPEED = 30 ;
 
-/*
-void debug_out() { cerr << endl; }
- 
-template <typename Head, typename... Tail>
-void debug_out(Head H, Tail... T) {
-	cerr << " " << H ;
-	debug_out(T...);
-}
- 
-#define debug(...)             cerr << "(" << #__VA_ARGS__ << "): ", debug_out(__VA_ARGS__)
-*/
+const double SUN_FINAL_DELTA_X = 60 ;
+const double SUN_EXTRA_DELTA_X = 4 ; 
+
+const double SUN_ACCELERATION = 0.15 ;
+const int MELLON_ACCELERATION = 600 ;
+
+const int SUNFLOWER_SUN_SPEED = 33 ; 

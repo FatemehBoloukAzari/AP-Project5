@@ -14,7 +14,7 @@ class Handler
 {
 public:
     Handler();
-    void update(State &state, double scale_x ,double scale_y);
+    void update(State &state, double scale_x);
     void render(RenderWindow &window);
     void add_zombie(SpriteType ,double ,double ,int);
     void add_bullet(BulletType ,int ,double ,double); 
@@ -28,15 +28,15 @@ public:
     void in_game_initialization();
     void handle_plants_shooting(); 
     void game_over_initialization();
-    void handle_zombie_damages(double ,double); 
+    void handle_zombie_damages(double); 
     void clean_dead_plants(); 
-    void check_moving_stopped_zombies(double ,double); 
+    void check_moving_stopped_zombies(double); 
     void clean_sun() ; 
     void clean_outside_bullets();
     void clean_dead_zombies(); 
     void generate_random_sun(); 
     void check_peas_collision(); 
-    bool is_in_same_field(Zombie* ,Plant* ,double ,double);
+    bool is_in_same_field(Zombie* ,Plant* ,double);
     //~Handler();
 private:
     bool square_is_full[NUM_ROW][NUM_COLUMN] ,first_zombie_generate ;

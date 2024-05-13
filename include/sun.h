@@ -2,6 +2,11 @@
 
 #include "global_stuff.h"
 
+enum Direction {
+    LEFT,
+    RIGHT 
+};
+
 class Sun
 {
 public:
@@ -12,11 +17,14 @@ public:
     bool exited_screen();
 private:
     bool is_moving;
-    double x;
-    double y;
+    double x ,delta_x;
+    double y ,delta_y;
     int speed;
     Texture sun_texture;
     Sprite sun_sprite;
     Clock last_move_clock;
+    Direction direction; 
     void move(double);
+    void move_x(double); 
+    void move_y();
 };

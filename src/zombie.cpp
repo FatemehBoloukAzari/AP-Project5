@@ -47,7 +47,7 @@ void Zombie::render(RenderWindow &window){
     
 }
 
-int Zombie::get_column_number(double scale_x ,double scale_y){
+int Zombie::get_column_number(double scale_x){
     int ptr = 0; 
     while (ptr < NUM_COLUMN && scale_x * field_square_x[ptr] < x + ZOMBIE_EATING_MARGIN) ptr++ ; 
     return ptr ; 
