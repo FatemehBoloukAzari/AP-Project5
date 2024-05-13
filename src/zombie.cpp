@@ -32,19 +32,20 @@ void Zombie::render(RenderWindow &window){
         scale_y = (double)REGULAR_HEIGHT / item_texture.getSize().y;
         item_sprite.setScale(scale_x, scale_y);
         item_sprite.setPosition(x, y);
-        window.draw(item_sprite);
         break;
     case HAIRMETALGARGANTUAR:
         scale_x = (double)HAIRMETALGARGANTUAR_WIDTH / item_texture.getSize().x;
         scale_y = (double)HAIRMETALGARGANTUAR_HEIGHT / item_texture.getSize().y;
         item_sprite.setScale(scale_x, scale_y);
         item_sprite.setPosition(x, y);
-        window.draw(item_sprite);
         break;
     default:
         break;
     }
-    
+    Sprite render_sprite = item_sprite;
+    if (freezed)
+        render_sprite.setColor(Color(100, 100, 255));
+    window.draw(render_sprite);
 }
 
 int Zombie::get_column_number(double scale_x ,double scale_y){
