@@ -664,3 +664,25 @@ void Handler::check_peas_collision(){
 bool Handler::is_in_same_field(Zombie *zombie, Plant *plant ,double scale_x){
     return plant->get_column() == zombie->get_column_number(scale_x) ;
 }
+
+Handler::~Handler()
+{
+    while (!game_objects.empty())
+    {
+        auto game_object = game_objects.back();
+        game_objects.pop_back();
+        delete game_object;
+    }
+    while (!suns.empty())
+    {
+        auto sun = suns.back();
+        suns.pop_back();
+        delete sun;
+    }
+    while (!bullets.empty())
+    {
+        auto bullet = bullets.back();
+        bullets.pop_back();
+        delete bullet;
+    }
+}

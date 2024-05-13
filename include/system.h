@@ -20,7 +20,7 @@ public:
     void run();
     void handle_events();
     void render();
-    //~System();
+    ~System();
 private:
     Texture background;
     Sprite backgroundSprite;

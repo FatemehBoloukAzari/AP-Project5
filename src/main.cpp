@@ -5,6 +5,6 @@ int main()
 {
     System *game = new System(WIDTH, HEIGHT);
     game->run();
-    //delete game();
+    delete game;
     return 0;
 }
