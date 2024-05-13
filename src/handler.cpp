@@ -1,9 +1,6 @@
 #include "handler.h"
 #include "setting.h"
 
-const int THANKING_PERSON_HEIGHT = 835;
-const int THANKING_PERSON_WIDTH = 375;
-
 Handler::Handler()
 {
     memset(square_is_full ,false ,sizeof square_is_full);
@@ -14,6 +11,7 @@ Handler::Handler()
     giant_probability = -18 ;
     sun_interval = read_sun_interval_from_file();
     number_of_suns = INITIAL_NUMBER_OF_SUNS;
+    first_zombie_generate = true ; 
 }
 
 void Handler::render_sun_bank(RenderWindow &window)
@@ -198,14 +196,16 @@ void Handler::generate_zombie(){
     if (zombie_amount_per_cycle > 0){
         double needed_time_to_release_new_zombie = (double)zombie_cycle_time / zombie_amount_per_cycle ; 
         elapsed = last_zombie_spawn_clock.getElapsedTime() ; 
-        if (elapsed.asSeconds() >= needed_time_to_release_new_zombie){
+        if (elapsed.asSeconds() >= needed_time_to_release_new_zombie || first_zombie_generate){
             SpriteType sprite_type = get_random_zombie_type() ;
             int row_number = rng() % NUM_ROW ;
             int y = row_spawn_height_giant[row_number] ;
             if (sprite_type == REGULAR)
                 y = row_spawn_height_regular[row_number] ;
             add_zombie(sprite_type ,WIDTH ,y ,row_number) ; 
-            last_zombie_spawn_clock.restart() ; 
+            if (!first_zombie_generate)
+                last_zombie_spawn_clock.restart() ; 
+            first_zombie_generate = false ; 
             giant_probability++ ; 
         }
     }
@@ -426,11 +426,22 @@ void Handler::in_game_initialization()
     sun_generating_clock.restart();
 }
 
+
+Zombie *Handler::last_Zombie_in_row(int row_number){
+    Zombie* zombie = NULL ; 
+    for (auto zm : zombies_in_line[row_number]){
+        if (zombie == NULL || zombie->get_x() < zm->get_x())
+            zombie = zm ; 
+    }
+    return zombie ; 
+}
+
 void Handler::handle_plants_shooting(){
     for (auto object : game_objects){
         if (object->is_plant()){
             Plant* plant = dynamic_cast<Plant*>(object) ;
-            if (zombies_in_line[plant->get_row()].empty() && plant->get_sprite_type() != SUNFLOWER){
+            Zombie* zombie = last_Zombie_in_row(plant->get_row()) ; 
+            if ((zombie == NULL || zombie->get_x() < plant->get_x()) && plant->get_sprite_type() != SUNFLOWER){
                 plant->shooting = false ; 
             }
             else {
@@ -623,7 +634,7 @@ void Handler::check_peas_collision(){
                 FloatRect zombie_rect = zombie->get_rect();
                 FloatRect bullet_rect = bullet->get_rect();
                 if (bullet_rect.intersects(zombie_rect)){
-                    if (nearest_zombie == NULL || nearest_zombie->get_x() > zombie->get_x()){
+                    if (nearest_zombie == NULL || nearest_zombie->get_x() > zombie->get_x() && !zombie->is_dead()){
                         nearest_zombie = zombie ; 
                     }
                 }

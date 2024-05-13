@@ -56,8 +56,10 @@ bool Sun::exited_screen()
 
 void Sun::update()
 {
-    if (!is_moving)
+    if (!is_moving){
+        
         return;
+    }
     Time elapsed = last_move_clock.getElapsedTime();
     if (elapsed.asMilliseconds() >= SUN_MOVE_INTERVAL)
     {
