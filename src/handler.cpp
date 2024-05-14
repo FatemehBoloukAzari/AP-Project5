@@ -31,6 +31,8 @@ Handler::Handler()
         splat[i].openFromFile(AUDIO_PATH + "splat" + to_string(i) + ".ogg") ; 
     }
     collecting_suns.openFromFile(AUDIO_PATH + "collecting_suns.wav") ; 
+    phase = 1;
+    last_wave_message_display = false;
 }
 
 void Handler::render_sun_bank(RenderWindow &window)
@@ -53,6 +55,34 @@ void Handler::render_sun_bank(RenderWindow &window)
     text.setCharacterSize(NUMBER_OF_SUNS_FONT_SIZE);
     text.setPosition(SUN_BANK_TEXT_POS_X, SUN_BANK_TEXT_POS_Y);
     text.setStyle(Text::Bold);
+    window.draw(text);
+}
+
+void Handler::render_phase(RenderWindow &window)
+{
+    Font new_font;
+    new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
+    Text text;
+    text.setString("Phase " + to_string(phase));
+    text.setFillColor(Color::Black);
+    text.setFont(new_font);
+    text.setCharacterSize(PHASE_TEXT_FONT_SIZE);
+    text.setPosition(PHASE_TEXT_POS_X, PHASE_TEXT_POS_Y);
+    window.draw(text);
+}
+
+void Handler::render_last_wave_message(RenderWindow &window)
+{
+    Font new_font;
+    new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
+    Text text;
+    text.setString(LAST_WAVE_TEXT);
+    text.setFillColor(Color::Red);
+    text.setFont(new_font);
+    text.setCharacterSize(LAST_WAVE_MESSAGE_TEXT_SIZE);
+    int pos_x = (WIDTH - text.getGlobalBounds().width) / 2 + LAST_WAVE_TEXT_MARGIN;
+    int pos_y = (HEIGHT - text.getGlobalBounds().height) / 2;
+    text.setPosition(pos_x, pos_y);
     window.draw(text);
 }
 
@@ -243,6 +273,7 @@ void Handler::generate_zombie(){
     if (elapsed.asSeconds() >= zombie_cycle_time){
         last_zombie_increase_clock.restart() ; 
         zombie_amount_per_cycle += zombie_increase_rate ;
+        phase++;
     }
 }
 
@@ -328,6 +359,17 @@ void Handler::render(RenderWindow &window)
         sun->render(window);
     for (auto &bullet : bullets)
         bullet->render(window) ; 
+    render_phase(window);
+    if (phase == zombie_generate_duration / zombie_cycle_time)
+    {
+        if (!last_wave_message_display)
+        {
+            last_wave_message_display = true;
+            last_wave_message_clock.restart();
+        }
+        if (last_wave_message_clock.getElapsedTime().asSeconds() < LAST_WAVE_MESSAGE_DURATION)
+            render_last_wave_message(window);
+    }
     menu.render(window ,number_of_suns);
     render_cursor_following_sprite(window);
 }

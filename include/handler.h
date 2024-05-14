@@ -55,9 +55,12 @@ private:
     Clock sun_generating_clock;
     Clock game_over_clock ,zombie_groan_clock;
     int number_of_suns ,groan_ptr ,splat_ptr ,throw_ptr ;
+    Clock last_wave_message_clock;
     int sun_interval;
     bool have_small_zombie ,have_giant_zombie ; 
     void render_sun_bank(RenderWindow &window);
+    void render_phase(RenderWindow &window);
+    void render_last_wave_message(RenderWindow &window);
     void handle_adding_plant(Event event, SpriteType adding_sprite, double, double);
     void render_cursor_following_sprite(RenderWindow &window);
     void add_plant(SpriteType sprite_type, double pos_x, double pos_y ,int row ,int col);
@@ -65,4 +68,6 @@ private:
     Zombie* first_zombie_in_row(double x, int row_number);
     Zombie* last_Zombie_in_row(int); 
     void check_melons_collision();
+    int phase;
+    bool last_wave_message_display;
 };
