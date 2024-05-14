@@ -6,18 +6,26 @@ Zombie::Zombie(double _x ,double _y ,SpriteType _sprite_type ,int _row) : GameOb
     row = _row ; 
     moving = true ; 
     attacked = false ; 
+    double scale_x ,scale_y ; 
+    frozen_sound.openFromFile(AUDIO_PATH + "frozen.ogg") ; 
     switch (sprite_type){
     case REGULAR:
         speed = read_zombie_speed_from_file(REGULAR) ; 
         damage = read_zombie_damage_from_file(REGULAR) ;
         hit_rate = read_zombie_hit_rate_from_file(REGULAR) ; 
-        health = read_zombie_health_from_file(REGULAR) ; 
+        health = read_zombie_health_from_file(REGULAR) ;
+        scale_x = (double)REGULAR_WIDTH / item_texture.getSize().x;
+        scale_y = (double)REGULAR_HEIGHT / item_texture.getSize().y;
+        item_sprite.setScale(scale_x, scale_y); 
         break;
     case HAIRMETALGARGANTUAR:
         speed = read_zombie_speed_from_file(HAIRMETALGARGANTUAR) ; 
         damage = read_zombie_damage_from_file(HAIRMETALGARGANTUAR) ;
         hit_rate = read_zombie_hit_rate_from_file(HAIRMETALGARGANTUAR) ; 
         health = read_zombie_health_from_file(HAIRMETALGARGANTUAR) ; 
+        scale_x = (double)HAIRMETALGARGANTUAR_WIDTH / item_texture.getSize().x;
+        scale_y = (double)HAIRMETALGARGANTUAR_HEIGHT / item_texture.getSize().y;
+        item_sprite.setScale(scale_x, scale_y);
         break;
     default:
         break;
@@ -28,15 +36,10 @@ void Zombie::render(RenderWindow &window){
     double scale_x ,scale_y ; 
     switch (sprite_type){
     case REGULAR:
-        scale_x = (double)REGULAR_WIDTH / item_texture.getSize().x;
-        scale_y = (double)REGULAR_HEIGHT / item_texture.getSize().y;
-        item_sprite.setScale(scale_x, scale_y);
+        
         item_sprite.setPosition(x, y);
         break;
     case HAIRMETALGARGANTUAR:
-        scale_x = (double)HAIRMETALGARGANTUAR_WIDTH / item_texture.getSize().x;
-        scale_y = (double)HAIRMETALGARGANTUAR_HEIGHT / item_texture.getSize().y;
-        item_sprite.setScale(scale_x, scale_y);
         item_sprite.setPosition(x, y);
         break;
     default:
@@ -68,6 +71,8 @@ void Zombie::decrease_health(int damage){
 
 void Zombie::affect_freezing(){
     if (!freezed){
+        frozen_sound.setPlayingOffset(seconds(0));
+        frozen_sound.play() ; 
         freezed = true ; 
         freeze_time += FREEZE_TIME_PER_BULLET ; 
         freeze_clock.restart() ; 

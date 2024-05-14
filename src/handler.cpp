@@ -15,7 +15,6 @@ Handler::Handler()
     first_zombie_coming.openFromFile(AUDIO_PATH + "awooga.ogg");
     for (int i = 0; i < NUM_ZOMBIE_GROAN; i++){
         zombie_groan[i].openFromFile(AUDIO_PATH + "groan" + to_string(i) + ".ogg") ;
-        zombie_groan[i].setLoop(false) ;
         groan_ptr = 0 ; 
     }
     first_zombie_coming.setLoop(false) ;
@@ -644,7 +643,7 @@ void Handler::check_peas_collision(){
             for (auto zombie : zombies_in_line[row]){
                 FloatRect zombie_rect = zombie->get_rect();
                 FloatRect bullet_rect = bullet->get_rect();
-                if (bullet_rect.intersects(zombie_rect)){
+                if (bullet_rect.intersects(zombie_rect)){                    
                     if (nearest_zombie == NULL || (nearest_zombie->get_x() > zombie->get_x() && !zombie->is_dead())){
                         nearest_zombie = zombie ; 
                     }
@@ -676,6 +675,7 @@ void Handler::groan(){
     Time elapsed = zombie_groan_clock.getElapsedTime() ; 
     if (elapsed.asSeconds() >= ZOMBIE_GROAN_INTERVAL){
         zombie_groan_clock.restart() ;
+        zombie_groan[groan_ptr].setPlayingOffset(seconds(0));
         zombie_groan[groan_ptr].play() ; 
         groan_ptr = (groan_ptr + 1) % NUM_ZOMBIE_GROAN ; 
     }

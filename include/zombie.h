@@ -25,4 +25,5 @@ public :
 private : 
     int freeze_time ,row ;
     int speed ,damage ,hit_rate ,health;
+    Music frozen_sound ; 
 };
