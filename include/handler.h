@@ -51,6 +51,7 @@ private:
     vector <Bullet*> bullets_in_line[NUM_ROW]; 
     Menu menu;
     Music first_zombie_coming ,zombie_groan[NUM_ZOMBIE_GROAN] ,collecting_suns ,splat[NUM_SPLATS];
+    Music planting_sound;
     Clock sun_generating_clock;
     Clock game_over_clock ,zombie_groan_clock;
     int number_of_suns ,groan_ptr ,splat_ptr;

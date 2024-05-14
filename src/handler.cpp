@@ -13,6 +13,7 @@ Handler::Handler()
     number_of_suns = INITIAL_NUMBER_OF_SUNS;
     first_zombie_generate = true ; 
     first_zombie_coming.openFromFile(AUDIO_PATH + "awooga.ogg");
+    planting_sound.openFromFile(AUDIO_PATH + "planting.ogg");
     for (int i = 0; i < NUM_ZOMBIE_GROAN; i++){
         zombie_groan[i].openFromFile(AUDIO_PATH + "groan" + to_string(i) + ".ogg") ;
     }
@@ -145,6 +146,8 @@ pair <int, int> get_clicked_square(Event event, double scale_x, double scale_y)
 void Handler::add_plant(SpriteType sprite_type, double pos_x, double pos_y ,int row ,int col)
 {
     Plant* new_plant = new Plant(pos_x, pos_y, sprite_type ,row ,col);
+    planting_sound.setPlayingOffset(seconds(0));
+    planting_sound.play();
     game_objects.push_back(new_plant);
 }
 
