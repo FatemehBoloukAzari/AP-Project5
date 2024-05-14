@@ -2,6 +2,6 @@ ZOMBIES: regular-10-50-5-70, hairMetalGargantuar-20-80-6-40
 
 PLANTS: peashooter-15-40-5-5-1000-4, snowpea-20-30-9-5-1000-6, melonPult-5-20-10-2-700-8, sunflower-0-30-10-2-0-2, walnut-0-200-10-0-0-2
 
-ATTACKS: attack-5-5-3-1
+ATTACKS: attack-100-10-3-1
 
 SUN: sun-10-10

@@ -8,10 +8,17 @@ Handler::Handler()
     zombie_cycle_time = read_attack_interval() ; 
     zombie_generate_duration = read_total_attack_time() ; 
     zombie_increase_rate = read_zombie_number_change() ; 
-    giant_probability = -18 ;
+    giant_probability = -10 ;
     sun_interval = read_sun_interval_from_file();
     number_of_suns = INITIAL_NUMBER_OF_SUNS;
     first_zombie_generate = true ; 
+    first_zombie_coming.openFromFile(AUDIO_PATH + "awooga.ogg");
+    for (int i = 0; i < NUM_ZOMBIE_GROAN; i++){
+        zombie_groan[i].openFromFile(AUDIO_PATH + "groan" + to_string(i) + ".ogg") ;
+        zombie_groan[i].setLoop(false) ;
+        groan_ptr = 0 ; 
+    }
+    first_zombie_coming.setLoop(false) ;
 }
 
 void Handler::render_sun_bank(RenderWindow &window)
@@ -205,6 +212,9 @@ void Handler::generate_zombie(){
             add_zombie(sprite_type ,WIDTH ,y ,row_number) ; 
             if (!first_zombie_generate)
                 last_zombie_spawn_clock.restart() ; 
+            else {
+                first_zombie_coming.play() ; 
+            }
             first_zombie_generate = false ; 
             giant_probability++ ; 
         }
@@ -327,6 +337,7 @@ void Handler::update(State &state, double scale_x)
     check_peas_collision() ; 
     check_melons_collision();
     clean_dead_zombies() ; 
+    groan() ; 
     menu.update();
     for (auto &game_object : game_objects)
     {
@@ -658,6 +669,15 @@ void Handler::check_peas_collision(){
     }
     for (auto bullet : trash_bullets){
         delete_bullet(bullet) ; 
+    }
+}
+
+void Handler::groan(){
+    Time elapsed = zombie_groan_clock.getElapsedTime() ; 
+    if (elapsed.asSeconds() >= ZOMBIE_GROAN_INTERVAL){
+        zombie_groan_clock.restart() ;
+        zombie_groan[groan_ptr].play() ; 
+        groan_ptr = (groan_ptr + 1) % NUM_ZOMBIE_GROAN ; 
     }
 }
 

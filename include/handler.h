@@ -36,6 +36,7 @@ public:
     void clean_dead_zombies(); 
     void generate_random_sun(); 
     void check_peas_collision(); 
+    void groan(); 
     bool is_in_same_field(Zombie* ,Plant* ,double); 
     ~Handler();
 private:
@@ -49,9 +50,10 @@ private:
     vector <Zombie*> zombies_in_line[5]; 
     vector <Bullet*> bullets_in_line[5]; 
     Menu menu;
+    Music first_zombie_coming ,zombie_groan[6] ;
     Clock sun_generating_clock;
-    Clock game_over_clock;
-    int number_of_suns;
+    Clock game_over_clock ,zombie_groan_clock;
+    int number_of_suns ,groan_ptr;
     int sun_interval;
     void render_sun_bank(RenderWindow &window);
     void handle_adding_plant(Event event, SpriteType adding_sprite, double, double);
