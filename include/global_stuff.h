@@ -111,8 +111,9 @@ const int SUN_MOVE_INTERVAL = 10;
 const int ZOMBIE_MOVE_INTERVAL = 30; 
 const int PEA_BULLET_MOVE_INTERVAL = 30 ;
 const int ICEPEA_BULLET_MOVE_INTERVAL = 30 ;
+const int ZOMBIE_GROAN_INTERVAL = 5 ; 
 
-const int GIANT_PROBABILITY = 150 ; 
+const int GIANT_PROBABILITY = 175 ; 
 
 const int FREEZE_TIME_PER_BULLET = 5 ; 
 
@@ -124,6 +125,8 @@ const double SUN_FINAL_DELTA_X = 60 ;
 const double SUN_EXTRA_DELTA_X = 4 ; 
 
 const double SUN_ACCELERATION = 0.15 ;
-const int MELLON_ACCELERATION = 600 ;
+const int MELLON_ACCELERATION = 2000 ;
 
-const int SUNFLOWER_SUN_SPEED = 33 ; 
+const int SUNFLOWER_SUN_SPEED = 40 ; 
+
+const int NUM_ZOMBIE_GROAN = 6 ;
