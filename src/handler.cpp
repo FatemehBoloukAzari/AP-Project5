@@ -29,7 +29,7 @@ void Handler::render_sun_bank(RenderWindow &window)
     double scale_x = (double)SUN_BANK_WIDTH / sun_bank_texture.getSize().x;
     double scale_y = (double)SUN_BANK_HEIGHT / sun_bank_texture.getSize().y;
     sun_bank_sprite.setScale(scale_x, scale_y);
-    sun_bank_sprite.setPosition(20, 5);
+    sun_bank_sprite.setPosition(SUN_BANK_POS_X, SUN_BANK_POS_Y);
     window.draw(sun_bank_sprite);
     Font new_font;
     new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
@@ -37,8 +37,8 @@ void Handler::render_sun_bank(RenderWindow &window)
     text.setString(to_string(number_of_suns));
     text.setFillColor(Color::Black);
     text.setFont(new_font);
-    text.setCharacterSize(50);
-    text.setPosition(150, 13);
+    text.setCharacterSize(NUMBER_OF_SUNS_FONT_SIZE);
+    text.setPosition(SUN_BANK_TEXT_POS_X, SUN_BANK_TEXT_POS_Y);
     text.setStyle(Text::Bold);
     window.draw(text);
 }
@@ -99,14 +99,14 @@ void Handler::main_menu_render(RenderWindow &window)
     text.setString("Press any key to start");
     text.setFillColor(Color::Black);
     text.setFont(new_font);
-    text.setCharacterSize(150);
+    text.setCharacterSize(MAIN_MENU_TEXT_FONT_SIZE);
     int x_pos = (WIDTH - text.getLocalBounds().width) / 2;
     int y_pos = (HEIGHT - text.getLocalBounds().height) / 2;
     text.setPosition(x_pos, y_pos);
     text.setStyle(Text::Bold);
     Text shadow = text;
-    shadow.setFillColor(Color(0, 0, 0, 128));
-    shadow.move(6, -6);
+    shadow.setFillColor(BLACK_SHADOW_COLOR);
+    shadow.move(SHADOW_DISTANCE_X, SHADOW_DISTANCE_Y);
     window.draw(shadow);
     window.draw(text);
 }
@@ -287,7 +287,6 @@ void Handler::handle_mouse_press(Event event, double scale_x, double scale_y)
             number_of_suns++;
             suns.erase(suns.begin() + i);
             i--;
-            assert(save != NULL);
             delete save;
         }
     }
@@ -363,7 +362,7 @@ void Handler::game_over_render(RenderWindow& window)
     for (auto &sun : suns)
         sun->render(window);
     RectangleShape rect;
-    rect.setFillColor(Color(0, 0, 0, 200));
+    rect.setFillColor(GAME_OVER_RECTANGLE_COLOR);
     rect.setSize(Vector2f(window.getSize().x, window.getSize().y));
     window.draw(rect);
 
@@ -372,33 +371,33 @@ void Handler::game_over_render(RenderWindow& window)
     Text text;
     text.setFillColor(Color::Green);
     text.setFont(new_font);
-    text.setCharacterSize(150);
+    text.setCharacterSize(GAME_OVER_NORMAL_TEXT_SIZE);
 
     text.setString("THE ZOMBIES");
     int x_pos = (WIDTH - text.getLocalBounds().width) / 2;
-    int y_pos = (HEIGHT - text.getLocalBounds().height) / 2 - 50;
-    text.setPosition(x_pos, y_pos - 180);
-    if (game_over_clock.getElapsedTime().asSeconds() > 3)
+    int y_pos = (HEIGHT - text.getLocalBounds().height) / 2 + GAME_OVER_TEXT_MARGIN_X;
+    text.setPosition(x_pos, y_pos - GAME_OVER_TEXT_LINE_SPACING);
+    if (game_over_clock.getElapsedTime().asSeconds() > GAME_OVER_FIRST_LINE_DISPLAY_TIME)
         window.draw(text);
     text.setString("ATE YOUR");
     x_pos = (WIDTH - text.getLocalBounds().width) / 2;
     text.setPosition(x_pos, y_pos);
-    if (game_over_clock.getElapsedTime().asSeconds() > 5)
+    if (game_over_clock.getElapsedTime().asSeconds() > GAME_OVER_SECOND_LINE_DISPLAY_TIME)
         window.draw(text);
     text.setString("BRAINS!");
-    text.setCharacterSize(220);
+    text.setCharacterSize(GAME_OVER_HUGE_TEXT_SIZE);
     x_pos = (WIDTH - text.getLocalBounds().width) / 2;
-    text.setPosition(x_pos, y_pos + 180);
-    if (game_over_clock.getElapsedTime().asSeconds() > 6)
+    text.setPosition(x_pos, y_pos + GAME_OVER_TEXT_LINE_SPACING);
+    if (game_over_clock.getElapsedTime().asSeconds() > GAME_OVER_THIRD_LINE_DISPLAY_TIME)
         window.draw(text);
     new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
     text.setString("Press Escape To Exit");
-    text.setCharacterSize(60);
+    text.setCharacterSize(EXIT_TEXT_FONT_SIZE);
     text.setFont(new_font);
     text.setFillColor(Color::White);
     x_pos = (WIDTH - text.getLocalBounds().width) / 2;
-    text.setPosition(x_pos, HEIGHT - 100);
-    if (game_over_clock.getElapsedTime().asSeconds() > 8)
+    text.setPosition(x_pos, HEIGHT - GAME_OVER_TEXT_MARGIN_Y);
+    if (game_over_clock.getElapsedTime().asSeconds() > GAME_OVER_FORTH_LINE_DISPLAY_TIME)
         window.draw(text);
 }
 
@@ -422,7 +421,7 @@ void Handler::victory_render(RenderWindow& window)
     Text text;
     new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
     text.setString("Press Escape To Exit");
-    text.setCharacterSize(VICTORY_TEXT_SIZE);
+    text.setCharacterSize(EXIT_TEXT_FONT_SIZE);
     text.setFont(new_font);
     text.setFillColor(Color::White);
     int x_pos = (WIDTH - text.getLocalBounds().width) / 2;

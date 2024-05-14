@@ -61,7 +61,7 @@ const int HOME_X = 173;
 const int row_spawn_height_regular[] = {100 ,245 ,420 ,600 ,755} ; 
 const int row_spawn_height_giant[] = {20 ,180 ,370 ,530 ,703} ;
 
-const int INITIAL_NUMBER_OF_SUNS = 3;
+const int INITIAL_NUMBER_OF_SUNS = 30;
 
 const bool MOVING_SUN = true;
 const bool NOT_MOVING_SUN = false;
@@ -168,3 +168,27 @@ const int VICTORY_TEXT_SIZE = 60 ;
 const int THANKING_PERSON_X_POS = 150 ; 
 const int THANKING_PERSON_y_POS = 300 ; 
 
+
+const int SUN_BANK_POS_X = 20;
+const int SUN_BANK_POS_Y = 5;
+const int NUMBER_OF_SUNS_FONT_SIZE = 50;
+const int SUN_BANK_TEXT_POS_X = 150;
+const int SUN_BANK_TEXT_POS_Y = 13;
+
+const int MAIN_MENU_TEXT_FONT_SIZE = 150;
+const Color BLACK_SHADOW_COLOR = Color(0, 0, 0, 128);
+const int SHADOW_DISTANCE_X = 6;
+const int SHADOW_DISTANCE_Y = -6;
+
+const Color GAME_OVER_RECTANGLE_COLOR = Color(0, 0, 0, 200);
+const int GAME_OVER_NORMAL_TEXT_SIZE = 150;
+const int GAME_OVER_HUGE_TEXT_SIZE = 220;
+const int GAME_OVER_TEXT_MARGIN_X = -50;
+const int GAME_OVER_TEXT_MARGIN_Y = 100;
+const int GAME_OVER_TEXT_LINE_SPACING = 180;
+const int GAME_OVER_FIRST_LINE_DISPLAY_TIME = 3;
+const int GAME_OVER_SECOND_LINE_DISPLAY_TIME = 5;
+const int GAME_OVER_THIRD_LINE_DISPLAY_TIME = 6;
+const int GAME_OVER_FORTH_LINE_DISPLAY_TIME = 8;
+
+const int EXIT_TEXT_FONT_SIZE = 60;
