@@ -5,7 +5,6 @@ Handler::Handler()
 {
     have_small_zombie = have_sprite_in_setting(REGULAR) ; 
     have_giant_zombie = have_sprite_in_setting(HAIRMETALGARGANTUAR) ; 
-    cout << have_giant_zombie << have_small_zombie << endl ; 
     memset(square_is_full ,false ,sizeof square_is_full);
     zombie_amount_per_cycle = read_first_interval_zombies() ;
     zombie_cycle_time = read_attack_interval() ; 
@@ -17,7 +16,8 @@ Handler::Handler()
     first_zombie_generate = true ; 
     first_zombie_coming.openFromFile(AUDIO_PATH + "awooga.ogg");
     planting_sound.openFromFile(AUDIO_PATH + "planting.ogg");
-    huge_wave_sound.openFromFile(AUDIO_PATH + "siren.ogg"); 
+    siren_sound.openFromFile(AUDIO_PATH + "siren.ogg"); 
+    huge_wave_sound.openFromFile(AUDIO_PATH + "hugewave.ogg") ; 
     for (int i = 0; i < NUM_ZOMBIE_GROAN; i++){
         zombie_groan[i].openFromFile(AUDIO_PATH + "groan" + to_string(i) + ".ogg") ;
     }
@@ -72,7 +72,7 @@ void Handler::render_phase(RenderWindow &window)
 }
 
 void Handler::render_last_wave_message(RenderWindow &window)
-{
+{ 
     Font new_font;
     new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
     Text text;
@@ -367,8 +367,11 @@ void Handler::render(RenderWindow &window)
             last_wave_message_display = true;
             last_wave_message_clock.restart();
         }
-        if (last_wave_message_clock.getElapsedTime().asSeconds() < LAST_WAVE_MESSAGE_DURATION)
+        if (last_wave_message_clock.getElapsedTime().asSeconds() < LAST_WAVE_MESSAGE_DURATION){
             render_last_wave_message(window);
+            siren_sound.play() ; 
+            huge_wave_sound.play() ;
+        }
     }
     menu.render(window ,number_of_suns);
     render_cursor_following_sprite(window);

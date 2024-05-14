@@ -204,6 +204,6 @@ const int PHASE_TEXT_POS_X = 1335;
 const int PHASE_TEXT_POS_Y = 20;
 
 const string LAST_WAVE_TEXT = "A huge wave of zombies is approaching";
-const int LAST_WAVE_MESSAGE_DURATION = 2;
+const int LAST_WAVE_MESSAGE_DURATION = 4;
 const int LAST_WAVE_MESSAGE_TEXT_SIZE = 80;
 const int LAST_WAVE_TEXT_MARGIN = 50;
