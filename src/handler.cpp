@@ -15,9 +15,13 @@ Handler::Handler()
     first_zombie_coming.openFromFile(AUDIO_PATH + "awooga.ogg");
     for (int i = 0; i < NUM_ZOMBIE_GROAN; i++){
         zombie_groan[i].openFromFile(AUDIO_PATH + "groan" + to_string(i) + ".ogg") ;
-        groan_ptr = 0 ; 
     }
-    first_zombie_coming.setLoop(false) ;
+    groan_ptr = 0 ; 
+    splat_ptr = 0 ; 
+    for (int i = 0; i < NUM_SPLATS; i++){
+        splat[i].openFromFile(AUDIO_PATH + "splat" + to_string(i) + ".ogg") ; 
+    }
+    collecting_suns.openFromFile(AUDIO_PATH + "collecting_suns.ogg") ; 
 }
 
 void Handler::render_sun_bank(RenderWindow &window)
@@ -283,6 +287,8 @@ void Handler::handle_mouse_press(Event event, double scale_x, double scale_y)
     {
         if (suns[i]->check_mouse_press(event))
         {
+            collecting_suns.setPlayingOffset(seconds(0)) ; 
+            collecting_suns.play() ; 
             auto save = suns[i];
             number_of_suns++;
             suns.erase(suns.begin() + i);
@@ -651,10 +657,16 @@ void Handler::check_peas_collision(){
             if (nearest_zombie != NULL){
                 switch (bullet->get_bullet_type()){
                 case PEA:
+                    splat[splat_ptr].setPlayingOffset(seconds(0)) ; 
+                    splat[splat_ptr].play() ; 
+                    splat_ptr = (splat_ptr + 1) % NUM_SPLATS ; 
                     nearest_zombie->decrease_health(bullet->get_damage()) ; 
                     trash_bullets.push_back(bullet) ; 
                     break;
                 case ICEPEA:
+                    splat[splat_ptr].setPlayingOffset(seconds(0)) ; 
+                    splat[splat_ptr].play() ; 
+                    splat_ptr = (splat_ptr + 1) % NUM_SPLATS ; 
                     nearest_zombie->decrease_health(bullet->get_damage()) ; 
                     nearest_zombie->affect_freezing() ; 
                     trash_bullets.push_back(bullet) ; 

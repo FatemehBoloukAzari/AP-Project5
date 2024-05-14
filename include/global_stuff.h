@@ -61,7 +61,7 @@ const int HOME_X = 173;
 const int row_spawn_height_regular[] = {100 ,245 ,420 ,600 ,755} ; 
 const int row_spawn_height_giant[] = {20 ,180 ,370 ,530 ,703} ;
 
-const int INITIAL_NUMBER_OF_SUNS = 30;
+const int INITIAL_NUMBER_OF_SUNS = 10;
 
 const bool MOVING_SUN = true;
 const bool NOT_MOVING_SUN = false;
@@ -130,6 +130,7 @@ const int MELLON_ACCELERATION = 2000 ;
 const int SUNFLOWER_SUN_SPEED = 40 ; 
 
 const int NUM_ZOMBIE_GROAN = 6 ;
+const int NUM_SPLATS = 3 ; 
 const Color FROZEN_COLOR = Color(100, 100, 255) ; 
 
 const string EMPTY_STRING = "" ; 
