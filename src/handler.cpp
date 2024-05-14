@@ -354,7 +354,7 @@ void Handler::handle_mouse_press(Event event, double scale_x, double scale_y)
     menu.handle_mouse_press(event, number_of_suns);
 }
 
-void Handler::render(RenderWindow &window)
+void Handler::render(RenderWindow &window, Music &background_music)
 {
     render_sun_bank(window);
     for (auto &game_object : game_objects)
@@ -372,10 +372,15 @@ void Handler::render(RenderWindow &window)
             huge_wave_sound.play() ;
             last_wave_message_display = true;
             last_wave_message_clock.restart();
+            siren_sound.play() ; 
+            huge_wave_sound.play() ;
+            background_music.setVolume(0);
         }
         if (last_wave_message_clock.getElapsedTime().asSeconds() < LAST_WAVE_MESSAGE_DURATION){
             render_last_wave_message(window);
         }
+        else
+            background_music.setVolume(100);
     }
     menu.render(window ,number_of_suns);
     render_cursor_following_sprite(window);

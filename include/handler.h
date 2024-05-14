@@ -15,7 +15,7 @@ class Handler
 public:
     Handler();
     void update(State &state, double scale_x);
-    void render(RenderWindow &window);
+    void render(RenderWindow &window, Music &background_music);
     void add_zombie(SpriteType ,double ,double ,int);
     void add_bullet(BulletType ,int ,double ,double); 
     void delete_bullet(Bullet*) ;
