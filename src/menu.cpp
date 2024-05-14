@@ -53,15 +53,15 @@ void MenuItem::normal_render(RenderWindow &window)
     text.setString(to_string(price));
     text.setFillColor(Color::White);
     text.setFont(new_font);
-    text.setCharacterSize(35);
-    text.setPosition(x + 123, y + 50);
+    text.setCharacterSize(CARD_NORMAL_RENDER_TEXT_CHARACTER_SIZE);
+    text.setPosition(x + CARD_NORMAL_RENDER_TEXT_MARGIN_X, y + CARD_NORMAL_RENDER_TEXT_MARGIN_Y);
     text.setStyle(Text::Bold);
     window.draw(text);
 }
 
 Color to_gray_scale(const sf::Color& color)
 {
-    unsigned char gray = color.r * 0.2126f + color.g * 0.7152f + color.b * 0.0722f;
+    unsigned char gray = color.r * GRAY_R + color.g * GRAY_G + color.b * GRAY_B;
     return Color(gray, gray, gray, color.a);
 }
 
@@ -104,8 +104,8 @@ void MenuItem::cooldown_render(RenderWindow &window, bool enough_sun)
     text.setString(stream.str());
     text.setFillColor(Color::White);
     text.setFont(new_font);
-    text.setCharacterSize(35);
-    text.setPosition(x + 60, y + 25);
+    text.setCharacterSize(CARD_NORMAL_RENDER_TEXT_CHARACTER_SIZE);
+    text.setPosition(x + CARD_COOLDOWN_RENDER_TEXT_MARGIN_X, y + CARD_COOLDOWN_RENDER_TEXT_MARGIN_Y);
     text.setStyle(Text::Bold);
     window.draw(text);
     text.setString(to_string(price));
@@ -114,8 +114,8 @@ void MenuItem::cooldown_render(RenderWindow &window, bool enough_sun)
     else
         text.setFillColor(Color::Red);
     text.setFont(new_font);
-    text.setCharacterSize(35);
-    text.setPosition(x + 123, y + 50);
+    text.setCharacterSize(CARD_NORMAL_RENDER_TEXT_CHARACTER_SIZE);
+    text.setPosition(x + CARD_NORMAL_RENDER_TEXT_MARGIN_X, y + CARD_NORMAL_RENDER_TEXT_MARGIN_Y);
     text.setStyle(Text::Bold);
     window.draw(text);
 }
@@ -133,8 +133,8 @@ void MenuItem::disabled_render(RenderWindow &window){
     text.setString(to_string(price));
     text.setFillColor(Color::Red);
     text.setFont(new_font);
-    text.setCharacterSize(35);
-    text.setPosition(x + 123, y + 50);
+    text.setCharacterSize(CARD_NORMAL_RENDER_TEXT_CHARACTER_SIZE);
+    text.setPosition(x + CARD_NORMAL_RENDER_TEXT_MARGIN_X, y + CARD_NORMAL_RENDER_TEXT_MARGIN_Y);
     text.setStyle(Text::Bold);
     window.draw(text);
 }
@@ -157,9 +157,9 @@ void Menu::render(RenderWindow &window ,int number_of_suns)
 
 Menu::Menu()
 {
-    int y_pos = 100;
-    int x_pos = 20;
-    int space_y = 3;
+    int y_pos = MENU_Y;
+    int x_pos = MENU_X;
+    int space_y = MENU_SPACE_Y ;
     for (int type = WALNUT; type != NOT_SPRITE; type++)
     {
         SpriteType sprite_type = static_cast<SpriteType>(type);

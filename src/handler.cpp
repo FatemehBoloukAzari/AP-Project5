@@ -416,18 +416,18 @@ void Handler::victory_render(RenderWindow& window)
     double scale_y = (double)THANKING_PERSON_HEIGHT / thanking_person.getGlobalBounds().height;
     thanking_person.setScale(scale_x, scale_y);
     thanking_person.setOrigin(thanking_person.getGlobalBounds().width / 2, thanking_person.getGlobalBounds().height / 2);
-    thanking_person.setPosition(150, 300);
+    thanking_person.setPosition(THANKING_PERSON_X_POS, THANKING_PERSON_y_POS);
     window.draw(thanking_person);
     Font new_font;
     Text text;
     new_font.loadFromFile(FONTS_PATH + "HouseOfTerrorRegular.otf");
     text.setString("Press Escape To Exit");
-    text.setCharacterSize(60);
+    text.setCharacterSize(VICTORY_TEXT_SIZE);
     text.setFont(new_font);
     text.setFillColor(Color::White);
     int x_pos = (WIDTH - text.getLocalBounds().width) / 2;
-    text.setPosition(x_pos, HEIGHT - 100);
-    if (game_over_clock.getElapsedTime().asSeconds() > 8)
+    text.setPosition(x_pos, HEIGHT - VICTORY_Y_MARGIN);
+    if (game_over_clock.getElapsedTime().asSeconds() > GAME_OVER_DRAW_TIME)
         window.draw(text);
 }
 
@@ -495,15 +495,15 @@ void Handler::handle_zombie_damages(double scale_x){
             auto plant = dynamic_cast<Plant*>(*it) ; 
             for (auto zombie : zombies_in_line[plant->get_row()]){
                 if (is_in_same_field(zombie ,plant ,scale_x)){
-                    if (!zombie->moving){
+                    if (!zombie->is_moving()){
                         zombie->update() ;
-                        if (zombie->attacked){
+                        if (zombie->is_attacked()){
                             plant->decrease_health(zombie->get_damage()) ; 
-                            zombie->attacked = false ; 
+                            zombie->set_attacked(false) ; 
                         }
                     }
                     else {
-                        zombie->moving = false ;
+                        zombie->set_moving(false) ;
                         zombie->init_hit_clock() ; 
                     }
                 }
@@ -534,10 +534,10 @@ void Handler::clean_dead_plants(){
 void Handler::check_moving_stopped_zombies(double scale_x){
     for (int row = 0; row < NUM_ROW; row++){
         for (auto zombie : zombies_in_line[row]){
-            if (!zombie->moving){
+            if (!zombie->is_moving()){
                 int col = zombie->get_column_number(scale_x) ;
                 if (!square_is_full[row][col]){
-                    zombie->moving = true ; 
+                    zombie->set_moving(true) ; 
                 }
             }
         }

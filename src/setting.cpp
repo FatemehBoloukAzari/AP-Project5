@@ -5,40 +5,40 @@ string get_sprite_string(SpriteType sprite_type)
     switch (sprite_type)
     {
         case WALNUT:
-            return "walnut";
+            return WALNUT_STRING;
         case PEASHOOTER:
-            return "peashooter";
+            return PEASHOOTER_STRING;
         case SNOWPEA:
-            return "snowpea";
+            return SNWOPEA_STRING;
         case MELONPULT:
-            return "melonPult";
+            return MELONPULT_STRING;
         case SUNFLOWER:
-            return "sunflower";
+            return SUNFLOWER_STRING;
         case REGULAR:
-            return "regular";
+            return REGULAR_STRING;
         case HAIRMETALGARGANTUAR:
-            return "hairMetalGargantuar";
+            return HAIRMETALGARGANTUAR_STRING;
         default:
             break;
     }
-    return "";
+    return EMPTY_STRING;
 }
 
 vector <string> dash_split(string str)
 {
     vector <string> ret;
-    string cur_str = "";
+    string cur_str = EMPTY_STRING;
     for (auto c : str)
     {
-        if (c == '-' || c == ',')
+        if (c == DASH || c == COMMA)
         {
             ret.push_back(cur_str);
-            cur_str = "";
+            cur_str = EMPTY_STRING;
         }
         else
             cur_str += c;
     }
-    if (cur_str != "")
+    if (cur_str != EMPTY_STRING)
         ret.push_back(cur_str);
     return ret;
 }
@@ -49,7 +49,7 @@ vector <string> get_setting(string sprite_str)
     string str;
     while (setting_file >> str)
     {
-        if (str == "ZOMBIES:" || str == "PLANTS:" || str == "ATTACKS:" || str == "SUN:")
+        if (str == ZOMBIES_STRING || str == PLANTS_STRING || str == ATTACKS_STRING || str == SUN_STRING)
             continue;
         vector <string> splited_str = dash_split(str);
         if (splited_str[0] == sprite_str)

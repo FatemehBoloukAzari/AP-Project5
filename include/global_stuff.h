@@ -130,3 +130,41 @@ const int MELLON_ACCELERATION = 2000 ;
 const int SUNFLOWER_SUN_SPEED = 40 ; 
 
 const int NUM_ZOMBIE_GROAN = 6 ;
+const Color FROZEN_COLOR = Color(100, 100, 255) ; 
+
+const string EMPTY_STRING = "" ; 
+const char DASH = '-' ; 
+const char COMMA = ',' ; 
+const string ZOMBIES_STRING = "ZOMBIES:" ; 
+const string PLANTS_STRING = "PLANTS:" ; 
+const string ATTACKS_STRING = "ATTACKES:" ; 
+const string SUN_STRING = "SUN:" ; 
+const string WALNUT_STRING = "walnut" ; 
+const string PEASHOOTER_STRING = "peashooter" ; 
+const string SNWOPEA_STRING = "snowpea" ; 
+const string MELONPULT_STRING = "melonPult" ; 
+const string SUNFLOWER_STRING = "sunflower" ; 
+const string REGULAR_STRING = "regular" ; 
+const string HAIRMETALGARGANTUAR_STRING = "hairMetalGargantuar" ; 
+
+const int MENU_Y = 100 ; 
+const int MENU_X = 20 ; 
+const int MENU_SPACE_Y = 3 ; 
+
+const int CARD_NORMAL_RENDER_TEXT_CHARACTER_SIZE = 35 ;
+const int CARD_NORMAL_RENDER_TEXT_MARGIN_X = 123 ;
+const int CARD_NORMAL_RENDER_TEXT_MARGIN_Y = 50 ;
+const int CARD_COOLDOWN_RENDER_TEXT_MARGIN_X = 60 ;
+const int CARD_COOLDOWN_RENDER_TEXT_MARGIN_Y = 25 ;
+
+const float GRAY_R = 0.2126f ; 
+const float GRAY_G = 0.7152f ; 
+const float GRAY_B = 0.0722f ;
+
+const int GAME_OVER_DRAW_TIME = 8 ; 
+const int VICTORY_Y_MARGIN = 100 ; 
+const int VICTORY_TEXT_SIZE = 60 ;
+
+const int THANKING_PERSON_X_POS = 150 ; 
+const int THANKING_PERSON_y_POS = 300 ; 
+

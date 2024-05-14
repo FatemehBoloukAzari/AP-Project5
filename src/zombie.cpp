@@ -47,7 +47,7 @@ void Zombie::render(RenderWindow &window){
     }
     Sprite render_sprite = item_sprite;
     if (freezed)
-        render_sprite.setColor(Color(100, 100, 255));
+        render_sprite.setColor(FROZEN_COLOR);
     window.draw(render_sprite);
 }
 
