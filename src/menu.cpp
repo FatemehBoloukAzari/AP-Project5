@@ -87,7 +87,7 @@ void MenuItem::render_cooldown_card(RenderWindow &window, double remaning_cooldo
     window.draw(item_cooldown_sprite);
 }
 
-void MenuItem::cooldown_render(RenderWindow &window)
+void MenuItem::cooldown_render(RenderWindow &window, bool enough_sun)
 {
     double scale_x = (double)CARD_WIDTH / item_texture.getSize().x;
     double scale_y = (double)CARD_HEIGHT / item_texture.getSize().y;
@@ -109,7 +109,10 @@ void MenuItem::cooldown_render(RenderWindow &window)
     text.setStyle(Text::Bold);
     window.draw(text);
     text.setString(to_string(price));
-    text.setFillColor(Color::White);
+    if (enough_sun)
+        text.setFillColor(Color::White);
+    else
+        text.setFillColor(Color::Red);
     text.setFont(new_font);
     text.setCharacterSize(35);
     text.setPosition(x + 123, y + 50);
@@ -141,7 +144,7 @@ void MenuItem::render(RenderWindow &window ,int number_of_suns)
     if (!on_cooldown && number_of_suns >= price)
         normal_render(window);
     else if (on_cooldown)
-        cooldown_render(window);
+        cooldown_render(window, (number_of_suns >= price));
     else 
         disabled_render(window) ; 
 }

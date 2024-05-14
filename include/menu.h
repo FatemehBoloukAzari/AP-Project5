@@ -29,7 +29,7 @@ private:
     bool check_mouse_press(Event event);
     void normal_render(RenderWindow &window);
     void render_cooldown_card(RenderWindow &window, double);
-    void cooldown_render(RenderWindow &window);
+    void cooldown_render(RenderWindow &window, bool enough_sun);
     void disabled_render(RenderWindow &window);
 };
 
