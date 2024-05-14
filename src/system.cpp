@@ -57,7 +57,7 @@ void System::render()
 {
     window.clear();
     window.draw(backgroundSprite);
-    handler->render(window);
+    handler->render(window, music);
     window.display();
 }
 
