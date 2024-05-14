@@ -3,26 +3,34 @@
 
 Handler::Handler()
 {
+    have_small_zombie = have_sprite_in_setting(REGULAR) ; 
+    have_giant_zombie = have_sprite_in_setting(HAIRMETALGARGANTUAR) ; 
+    cout << have_giant_zombie << have_small_zombie << endl ; 
     memset(square_is_full ,false ,sizeof square_is_full);
     zombie_amount_per_cycle = read_first_interval_zombies() ;
     zombie_cycle_time = read_attack_interval() ; 
     zombie_generate_duration = read_total_attack_time() ; 
     zombie_increase_rate = read_zombie_number_change() ; 
-    giant_probability = -10 ;
+    giant_probability = INITIAL_GIANT_PROBABILITY ;
     sun_interval = read_sun_interval_from_file();
     number_of_suns = INITIAL_NUMBER_OF_SUNS;
     first_zombie_generate = true ; 
     first_zombie_coming.openFromFile(AUDIO_PATH + "awooga.ogg");
     planting_sound.openFromFile(AUDIO_PATH + "planting.ogg");
+    huge_wave_sound.openFromFile(AUDIO_PATH + "siren.ogg"); 
     for (int i = 0; i < NUM_ZOMBIE_GROAN; i++){
         zombie_groan[i].openFromFile(AUDIO_PATH + "groan" + to_string(i) + ".ogg") ;
     }
+    for (int i = 0; i < NUM_THROW; i++){
+        throw_music[i].openFromFile(AUDIO_PATH + "throw" + to_string(i) + ".ogg") ;
+    }
+    throw_ptr = 0 ;
     groan_ptr = 0 ; 
     splat_ptr = 0 ; 
     for (int i = 0; i < NUM_SPLATS; i++){
         splat[i].openFromFile(AUDIO_PATH + "splat" + to_string(i) + ".ogg") ; 
     }
-    collecting_suns.openFromFile(AUDIO_PATH + "collecting_suns.ogg") ; 
+    collecting_suns.openFromFile(AUDIO_PATH + "collecting_suns.wav") ; 
 }
 
 void Handler::render_sun_bank(RenderWindow &window)
@@ -193,6 +201,12 @@ void Handler::add_zombie(SpriteType sprite_type ,double x ,double y ,int row_num
 
 SpriteType Handler::get_random_zombie_type(){
     mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+    if (!have_small_zombie){
+        assert(have_giant_zombie) ; 
+        return HAIRMETALGARGANTUAR ;
+    }
+    if (!have_giant_zombie)
+        return REGULAR ; 
     if (giant_probability <= 0) 
         return REGULAR ; 
     int rand_num = rng() % GIANT_PROBABILITY ;
@@ -473,9 +487,15 @@ void Handler::handle_plants_shooting(){
                     plant->shooted = false ; 
                     switch (plant->get_sprite_type()){
                     case PEASHOOTER:
+                        throw_music[throw_ptr].setPlayingOffset(seconds(0)) ; 
+                        throw_music[throw_ptr].play() ; 
+                        throw_ptr = (throw_ptr + 1) % NUM_THROW ; 
                         add_bullet(PEA ,plant->get_row() ,plant->get_x() ,plant->get_y() + BULLET_MARGIN);
                         break;
                     case SNOWPEA:
+                        throw_music[throw_ptr].setPlayingOffset(seconds(0)) ; 
+                        throw_music[throw_ptr].play() ; 
+                        throw_ptr = (throw_ptr + 1) % NUM_THROW ; 
                         add_bullet(ICEPEA ,plant->get_row() ,plant->get_x() ,plant->get_y() + BULLET_MARGIN );
                         break; 
                     case MELONPULT:

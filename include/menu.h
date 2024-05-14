@@ -18,6 +18,8 @@ private:
     int y;
     int cooldown;
     int price;
+    Music tap[NUM_TAP] ; 
+    int tap_ptr ; 
     Texture item_texture;
     Sprite item_sprite;
     Texture item_cooldown_texture;

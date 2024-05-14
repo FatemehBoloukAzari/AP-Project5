@@ -1,6 +1,6 @@
-ZOMBIES: regular-10-50-5-70, hairMetalGargantuar-20-80-6-40
+ZOMBIES: regular-10-50-5-30, hairMetalGargantuar-20-80-6-20
 
-PLANTS: peashooter-10-40-5-5-850-4, snowpea-10-35-9-5-850-6, melonPult-15-30-10-2-500-8, sunflower-0-30-10-5-0-2, walnut-0-140-10-0-0-2
+PLANTS: peashooter-10-40-5-5-700-4, snowpea-10-35-9-5-700-6, melonPult-15-30-10-2-500-8, sunflower-0-30-10-5-0-2, walnut-0-140-10-0-0-2
 
 ATTACKS: attack-150-15-2-1
 

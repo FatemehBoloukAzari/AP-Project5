@@ -108,9 +108,9 @@ const int THANKING_PERSON_WIDTH = 375;
 const int X_SPACE = 350;
 
 const int SUN_MOVE_INTERVAL = 10;
-const int ZOMBIE_MOVE_INTERVAL = 30; 
-const int PEA_BULLET_MOVE_INTERVAL = 30 ;
-const int ICEPEA_BULLET_MOVE_INTERVAL = 30 ;
+const int ZOMBIE_MOVE_INTERVAL = 10; 
+const int PEA_BULLET_MOVE_INTERVAL = 10 ;
+const int ICEPEA_BULLET_MOVE_INTERVAL = 10 ;
 const int ZOMBIE_GROAN_INTERVAL = 5 ; 
 
 const int GIANT_PROBABILITY = 175 ; 
@@ -125,12 +125,15 @@ const double SUN_FINAL_DELTA_X = 60 ;
 const double SUN_EXTRA_DELTA_X = 4 ; 
 
 const double SUN_ACCELERATION = 0.15 ;
-const int MELLON_ACCELERATION = 2000 ;
+const int MELLON_ACCELERATION = 500 ;
 
 const int SUNFLOWER_SUN_SPEED = 40 ; 
 
 const int NUM_ZOMBIE_GROAN = 6 ;
 const int NUM_SPLATS = 3 ; 
+const int NUM_THROW = 2 ;
+const int NUM_TAP = 2 ; 
+
 const Color FROZEN_COLOR = Color(100, 100, 255) ; 
 
 const string EMPTY_STRING = "" ; 
@@ -191,5 +194,7 @@ const int GAME_OVER_FIRST_LINE_DISPLAY_TIME = 3;
 const int GAME_OVER_SECOND_LINE_DISPLAY_TIME = 5;
 const int GAME_OVER_THIRD_LINE_DISPLAY_TIME = 6;
 const int GAME_OVER_FORTH_LINE_DISPLAY_TIME = 8;
+
+const int INITIAL_GIANT_PROBABILITY = -10 ; 
 
 const int EXIT_TEXT_FONT_SIZE = 60;

@@ -4,6 +4,7 @@
 
 MenuItem::MenuItem(SpriteType type, int x_pos, int y_pos)
 {
+    tap_ptr = 0 ; 
     x = x_pos;
     y = y_pos;
     sprite_type = type;
@@ -11,6 +12,9 @@ MenuItem::MenuItem(SpriteType type, int x_pos, int y_pos)
     tagged = false;
     cooldown = read_plant_cooldown_from_file(sprite_type);
     price = read_plant_price_from_file(sprite_type);
+    for (int i = 0; i < NUM_TAP; i++){
+        tap[i].openFromFile(AUDIO_PATH + "tap" + to_string(i) + ".ogg") ; 
+    }
     switch (sprite_type)
     {
         case WALNUT:
@@ -189,6 +193,9 @@ void MenuItem::handle_mouse_press(Event event, int number_of_suns)
         return;
     if (price > number_of_suns)
         return;
+    tap[tap_ptr].setPlayingOffset(seconds(0)) ; 
+    tap[tap_ptr].play() ; 
+    tap_ptr = (tap_ptr + 1) % NUM_TAP ; 
     tagged = true;
 }
 
