@@ -133,6 +133,8 @@ const int NUM_ZOMBIE_GROAN = 6 ;
 const int NUM_SPLATS = 3 ; 
 const int NUM_THROW = 2 ;
 const int NUM_TAP = 2 ; 
+const int NUM_KERNELPULT = 2 ; 
+const int NUM_MELON_IMPACT = 2 ; 
 
 const Color FROZEN_COLOR = Color(100, 100, 255) ; 
 
@@ -204,6 +206,6 @@ const int PHASE_TEXT_POS_X = 1335;
 const int PHASE_TEXT_POS_Y = 20;
 
 const string LAST_WAVE_TEXT = "A huge wave of zombies is approaching";
-const int LAST_WAVE_MESSAGE_DURATION = 4;
+const int LAST_WAVE_MESSAGE_DURATION = 4 ;
 const int LAST_WAVE_MESSAGE_TEXT_SIZE = 80;
 const int LAST_WAVE_TEXT_MARGIN = 50;

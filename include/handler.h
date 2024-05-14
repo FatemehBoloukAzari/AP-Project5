@@ -51,10 +51,11 @@ private:
     vector <Bullet*> bullets_in_line[NUM_ROW]; 
     Menu menu;
     Music first_zombie_coming ,zombie_groan[NUM_ZOMBIE_GROAN] ,collecting_suns ,splat[NUM_SPLATS];
-    Music planting_sound ,huge_wave_sound ,siren_sound ,throw_music[NUM_THROW] ;
+    Music planting_sound ,huge_wave_sound ,siren_sound ,throw_music[NUM_THROW] ,kernelpult[NUM_KERNELPULT] ;
+    Music melon_impact[NUM_MELON_IMPACT] ;
     Clock sun_generating_clock;
     Clock game_over_clock ,zombie_groan_clock;
-    int number_of_suns ,groan_ptr ,splat_ptr ,throw_ptr ;
+    int number_of_suns ,groan_ptr ,splat_ptr ,throw_ptr ,pult_ptr ,impact_ptr ;
     Clock last_wave_message_clock;
     int sun_interval;
     bool have_small_zombie ,have_giant_zombie ; 

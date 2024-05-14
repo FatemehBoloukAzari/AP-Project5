@@ -24,12 +24,16 @@ Handler::Handler()
     for (int i = 0; i < NUM_THROW; i++){
         throw_music[i].openFromFile(AUDIO_PATH + "throw" + to_string(i) + ".ogg") ;
     }
-    throw_ptr = 0 ;
-    groan_ptr = 0 ; 
-    splat_ptr = 0 ; 
+    for (int i = 0; i < NUM_KERNELPULT; i++){
+        kernelpult[i].openFromFile(AUDIO_PATH + "kernelpult" + to_string(i) + ".ogg") ; 
+    }
     for (int i = 0; i < NUM_SPLATS; i++){
         splat[i].openFromFile(AUDIO_PATH + "splat" + to_string(i) + ".ogg") ; 
     }
+    for (int i = 0; i < NUM_MELON_IMPACT; i++){
+        melon_impact[i].openFromFile(AUDIO_PATH + "melonimpact" + to_string(i) + ".ogg") ; 
+    }
+    pult_ptr = throw_ptr = groan_ptr = splat_ptr = impact_ptr = 0 ; 
     collecting_suns.openFromFile(AUDIO_PATH + "collecting_suns.wav") ; 
     phase = 1;
     last_wave_message_display = false;
@@ -364,13 +368,13 @@ void Handler::render(RenderWindow &window)
     {
         if (!last_wave_message_display)
         {
+            siren_sound.play() ; 
+            huge_wave_sound.play() ;
             last_wave_message_display = true;
             last_wave_message_clock.restart();
         }
         if (last_wave_message_clock.getElapsedTime().asSeconds() < LAST_WAVE_MESSAGE_DURATION){
             render_last_wave_message(window);
-            siren_sound.play() ; 
-            huge_wave_sound.play() ;
         }
     }
     menu.render(window ,number_of_suns);
@@ -544,6 +548,9 @@ void Handler::handle_plants_shooting(){
                         add_bullet(ICEPEA ,plant->get_row() ,plant->get_x() ,plant->get_y() + BULLET_MARGIN );
                         break; 
                     case MELONPULT:
+                        kernelpult[pult_ptr].setPlayingOffset(seconds(0)) ; 
+                        kernelpult[pult_ptr].play() ; 
+                        pult_ptr = (pult_ptr + 1) % NUM_KERNELPULT ; 
                         add_bullet(MELLON ,plant->get_row() ,plant->get_x() ,plant->get_y() + BULLET_MARGIN);
                         break; 
                     case SUNFLOWER:
@@ -696,6 +703,9 @@ void Handler::check_melons_collision()
             Mellon_Bullet *melon = dynamic_cast<Mellon_Bullet*>(bullet);
             if (melon->end_collision_time())
             {
+                melon_impact[impact_ptr].setPlayingOffset(seconds(0)) ; 
+                melon_impact[impact_ptr].play() ; 
+                impact_ptr = (impact_ptr + 1) % NUM_MELON_IMPACT ;
                 Zombie* zombie = find_zombie(zombies_in_line[row], melon->get_target_zombie());
                 if (zombie != NULL)
                     zombie->decrease_health(bullet->get_damage());
